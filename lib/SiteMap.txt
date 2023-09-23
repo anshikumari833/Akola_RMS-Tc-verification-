@@ -1,0 +1,15 @@
+1. login_screen   [tc, utc]
+
+2.home  -  property_HomeScreen
+        -  water_HomeScreen
+        -  trade_HomeScreen
+        -  advertisement_HomeScreen
+
+3.property_HomeScreen  - fieldVerification_pending_list
+                       - property_NewAssessment
+                       - Property_WaterHarvestingFieldVerify
+                       - Property_MissingGeotaggingProperty_MissingGeotagging
+
+
+                       APPLICATON ID
+                       8a555650d06c407e97bc73fc7d69a673
