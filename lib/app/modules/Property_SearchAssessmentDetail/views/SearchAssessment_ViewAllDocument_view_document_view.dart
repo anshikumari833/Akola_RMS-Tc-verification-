@@ -58,8 +58,69 @@ class SearchAssessmentViewDocumentView extends GetView<SearchAssessmentDetailCon
                                 ],
                               ),
                             ),
+                            // Padding(
+                            //   padding:EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Container(
+                            //         child: SingleChildScrollView(
+                            //           scrollDirection: Axis.horizontal,
+                            //           child: DataTable(
+                            //             columnSpacing: 20,
+                            //             columns: [
+                            //               DataColumn(label: Center(child: Text('#'))),
+                            //               DataColumn(label: Center(child: Text('Document Name'))),
+                            //               DataColumn(label: Center(child: Text('View'))),
+                            //               DataColumn(label: Center(child: Text('Status'))),
+                            //               DataColumn(label: Center(child: Text('Remarks'))),
+                            //             ],
+                            //             rows: controller.documents.map((document) {
+                            //               Widget viewWidget;
+                            //
+                            //               if (document['doc_path'].toString().endsWith('.pdf')) {
+                            //                 viewWidget = Text('Document'); // Display 'Document' for PDF files
+                            //               } else if (document['doc_path'].toString().isNotEmpty) {
+                            //                 // viewWidget = Image.network(document['doc_path'].toString()); // Display the image
+                            //                 viewWidget = Image.network(
+                            //                   document['doc_path'].toString(),
+                            //                   errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                            //                     // Handle the error here, for example, display a placeholder image or an error message.
+                            //                     return Icon(Icons.error_outline_outlined); // Replace with your custom error widget.
+                            //                   },
+                            //                 );
+                            //
+                            //                 // Image.network(document['doc_path'].toString());
+                            //               } else {
+                            //                 viewWidget = Text('No Data');
+                            //               }
+                            //               String statusText;
+                            //               if (document['verify_status'] == 1) {
+                            //                 statusText = 'Verified';
+                            //               } else if (document['verify_status'] == 0) {
+                            //                 statusText = 'Pending';
+                            //               } else {
+                            //                 statusText = 'NA';
+                            //               }
+                            //               return DataRow(
+                            //                 cells: [
+                            //                   DataCell(Center(child: Text((controller.documents.indexOf(document) + 1).toString()))),
+                            //                   DataCell(Center(child: Text(document['doc_code'].toString()))),
+                            //                   DataCell(Center(child: viewWidget)),
+                            //                   DataCell(Center(child: Text(statusText))),
+                            //                   DataCell(Center(child: Text(document['remarks'].toString()))),
+                            //                 ],
+                            //               );
+                            //             }).toList(),
+                            //           ),
+                            //         ),
+                            //
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Padding(
-                              padding:EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -80,8 +141,9 @@ class SearchAssessmentViewDocumentView extends GetView<SearchAssessmentDetailCon
 
                                           if (document['doc_path'].toString().endsWith('.pdf')) {
                                             viewWidget = Text('Document'); // Display 'Document' for PDF files
-                                          } else if (document['doc_path'].toString().isNotEmpty) {
-                                            // viewWidget = Image.network(document['doc_path'].toString()); // Display the image
+                                          } else if (document['doc_path'].toString().endsWith('.jpeg') ||
+                                              document['doc_path'].toString().endsWith('.jpg') ||
+                                              document['doc_path'].toString().endsWith('.png')) {
                                             viewWidget = Image.network(
                                               document['doc_path'].toString(),
                                               errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
@@ -89,8 +151,6 @@ class SearchAssessmentViewDocumentView extends GetView<SearchAssessmentDetailCon
                                                 return Icon(Icons.error_outline_outlined); // Replace with your custom error widget.
                                               },
                                             );
-
-                                            // Image.network(document['doc_path'].toString());
                                           } else {
                                             viewWidget = Text('No Data');
                                           }
@@ -114,11 +174,11 @@ class SearchAssessmentViewDocumentView extends GetView<SearchAssessmentDetailCon
                                         }).toList(),
                                       ),
                                     ),
-
                                   ),
                                 ],
                               ),
                             ),
+
                           ],
                         ),
                       ),

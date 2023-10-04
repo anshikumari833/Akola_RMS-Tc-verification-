@@ -18,15 +18,16 @@ import '../views/Property_NA_FormSubmitPreview.dart';
 import '../views/property_NA_TaxCalculationForm.dart';
 
 class PropertyNewAssessmentController extends GetxController {
-
-
+  final GlobalKey<FormState> basicDetailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> propertyDetailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> electricityDetailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> ownerDetailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> floorDetailsFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> extraDetailsFormKey = GlobalKey<FormState>();
   //FOR PREFILL DATA FROM PAY PROPERTY TAX
   final PropertyPayPropertyTaxController payPropertyTaxController = Get.find();
-
   // Access the searched data by ID from payPropertyTaxController
   List<dynamic> get searchedDataById => payPropertyTaxController.searchedDataById;
-
-
   final GlobalKey<FormState> newAssessmentFormKey = GlobalKey<FormState>();
   var safReceipts = List<dynamic>.empty(growable: true);
   // var searchedDataById = List<dynamic>.empty(growable: true).obs;
@@ -344,8 +345,7 @@ class PropertyNewAssessmentController extends GetxController {
   Future<void>  getWardByZone({required String zoneId}) async {
     isDataProcessing.value = true;
     WardListByZone.clear();
-    APIResponse response = await PropertyNewAssessmentProvider().WardByZone(
-        zoneId);
+    APIResponse response = await PropertyNewAssessmentProvider().WardByZone(zoneId);
     if (!response.error) {
       List<dynamic> responseDataList = List<dynamic>.from(response.data);
       for (var responseData in responseDataList) {

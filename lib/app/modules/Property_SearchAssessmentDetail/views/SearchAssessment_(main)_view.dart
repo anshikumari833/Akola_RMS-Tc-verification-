@@ -355,55 +355,28 @@ class SearchAssessmentDetailView
                                       Card(
                                         margin: EdgeInsets.all(2.0),
                                         shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
+                                          borderRadius: BorderRadius.circular(20.0),),
                                         elevation: 2,
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
                                           children: [
                                             Container(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
+                                              padding: const EdgeInsets.all(10.0),
                                               child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  _buildDetailsRow(
-                                                      'Ward No',
-                                                      searchedData.oldWardNo
-                                                          .toString()),
-                                                  _buildDetailsRow(
-                                                      'Application No',
-                                                      searchedData.safNo ?? ''),
-                                                  _buildDetailsRow(
-                                                      'Assessment Type',
-                                                      searchedData
-                                                              .assessmentType ??
-                                                          ''),
-                                                  _buildDetailsRow(
-                                                      'First Owner',
-                                                      searchedData.ownerName ??
-                                                          ''),
-                                                  _buildDetailsRow(
-                                                      'Mobile No',
-                                                      searchedData.mobileNo ??
-                                                          ''),
-                                                  _buildDetailsRow(
-                                                      'Applied By',
-                                                      searchedData.appliedby ??
-                                                          ''),
-                                                  _buildDetailsRow(
-                                                      'Current Level',
-                                                      searchedData.status ??
-                                                          ''),
+                                                  _buildDetailsRow('Ward No', searchedData.oldWardNo.toString()),
+                                                  _buildDetailsRow('Application No', searchedData.safNo ?? ''),
+                                                  _buildDetailsRow('Assessment Type', searchedData.assessmentType ?? ''),
+                                                  _buildDetailsRow('First Owner', searchedData.ownerName ?? ''),
+                                                  _buildDetailsRow('Mobile No', searchedData.mobileNo ?? ''),
+                                                  _buildDetailsRow('Applied By', searchedData.appliedby ?? ''),
+                                                  _buildDetailsRow('Current Level', searchedData.status ?? ''),
                                                 ],
                                               ),
                                             ),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 //BASIC DETAILS
                                                 TextButton(

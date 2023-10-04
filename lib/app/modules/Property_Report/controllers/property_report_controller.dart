@@ -8,6 +8,7 @@ import '../providers/property_report_provider.dart';
 
 class PropertyReportController extends GetxController with GetSingleTickerProviderStateMixin  {
   var reportList = List<dynamic>.empty(growable: true);
+  final ValueNotifier<bool> isExpanded = ValueNotifier<bool>(false);
   late AnimationController animationController;
   late Animation<Offset> slideAnimation;
   var isContainerVisible = false.obs;
@@ -156,20 +157,6 @@ class PropertyReportController extends GetxController with GetSingleTickerProvid
     });
   }
 
-  //SEARCH-PROPERTY-DETAILS
-  // Future<void> getReportDetail() async {
-  //   APIResponse response = await PropertyReportProvider().searchReportDetail({
-  //     "collectionType": collectionType.value,
-  //     "fromDate": dateFromController.text.toString(),
-  //     "uptoDate": dateUptoController.text.toString(),
-  //     "wardNo": wardNo.value.toString(),
-  //     "paymentMode": paymentMode.value.toString(),
-  //   });
-  //   if (response != null) {
-  //     reportList.add(response); // Add the response to the reportList
-  //     print(response);
-  //   }
-  // }
 
   var rwardNo = '';
   var id = '';
@@ -249,43 +236,6 @@ class PropertyReportController extends GetxController with GetSingleTickerProvid
     isLoading.value = false;
   }
 
-
-
-  //
-  // if (response != null) {
-  //     Map<String, dynamic> responseData = response.data;
-  //     rwardNo = responseData["ward_no"].toString();
-  //     id = responseData["id"].toString();
-  //     type = responseData["type"].toString();
-  //     safNo = responseData["saf_no"].toString();
-  //     assessmentType = responseData["assessment_type"].toString();
-  //     newHoldingNo = responseData["new_holding_no"].toString();
-  //     tranId = responseData["tran_id"].toString();
-  //     holdingNo = responseData["holding_no"].toString();
-  //     ownerName = responseData["owner_name"].toString();
-  //     mobileNo = responseData["mobile_no"].toString();
-  //     fromUptoFyQtr = responseData["from_upto_fy_qtr"].toString();
-  //     tranDate = responseData["tran_date"].toString();
-  //     transactionMode = responseData["transaction_mode"].toString();
-  //     amount = responseData["amount"].toString();
-  //     empName = responseData["emp_name"].toString();
-  //     userId = responseData["user_id"].toString();
-  //     tranNo = responseData["tran_no"].toString();
-  //     chequeNo = responseData["cheque_no"].toString();
-  //     bankName = responseData["bank_name"].toString();
-  //     branchName = responseData["branch_name"].toString();
-  //     if (page == 1) {
-  //       totalAmount = responseData["totalAmt"].toString();
-  //       currentPage.value = responseData["current_page"];
-  //       totalPages.value =responseData["last_page"];
-  //     }
-  //     reportList.clear();
-  //     // reportList.addAll(responseData);
-  //     print(reportList);
-  //     isLoading.value = false;
-  //   }
-  //   return true;
-  // }
 
   @override
   void dispose() {

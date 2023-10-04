@@ -44,6 +44,15 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    signingConfigs {
+        release {
+            storeFile file("D:\\Akola Project\\tc_verification_app\\Akola_RMSKeyStore.jks")
+            storePassword "aadrika@321"
+            keyAlias "Amc-Rms321"
+            keyPassword "aadrika@321"
+        }
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.amcakola.tc_verification_app"
@@ -52,15 +61,16 @@ android {
 //        minSdkVersion flutter.minSdkVersion
         minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 2
+        versionName "2.0"
     }
 
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+//        signingConfig signingConfigs.debug
+           signingConfig signingConfigs.release
         }
     }
 }

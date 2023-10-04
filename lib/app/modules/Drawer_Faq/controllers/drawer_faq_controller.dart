@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class FaqController extends GetxController {
-  //TODO: Implement FaqController
+class DrawerFaqController extends GetxController {
+  //TODO: Implement DrawerFaqController
 
   final count = 0.obs;
   @override

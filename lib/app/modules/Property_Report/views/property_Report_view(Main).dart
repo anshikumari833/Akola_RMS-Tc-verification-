@@ -92,6 +92,7 @@ class PropertyReportView extends GetView<PropertyReportController> {
                                   color: Colors.grey[200],
                                 ),
                                 child: DropdownButton2(
+                                  value: controller.selectedItems.isNotEmpty ? controller.selectedItems[0] : null,
                                   isExpanded: true,
                                   hint: Align(
                                     alignment: AlignmentDirectional.center,
@@ -123,42 +124,42 @@ class PropertyReportView extends GetView<PropertyReportController> {
                                         },
                                       )),
                                     ),
-                                    DropdownMenuItem(
-                                      value: 'saf',
-                                      child: Obx(() => CheckboxListTile(
-                                        title: Text('SAF'),
-                                        value: controller.selectedItems.contains('saf'),
-                                        onChanged: (newValue) {
-                                          if (newValue != null) {
-                                            if (newValue) {
-                                              controller.selectedItems.add('saf');
-                                            } else {
-                                              controller.selectedItems.remove('saf');
-                                            }
-                                          }
-                                          controller.collectionType.value =
-                                              controller.selectedItems.toList();
-                                        },
-                                      )),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 'gbsaf',
-                                      child: Obx(() => CheckboxListTile(
-                                        title: Text('Gov.SAF'),
-                                        value: controller.selectedItems.contains('gbsaf'),
-                                        onChanged: (newValue) {
-                                          if (newValue != null) {
-                                            if (newValue) {
-                                              controller.selectedItems.add('gbsaf');
-                                            } else {
-                                              controller.selectedItems.remove('gbsaf');
-                                            }
-                                          }
-                                          controller.collectionType.value =
-                                              controller.selectedItems.toList();
-                                        },
-                                      )),
-                                    ),
+                                    // DropdownMenuItem(
+                                    //   value: 'saf',
+                                    //   child: Obx(() => CheckboxListTile(
+                                    //     title: Text('SAF'),
+                                    //     value: controller.selectedItems.contains('saf'),
+                                    //     onChanged: (newValue) {
+                                    //       if (newValue != null) {
+                                    //         if (newValue) {
+                                    //           controller.selectedItems.add('saf');
+                                    //         } else {
+                                    //           controller.selectedItems.remove('saf');
+                                    //         }
+                                    //       }
+                                    //       controller.collectionType.value =
+                                    //           controller.selectedItems.toList();
+                                    //     },
+                                    //   )),
+                                    // ),
+                                    // DropdownMenuItem(
+                                    //   value: 'gbsaf',
+                                    //   child: Obx(() => CheckboxListTile(
+                                    //     title: Text('Gov.SAF'),
+                                    //     value: controller.selectedItems.contains('gbsaf'),
+                                    //     onChanged: (newValue) {
+                                    //       if (newValue != null) {
+                                    //         if (newValue) {
+                                    //           controller.selectedItems.add('gbsaf');
+                                    //         } else {
+                                    //           controller.selectedItems.remove('gbsaf');
+                                    //         }
+                                    //       }
+                                    //       controller.collectionType.value =
+                                    //           controller.selectedItems.toList();
+                                    //     },
+                                    //   )),
+                                    // ),
                                   ],
                                 ),
                               ),

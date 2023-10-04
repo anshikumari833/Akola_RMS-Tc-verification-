@@ -9,9 +9,8 @@ import 'package:intl/intl.dart';
 import '../../../widgets/Assessment_appbar.dart';
 import '../controllers/property_new_assessment_controller.dart';
 
-class PropertyElectricityDetailView
-    extends GetView<PropertyNewAssessmentController> {
-  const PropertyElectricityDetailView({Key? key}) : super(key: key);
+class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentController> {
+   PropertyElectricityDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class PropertyElectricityDetailView
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
-          // key: controller.newAssessmentFormKey,
+          // key: controller.electricityDetailsFormKey,
           child: Column(
             children: [
               //ELECTRICITY & WATER DETAILS

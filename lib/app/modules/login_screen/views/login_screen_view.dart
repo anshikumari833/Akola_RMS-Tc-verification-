@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../common/Common_ThemeColor.dart';
 import '../controllers/login_screen_controller.dart';
 
 class LoginScreenView extends GetView<LoginScreenController> {
   const LoginScreenView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = AppTheme.lightTheme();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         body: Obx(() {
           if (controller.isLoading.value == true) {
             return Container(
               child:  Center(
-                child:  SpinKitFadingCircle(
-                  color: Colors.blue,
-                  size: 50.0,
+                child:SpinKitThreeBounce(
+                  color: theme.primaryColorDark,
+                  size: 40.0,
                 ),
               ),
             );
@@ -26,48 +28,51 @@ class LoginScreenView extends GetView<LoginScreenController> {
                 child: Column(
                   children: [
                     SizedBox(height:60,),
+                    //IMAGE
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          "assets/images/akola_logo.png",height: 220,width: 220,),
+                          "assets/images/loginPage_img.png",height: 200,width: 200,),
                       ],
                     ),
-                    // SizedBox(height: 10,),
+                    SizedBox(height: 10,),
+                    //LOGIN CONTAINER
                     Container(
-                      // margin: EdgeInsets.all(14.0),
-                      // decoration: BoxDecoration(
-                      //   color: Colors.white,
-                      //   borderRadius: BorderRadius.circular(15.0),
-                      //   boxShadow: [
-                      //     BoxShadow(
-                      //       color: Colors.grey.withOpacity(0.5),
-                      //       spreadRadius: 1,
-                      //       blurRadius: 1,
-                      //       offset: Offset(0,1),
-                      //     ),
-                      //   ],
-                      // ),
+                      margin: EdgeInsets.all(14.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: Offset(0,1),
+                          ),
+                        ],
+                      ),
                       child: Column(
                       children: [
-                        SizedBox(height: 10,),
+                        SizedBox(height: 20,),
                         Text("Login ",style:GoogleFonts.inter(
                           fontSize:30,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w700,
-                          color: Colors.red,
+                          color:theme.primaryColorDark
                         ),),
                         SizedBox(height:10,),
                         Text("Please Login To Continue",style:GoogleFonts.inter(
                           fontSize: 14,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black,
+                          color: theme.primaryColorDark
                         ),),
                         // SizedBox(height: size.height * 0.03),
+                        //EMAIL TEXTFIELD
                         SizedBox(height: 35,),
                       Obx(() =>Container(
-                        margin: EdgeInsets.symmetric(horizontal: 40),
+                        margin: EdgeInsets.symmetric(horizontal: 33),
                         child: TextFormField(
                           controller: controller.emailController,
                           decoration: InputDecoration(
@@ -76,37 +81,39 @@ class LoginScreenView extends GetView<LoginScreenController> {
                             errorText: controller.invalidEmailError.value ? 'Invalid Email' : null,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(color: Colors.black),
+                              borderSide: BorderSide(color: theme.primaryColorDark,),
                             ),
-                            prefixIcon: Icon(Icons.email,size: 20,),
+                            prefixIcon: Icon(Icons.email,size: 20,color: Colors.brown,),
                           ),
                         ),
                       ),),
-
+                        //PASSWORD TEXTFIELD
                         SizedBox(height: size.height * 0.03),
                         Obx(() => Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(horizontal: 40),
+                          margin: EdgeInsets.symmetric(horizontal: 33),
                           child: TextFormField(
                             controller: controller.passwordController,
                             decoration: InputDecoration(contentPadding: EdgeInsets.all(15),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                                borderSide: BorderSide(color: Colors.black),
+                                borderSide: BorderSide(color:theme.primaryColorDark,),
                               ),
                               labelText: "Password",
                               errorText: controller.incorrectPasswordError.value ? 'Invalid Password' : null,
                               suffixIcon: IconButton(
-                                icon: Icon(controller.isPasswordVisible.value ? Icons.visibility_off : Icons.visibility),
+                                icon: Icon(controller.isPasswordVisible.value ? Icons.visibility_off : Icons.visibility,color:Colors.orange,),
                                 onPressed: () {
                                   controller.isPasswordVisible.toggle();
                                 },
                               ),
-                              prefixIcon: Icon(Icons.lock,size: 20,),
+                              prefixIcon: Icon(Icons.lock,size: 20,color: Colors.brown,),
                             ),
                             obscureText: !controller.isPasswordVisible.value,
                           ),
-                        ),),
+                        ),
+                        ),
+                        //FORGOT PASSWORD
                         Container(
                           alignment: Alignment.centerRight,
                           margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
@@ -118,15 +125,17 @@ class LoginScreenView extends GetView<LoginScreenController> {
                             ),
                           ),
                         ),
+                        //LOGIN BUTTON
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                           child: ElevatedButton(
                             onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               controller.login();
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.redAccent,
-                              padding: EdgeInsets.symmetric(horizontal: 118),
+                              backgroundColor: theme.primaryColorDark,
+                              padding: EdgeInsets.symmetric(horizontal: 110,vertical:14),
                             ),
                             child: Text(
                               "LOGIN",
@@ -137,9 +146,11 @@ class LoginScreenView extends GetView<LoginScreenController> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 15,)
                       ],
                     ),),
-                    SizedBox(height:120,),
+                    SizedBox(height:100,),
+                    //FOOTER
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -147,11 +158,12 @@ class LoginScreenView extends GetView<LoginScreenController> {
                           "© 2023 : Akola",
                           style: TextStyle(
                               fontSize: 12,
-                              color: Colors.redAccent
+                              color: theme.primaryColorDark
                           ),
                         ),
                       ],
                     ),
+                    SizedBox(height: 30,)
                   ],
                 ),
               ),

@@ -7,10 +7,10 @@ class LoginScreenProvider extends GetConnect {
   void onInit() {
   }
 
+  //LOGIN API
   Future<APIResponse> userLogin(Map data) async {
     String url = Strings.base_url + '/api/login';
       final response = await post('$url', data  );
-
     //sending data to APIResponse
     return APIResponse.fromJson({"data": response.body, "error": response.status.hasError});
   }

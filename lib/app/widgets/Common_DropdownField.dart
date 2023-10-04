@@ -1,4 +1,4 @@
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,9 +25,9 @@ class CustomDropdownFormField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 100,
+           width: 100,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal:0),
               child: Text(
                 headingText,
                 style: GoogleFonts.publicSans(
@@ -41,13 +41,24 @@ class CustomDropdownFormField extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-              child:  DropdownButtonFormField<String>(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal:0),
+              child:  DropdownButtonFormField2<String>(
                 items: items,
+                 dropdownMaxHeight:230,
+                 dropdownWidth: 200,
+                buttonHeight: 40,
+                buttonPadding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+                dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                ),
+                itemPadding: EdgeInsets.only(left: 25, right: 0, bottom: 10),
+                dropdownElevation: 1,
+                scrollbarRadius: Radius.circular(40),
+                scrollbarThickness: 5,
+                scrollbarAlwaysShow: true,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[200],
-                  // contentPadding: EdgeInsets.zero,
+                  contentPadding: EdgeInsets.zero,
                   enabledBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
                     borderSide: BorderSide(

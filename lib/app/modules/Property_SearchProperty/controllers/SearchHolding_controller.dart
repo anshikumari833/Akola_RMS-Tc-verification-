@@ -1,13 +1,16 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import '../../../common/api_response.dart';
 import '../../../common/cluster.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../property_NewAssessment/providers/property_new_assessment_provider.dart';
 import '../providers/SearchHolding_provider.dart';
 import '../search_propert_model.dart';
 import '../views/property_prop_receipt_view.dart';
@@ -21,18 +24,174 @@ class PropertyPayPropertyTaxController extends GetxController {
   var searchedDataById = List<dynamic>.empty(growable: true).obs;
   var isDataProcessing = false.obs;
   var isLoading = false.obs;
-
   // Method to set the loading state
   void setLoading(bool value) {
     isLoading.value = value;
   }
 
-
+  RxList<Map<String, dynamic>> wardList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> WardListByZone = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> ownershipList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> propertyList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> floorList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> usageList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> occuppancyList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> constructionList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> zoneList = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> categoryList = <Map<String, dynamic>>[].obs;
+  var newWardNo = ''.obs;
+  var zoneType = ''.obs;
+  // MASTER SAF DATA - (DROPDOWN LIST)
+  void getDropdownListDetail() async {
+    isDataProcessing(true);
+    APIResponse result = await PropertyNewAssessmentProvider().getlistData();
+    if(!result.error){
+      //using the responseData as a Map
+      Map<String, dynamic> data = result.data;
+      data.forEach((key, value) {
+        switch (key) {
+          case 'ward_master':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["ward_name"] = item["ward_name"];
+                wardList.add(dataListMap);
+              });
+            }
+            break;
+          case 'ownership_types':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["ownership_type"] = item["ownership_type"];
+                ownershipList.add(dataListMap);
+              });
+            }
+            break;
+          case 'property_type':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["property_type"] = item["property_type"];
+                propertyList.add(dataListMap);
+              });
+            }
+            break;
+          case 'floor_type':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["floor_name"] = item["floor_name"];
+                floorList.add(dataListMap);
+              });
+            }
+            break;
+          case 'usage_type':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["usage_type"] = item["usage_type"];
+                usageList.add(dataListMap);
+              });
+            }
+            break;
+          case 'occupancy_type':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["occupancy_type"] = item["occupancy_type"];
+                occuppancyList.add(dataListMap);
+              });
+            }
+            break;
+          case 'construction_type':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["construction_type"] = item["construction_type"];
+                constructionList.add(dataListMap);
+              });
+            }
+            break;
+          case 'zone':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["zone_name"] = item["zone_name"];
+                zoneList.add(dataListMap);
+              });
+            }
+            break;
+          case 'categories':
+            {
+              value.forEach((item) {
+                Map<String, dynamic> dataListMap = Map<String, dynamic>();
+                dataListMap["id"] = item["id"];
+                dataListMap["category"] = item["category"];
+                categoryList.add(dataListMap);
+              });
+            }
+            break;
+          default:
+            {
+              break;
+            }
+        }
+      });
+      isDataProcessing.value = false;
+    } else {
+      Get.snackbar(
+        'Oops!!!',
+        result.errorMessage,
+        backgroundColor: Colors.pinkAccent,
+        colorText: Colors.white,
+      );
+    }
+    isDataProcessing.value = false;
+  }
   //SEARCH-PROPERTY-DETAILS
   var filterByValue = "".obs;
   late TextEditingController searchByController;
 
-
+  //WARD BY ZONE - (DROPDOWN LIST)
+  Future<void>  getWardByZone({required String zoneId}) async {
+    isDataProcessing.value = true;
+    WardListByZone.clear();
+    APIResponse response = await PropertyNewAssessmentProvider().WardByZone(zoneId);
+    if (!response.error) {
+      List<dynamic> responseDataList = List<dynamic>.from(response.data);
+      for (var responseData in responseDataList) {
+        Map<String, dynamic> zoneWardData = Map<String, dynamic>.from(
+            responseData);
+        // Creating a map to hold the processed data
+        Map<String, dynamic> WardData = {
+          'id': zoneWardData['id'],
+          'zone': zoneWardData['zone'],
+          'ward_name': zoneWardData['ward_name'],
+          'old_ward_name': zoneWardData['old_ward_name'],
+        };
+        // Add the processed data to the wardList
+        WardListByZone.add(WardData);
+      }
+      isDataProcessing.value = false;
+    } else {
+      Get.snackbar(
+        'Oops!!!',
+        response.errorMessage,
+        backgroundColor: Colors.pinkAccent,
+        colorText: Colors.white,
+      );
+    }
+    isDataProcessing.value = false;
+  }
 
   final count = 0.obs;
   final responseMessage = RxString("");
@@ -48,6 +207,7 @@ class PropertyPayPropertyTaxController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    getDropdownListDetail();
     searchByController  = TextEditingController();
     bankNameController = TextEditingController();
     branchNameController = TextEditingController();
@@ -56,13 +216,23 @@ class PropertyPayPropertyTaxController extends GetxController {
     remarksController = TextEditingController();
     const platform = MethodChannel("com.amcakola.tc_verification_app/com.pinelabs.masterapp");
     platform. setMethodCallHandler((call) async {
-      handlePaymentResponse(call.arguments);
-      pineLabStatus.value = true;
       if (call.method == 'handleResponse') {
+        // if (shouldHandlePaymentResponse.value) {
+          handlePaymentResponse(call.arguments);
+        // }
+        pineLabStatus.value = true;
         responseMessage.value = call.arguments;
       }
     });
   }
+
+  //     handlePaymentResponse(call.arguments);
+  //     pineLabStatus.value = true;
+  //     if (call.method == 'handleResponse') {
+  //       responseMessage.value = call.arguments;
+  //     }
+  //   });
+  // }
 
   //*********************************************************PINE LAB METHODS IMPLEMENTATION****************************************************************************************
 
@@ -72,9 +242,16 @@ class PropertyPayPropertyTaxController extends GetxController {
   Future<void> openPineCardPOS() async {
     if (Platform.isAndroid) {
       try {
-        // Convert payableAmount to cents format
-        int amountInDollars = payableAmount * 100;
+        shouldHandlePaymentResponse.value = true;
+        // Determine the amount to be paid based on the checkbox state
+        double amountToPay = isCheckboxChecked.value
+            ? double.parse(arrear.value)
+            : double.parse(payableAmount.value);
 
+        // Convert amount to cents format
+        int amountInDollars = (amountToPay * 100).toInt();
+        // Convert payableAmount to cents format
+        // int amountInDollars = int.parse(payableAmount.value) * 100;
         final Map<String, dynamic> paymentDetail = {
           "BillingRefNo": billRefNo,
           "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
@@ -83,7 +260,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -91,6 +268,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         };
         final String payloadJson = json.encode(payload);
         final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = true;
         if (responseDataJson != null) {
           try {
             final Map<String, dynamic> response = json.decode(responseDataJson);
@@ -112,8 +290,8 @@ class PropertyPayPropertyTaxController extends GetxController {
     if (Platform.isAndroid) {
       try {
         // Convert payableAmount to cents format
-        int amountInDollars = payableAmount * 100;
-
+        // int amountInDollars = payableAmount * 100;
+        int amountInDollars = int.parse(payableAmount.value) * 100;
         final Map<String, dynamic> paymentDetail = {
           "BillingRefNo": billRefNo,
           "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
@@ -122,7 +300,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -130,6 +308,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         };
         final String payloadJson = json.encode(payload);
         final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = true;
         if (responseDataJson != null) {
           try {
             final Map<String, dynamic> response = json.decode(responseDataJson);
@@ -150,9 +329,17 @@ class PropertyPayPropertyTaxController extends GetxController {
   Future<void> openPineUPIPOS() async {
     if (Platform.isAndroid) {
       try {
-        // Convert payableAmount to cents format
-        int amountInDollars = payableAmount * 100;
+        shouldHandlePaymentResponse.value = true;
+        // Determine the amount to be paid based on the checkbox state
+        double amountToPay = isCheckboxChecked.value
+            ? double.parse(arrear.value)
+            : double.parse(payableAmount.value);
 
+        // Convert amount to cents format
+        int amountInDollars = (amountToPay * 100).toInt();
+
+        // Convert payableAmount to cents format
+        // int amountInDollars = int.parse(payableAmount.value) * 100;
         final Map<String, dynamic> paymentDetail = {
           "BillingRefNo": billRefNo,
           "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
@@ -161,7 +348,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -171,12 +358,17 @@ class PropertyPayPropertyTaxController extends GetxController {
         final String payloadJson = json.encode(payload);
 
         final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-
+        shouldHandlePaymentResponse.value = true;
         if (responseDataJson != null) {
           try {
             final Map<String, dynamic> response = json.decode(responseDataJson);
             handlePaymentResponse(responseDataJson);
             // SenddPinelabResponse(responseDataJson);
+
+            // if(response['Response']['ResponseCode'] == 100){
+            //
+            // }
+
           } catch (e) {
             print('Error parsing JSON: $e');
           }
@@ -187,13 +379,32 @@ class PropertyPayPropertyTaxController extends GetxController {
       }
     }
   }
+
+  // Define a function to generate the lines conditionally
+  String generateConditionalLines(String paymentMode) {
+    if (paymentMode == "CASH") {
+      return ''; // Return an empty string if payment mode is "CASH"
+    } else {
+      // Return the lines for bank details
+      return """
+      Bank Name: $bankName
+      Branch Name: $branchName
+      Cheque No: $chequeNo
+      Cheque Date: $chequeDate
+    """;
+    }
+  }
+
+
+  var shouldHandlePaymentResponse = false.obs;
   //PRINT
   Future<void> openPrintPOS() async {
     if (Platform.isAndroid) {
       try {
+        shouldHandlePaymentResponse.value = false;
         final Map<String, dynamic> payload = {
           "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
             "UserId": "user1234",
             "MethodId": "1002",
             "VersionNo": "1.0"
@@ -214,28 +425,30 @@ class PropertyPayPropertyTaxController extends GetxController {
               {
                 "PrintDataType": "0",
                 "PrinterWidth":24,
-                // "IsCenterAligned": true,
-                "DataToPrint":
-                "Date: $transactionDate\n"
+                "DataToPrint": "Date: $transactionDate\n"
                     "Time: $transactionTime\n"
-                    "  *********************\n"
+                    "   ********************\n"
                     "Description: $accountDescription\n"
-                    "Transaction No.: $transactionNo\n"
-                    "Holding No.: $applicationNo\n"
+                    "Zone: $ReceiptZoneNo\n"
                     "Ward No.: $ReceiptWardNo\n"
+                    "Holding No.: $applicationNo\n"
+                    "Property No.: $propertyNo\n"
                     "Tax Ow. Name: $customerName\n"
                     "Address: $ReceiptAddress\n"
-                    "  *********************\n"
+                    "   ********************\n"
+                    "Transaction No.: $transactionNo\n"
                     "Paid Upto: $paidUpto\n"
-                    "Demand Amount: $demandAmount\n"
-                    "Payment Mode: $paymentMode\n"
-                    "Bank Name: $bankName\n"
-                    "Branch Name: $branchName\n"
-                    "Cheque No: $chequeNo\n"
-                    "Cheque Date: $chequeDate\n"
-                    "Amount Paid: $totalPaidAmount\n"
-                    "In Words: $paidAmtInWords\n"
-                    "  *********************\n"
+                    "Mode: $paymentMode\n"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Bank Name: $bankName\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Branch Name: $branchName\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque No: $chequeNo\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque Date: $chequeDate\n"}"
+                // "${generateConditionalLines(paymentMode)}"
+                    "Current Demand: $demandAmount\n"
+                    "Arrear : $arrearAmount\n"
+                    "Total Amount : $totalPaidAmount\n"
+                    "In Words: ${(paidAmtInWords)} only\n"
+                    "   ********************\n"
                     "TC Name: $tcName\n"
                     "Mobile No: $tcMobile\n"
               },
@@ -245,8 +458,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                  "IsCenterAligned": true,
                 "DataToPrint":
                     "Thank You!\n"
-                    "For Details Please visit:\n"
-                    "$website\n"
+                    "For More Details Please visit: $website\n"
                     "$tollFreeNo\n"
                     "Please keep this Bill \n For Future Reference\n\n\n\n",
               },
@@ -257,12 +469,11 @@ class PropertyPayPropertyTaxController extends GetxController {
         final String payloadJson = json.encode(payload);
         final String responseDataJson =
         await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-
+        shouldHandlePaymentResponse.value = false;
         if (responseDataJson != null) {
           try {
             final Map<String, dynamic> response = json.decode(responseDataJson);
             handlePaymentResponse(responseDataJson);
-
           } catch (e) {
             print('Error parsing JSON: $e');
           }
@@ -282,7 +493,10 @@ class PropertyPayPropertyTaxController extends GetxController {
   void handlePaymentResponse(String response) {
     try {
       final Map<String, dynamic> responseData = jsonDecode(response);
-      SenddPinelabResponse(responseData);
+       if (shouldHandlePaymentResponse.value) {
+         SenddPinelabResponse(responseData);
+      }
+      // SenddPinelabResponse(responseData);
       // Access the response message from the JSON
       responseCode = responseData['Response']['ResponseCode'].toString();
       responseMsg = responseData['Response']['ResponseMsg'].toString();
@@ -295,8 +509,6 @@ class PropertyPayPropertyTaxController extends GetxController {
           colorText: Colors.black,
         );
       }
-
-
       if(responseCode == '100'){
         // checkPaymentStatus();
       }
@@ -337,12 +549,14 @@ class PropertyPayPropertyTaxController extends GetxController {
 
   // SEARCH-PROPERTY-DETAILS
   Future<void> getDetaiBySearch(int page) async {
-    final isValid = SearchHoldingFormKey.currentState!.validate();
-    if (!isValid) {
-      return;
-    }
+    // final isValid = SearchHoldingFormKey.currentState!.validate();
+    // if (!isValid) {
+    //   return;
+    // }
     isPageLoading.value = true;
     APIResponse response = await SearchHoldingProvider().searchDetail(page, perPage, {
+      "zone": zoneType.value.toString(),
+      "wardNo":newWardNo.value.toString(),
       "filteredBy": filterByValue.value.toString(),
       "parameter": searchByController.text.toString(),
     });
@@ -412,49 +626,70 @@ class PropertyPayPropertyTaxController extends GetxController {
 
 
   // Storing duesList values
-  var paymentStatus;
-  var currentDemand;
-  List<Map<String, dynamic>> demandList = [];
-  Map<String, dynamic> grandTaxes = {};
-  var arrear;
-  var payableAmount;
-  var monthlyPenaltyAmount;
+  // var paymentStatus;
+  // var currentDemand;
+  // List<Map<String, dynamic>> demandList = [];
+  // Map<String, dynamic> grandTaxes = {};
+  // var arrear;
+  // var payableAmount;
+  // var monthlyPenaltyAmount;
+  // Map<String, dynamic> basicDetails= {};
+  // var demand_PropertyId;
+  // var  demand_ModuleId;
+  // var  demand_WorkflowId;
+  // var demandMessage;
+  // bool demandError = false;
+  var paymentStatus = ''.obs;
+  var currentDemand = ''.obs;
+  var demandList = <Map<String, dynamic>>[].obs;
+  var grandTaxes = <String, dynamic>{}.obs;
+  var arrear = ''.obs;
+  var payableAmount = ''.obs;
+  var monthlyPenaltyAmount = '';
+  var totalPenaltyIntrest = '';
+  // var basicDetails = <String, dynamic>{};
   Map<String, dynamic> basicDetails= {};
-  var demand_PropertyId;
-  var  demand_ModuleId;
-  var  demand_WorkflowId;
-  var demandMessage;
-  bool demandError = false;
+  var demand_PropertyId = '';
+  var demand_ModuleId = '';
+  var demand_WorkflowId = '';
+  var demandMessage = ''.obs;
+  var demandError = false.obs;
+
   //DEMAND- DETAIL
   Future<void> getDemandDetail(propertyId,type) async {
     // Clear the previous data when fetching data for a different propertyId
-    demandError = false;
-    currentDemand = null;
-    demandMessage = null;
-    paymentStatus = null;
-    demandList = [];
-    grandTaxes = {};
-    arrear = null;
-    payableAmount = null;
-    basicDetails = {};
-    demand_PropertyId = null;
-    demand_ModuleId = null;
-   demand_WorkflowId= null;
+   //  demandError = false;
+   //  demandList = [];
+   //  grandTaxes = {};
+   //  basicDetails = {};
+    demandError.value = false;
+    currentDemand.value = '';
+    demandMessage.value = '';
+    paymentStatus.value = '';
+    demandList.clear();
+    grandTaxes.clear();
+    arrear.value = '';
+    payableAmount.value = '';
+    basicDetails.clear();
+    demand_PropertyId = '';
+    demand_ModuleId = '';
+    demand_WorkflowId = '';
     APIResponse response = await SearchHoldingProvider().SearchedDemandData(propertyId,type);
-    demandError = response.error;
-    demandMessage = response.errorMessage;
+    demandError.value = response.error;
+    demandMessage.value = response.errorMessage;
     if (response.error == false) {
       Map<String, dynamic> responseData = response.data;
-      paymentStatus = responseData['paymentStatus'].toString();
-     demandList = List<Map<String, dynamic>>.from(responseData['demandList']);
-     grandTaxes = Map<String, dynamic>.from(responseData['grandTaxes']);
-      arrear = nullToZero(responseData['arrear']);
-      payableAmount = responseData['payableAmt'];
-      currentDemand = responseData['currentDemand'].toString();
-      monthlyPenaltyAmount = responseData['monthlyPenalty'];
+      paymentStatus.value = nullToNA(responseData['paymentStatus'].toString());
+     demandList.value = List<Map<String, dynamic>>.from(responseData['demandList']);
+     grandTaxes.value = Map<String, dynamic>.from(responseData['grandTaxes']);
+      arrear.value = nullToNA(responseData['arrear']);
+      payableAmount.value = nullToNA(responseData['payableAmt'].toString());
+      currentDemand.value = nullToNA(responseData['currentDemand'].toString());
+      monthlyPenaltyAmount = nullToNA(responseData['monthlyPenalty'].toString());
+      totalPenaltyIntrest = nullToNA(responseData['totalInterestPenalty'].toString());
       basicDetails = Map<String, dynamic>.from(responseData['basicDetails']);
       demand_PropertyId = basicDetails['id'].toString();
-      demand_ModuleId = basicDetails['moduleId'].toString();
+      demand_ModuleId= basicDetails['moduleId'].toString();
       demand_WorkflowId = basicDetails['workflowId'].toString();
     } else {
       Get.snackbar(
@@ -511,11 +746,14 @@ class PropertyPayPropertyTaxController extends GetxController {
   var demandAmount = "";
   var taxDetails = "";
   var totalRebate = "";
+  var arrearAmount = "";
   var totalPenalty = "";
   var ReceiptUlbId = "";
   var ReceiptWardNo = "";
+  var ReceiptZoneNo = "";
   var ReceiptnewWardNo = "";
   var towards = "";
+  var propertyNo = "";
   var tax_description = "";
   var totalPaidAmount = "";
   var paidAmtInWords = "";
@@ -531,6 +769,7 @@ class PropertyPayPropertyTaxController extends GetxController {
       var data = response.data;
       // Extract penalty amounts and store them in the controller's list
       if (data['penaltyRebates'] is List) {
+        penaltyAmounts.clear();
         for (var entry in data['penaltyRebates']) {
           if (entry is Map) {
             String penaltyAmount = entry['amount'].toString();
@@ -538,10 +777,10 @@ class PropertyPayPropertyTaxController extends GetxController {
           }
         }
       }
-
       departmentSection = data['receiptDtls']['departmentSection'].toString();
       accountDescription = data['receiptDtls']['accountDescription'].toString();
       transactionDate = data['receiptDtls']['transactionDate'].toString();
+      propertyNo = data['receiptDtls']['propertyNo'].toString();
       transactionNo = data['receiptDtls']['transactionNo'].toString();
       transactionTime =data['receiptDtls']['transactionTime'].toString();
       applicationNo = data['receiptDtls']['applicationNo'].toString();
@@ -556,7 +795,9 @@ class PropertyPayPropertyTaxController extends GetxController {
       chequeNo = data['receiptDtls']['chequeNo'].toString();
       chequeDate = data['receiptDtls']['chequeDate'].toString();
       demandAmount = data['receiptDtls']['demandAmount'].toString();
+      arrearAmount = data['receiptDtls']['arrearSettled'].toString();
       ReceiptWardNo = data['receiptDtls']['wardNo'].toString();
+      ReceiptZoneNo = data['receiptDtls']['zone_name'].toString();
       towards = data['receiptDtls']['towards'].toString();
       tax_description = data['receiptDtls']['description'].toString();
       totalPaidAmount = data['receiptDtls']['totalPaidAmount'].toString();
@@ -588,61 +829,75 @@ class PropertyPayPropertyTaxController extends GetxController {
   late TextEditingController remarksController;
   var isCheckboxChecked = false.obs;
   var billRefNo = "";
-  var isPayButtonLoading = false.obs;
   var isPaymentInProgress = false.obs;
   var paymentSuccessful = false.obs;
 
-  void showLoadingDialog() {
-    Get.dialog(
-      Stack(
-        children: [
-          // Blurred background
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Adjust blur intensity
-            child: Container(
-              color: Colors.black.withOpacity(0.5), // Adjust the opacity
-              width: double.infinity,
-              height: double.infinity,
-            ),
-          ),
-          // Loading dialog
-          AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircularProgressIndicator(), // Display a loading indicator
-                SizedBox(height: 16),
-                Text(
-                  'Waiting for payment...',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+  void showLoadingDialog(bool value) {
+    if(value)
+      {
+        Get.dialog(
+          Stack(
+            children: [
+              // Blurred background
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Adjust blur intensity
+                child: Container(
+                  color: Colors.black.withOpacity(0.5), // Adjust the opacity
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
-              ],
-            ),
+              ),
+              // Loading dialog
+              AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(), // Display a loading indicator
+                    SizedBox(height: 16),
+                    Text(
+                      'Waiting for payment...',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      barrierDismissible: false,
-    );
+          barrierDismissible: false,
+        );
+      }
   }
 
   //PAYMENT (CASH,CHEQUE,DD)
-  Future<void> DemandTaxPayment() async {
-    showLoadingDialog();
+  Future<void> DemandTaxPayment({String type = ''}) async {
+    showLoadingDialog(isPaymentInProgress.value);
     isPaymentInProgress.value = true;
-
-      var result = await SearchHoldingProvider().DemandTaxDuePayment(demand_PropertyId, {
+    var file1;
+   if(type != 'cash') {
+      String _img64Image1;
+      final bytes1 = await _selectedFile1!.readAsBytes();
+      _img64Image1 = base64Encode(bytes1);
+      // Create temporary files to save base64 encoded image data
+      // final tempDir = await getTemporaryDirectory();
+      final bytes01 = base64Decode(_img64Image1);
+      final directory = await getApplicationDocumentsDirectory();
+      file1 = await File('${directory.path}/image1.png').create();
+      await file1.writeAsBytes(bytes01);
+    }
+    var result = await SearchHoldingProvider().DemandTaxDuePayment(demand_PropertyId, {
         'paymentMode': demand_PaymentMode.value.toString(),
         'bankName': bankNameController.value.text,
         'branchName': branchNameController.value.text,
         'chequeNo': chequeNoController.value.text,
         'chequeDate': chequeDateController.value.text,
         'isArrear': isCheckboxChecked.value,
+        'imagePath[0]': file1,
       });
-
-      // Close the loading dialog here
-      Get.back();
+      // // Close the loading dialog here
+      // Get.back();
+        showLoadingDialog(isPaymentInProgress.value);
       if (result.error == false) {
         paymentSuccessful.value = true;
         var data = result.data;
@@ -675,7 +930,6 @@ class PropertyPayPropertyTaxController extends GetxController {
                   ElevatedButton(
                     onPressed: () {
                       clearAllFields();
-                      // Get.off(PropertyPayPropertyTaxView());
                       Get.back();
                       Get.back();
                     },
@@ -716,20 +970,21 @@ class PropertyPayPropertyTaxController extends GetxController {
           colorText: Colors.white,
         );
       }
-      isPaymentInProgress.value = false; // Payment process completed
+      isPaymentInProgress.value = false;
 
   }
 
 
 
 
-  //PINLAB PAYMENT ONLINE (for card )
+  //PINLAB PAYMENT ONLINE (for card ):(PAYMENT REF NO )
   Future<void> DemandOnlineCardPayment() async {
+    showLoadingDialog(true);
+    isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentOnline({
-      // 'workflowId': bankNameController.value.text,
-      'amount': payableAmount.toString(),
-      // 'moduleId': demand_PropertyId,
-      'applicationId': demand_PropertyId,
+      "propId": demand_PropertyId,
+      "paymentMode": "CARD".toString(),
+       "isArrear": isCheckboxChecked.value,
     });
     if (result.error == false) {
       var data = result.data;
@@ -761,7 +1016,6 @@ class PropertyPayPropertyTaxController extends GetxController {
                 ElevatedButton(
                   onPressed: () {
                     clearAllFields();
-                    // Get.off(PropertyPayPropertyTaxView());
                     Get.back();
                     Get.back();
                   },
@@ -770,15 +1024,6 @@ class PropertyPayPropertyTaxController extends GetxController {
                 ElevatedButton(
                   onPressed: () async {
                     await getPaymentReceipt(tranNo);
-                    // Get.to(PrintReceipt(),
-                    //     transition: Transition.rightToLeft,
-                    //     duration: Duration(seconds: 1),
-                    //     arguments: [
-                    //       { 'print_string1': getPrintString1()},
-                    //       { 'print_string2': getPrintString2()},
-                    //       { 'print_string3': getPrintString3()},
-                    //     ],
-                    //     preventDuplicates: true);
                     openPrintPOS();
                   },
                   child: Text("Print Receipt"),
@@ -795,6 +1040,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         colorText: Colors.white,
       );
     } else {
+      // isPaymentInProgress.value = false;
       Get.snackbar(
         'Oops!!!',
         result.errorMessage,
@@ -802,22 +1048,24 @@ class PropertyPayPropertyTaxController extends GetxController {
         colorText: Colors.white,
       );
     }
+    isPaymentInProgress.value = false;
   }
 
 
-  //PINLAB PAYMENT ONLINE (for upi )
+  //PINLAB PAYMENT ONLINE (for upi ):(PAYMENT REF NO )
   Future<void> DemandOnlineUpiPayment() async {
+    showLoadingDialog(true);
+    isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentOnline({
-      // 'workflowId': bankNameController.value.text,
-      'amount': payableAmount.toString(),
-      // 'moduleId': demand_PropertyId,
-      'applicationId': demand_PropertyId,
+      "propId": demand_PropertyId,
+      "paymentMode": "UPI".toString(),
+      "isArrear": isCheckboxChecked.value,
     });
     if (result.error == false) {
       var data = result.data;
       billRefNo = data['billRefNo'].toString();
       await openPineUPIPOS();
-      await getDemandDetail(demand_PropertyId,"demand");
+      // await getDemandDetail(demand_PropertyId,"demand");
       Get.dialog(
         barrierDismissible: false,
         AlertDialog(
@@ -872,20 +1120,95 @@ class PropertyPayPropertyTaxController extends GetxController {
         colorText: Colors.white,
       );
     }
+    isPaymentInProgress.value = false;
+    // showLoadingDialog(isPaymentInProgress.value);
   }
 
+  var online_tranNo ;
   //PINLAB PAYMENT ONLINE
   Future<void> SenddPinelabResponse(responseData) async {
+    isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentResponse({
       "BillingRefNo":billRefNo.toString(),
       'amount': payableAmount.toString(),
       'applicationId': demand_PropertyId.toString(),
       "pinelabResponseBody": responseData});
+    showLoadingDialog(false);
     if (result.error == false) {
+      var data = result.data;
+      online_tranNo = data['res_ref_no'].toString();
+      await getDemandDetail(demand_PropertyId, "demand");
+      if( result.data['response_code'] == 0){Get.dialog(
+        barrierDismissible: false,
+        AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.task_alt_rounded, size: 85.0, color: Colors.green),
+              SizedBox(height: 7,),
+              Text(
+                result.data['response_msg'].toString(),
+                style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.green,
+                ),
+              ),
+              SizedBox(height: 5,),
+            ],
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    clearAllFields();
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text("Close"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await getPaymentReceipt(online_tranNo);
+                    openPrintPOS();
+                  },
+                  child: Text("Print Receipt"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );}
+      else {Get.dialog(
+        barrierDismissible: false,
+        AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.warning_amber_rounded, size: 85.0, color: Colors.red),
+              SizedBox(height: 7,),
+              Text(
+                result.data['response_msg'].toString(),
+                style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(height: 5,),
+            ],
+          ),
+        ),
+      );}
+
       Get.snackbar(
         '😁😁',
         result.errorMessage,
-        backgroundColor: Colors.pinkAccent,
+        backgroundColor: Colors.green,
         colorText: Colors.white,
       );
     } else {
@@ -896,6 +1219,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         colorText: Colors.white,
       );
     }
+    isPaymentInProgress.value = false;
   }
 
   //PRINT RECEIPT
@@ -1056,6 +1380,38 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
+  // //PDF
+  //
+  // Future<Uint8List> generatePDF(PropertyPayPropertyTaxController controller) async {
+  //   final pdf = pw.Document();
+  //
+  //   // Create a PDF page and add your widget to it
+  //   pdf.addPage(
+  //     pw.Page(
+  //       build: (pw.Context context) {
+  //         return PropReceiptView();
+  //       },
+  //     ),
+  //   );
+  //
+  //   // Save the PDF to a file
+  //   final output = await getTemporaryDirectory();
+  //   final file = File("${output.path}/receipt.pdf");
+  //   await file.writeAsBytes(await pdf.save());
+  //
+  //   return file.readAsBytesSync();
+  // }
+  //
+  //
+  // void openPDF(Uint8List pdfBytes) async {
+  //   // Save the PDF bytes to a temporary file
+  //   final tempDir = await getTemporaryDirectory();
+  //   final tempFile = File("${tempDir.path}/receipt.pdf");
+  //   await tempFile.writeAsBytes(pdfBytes);
+  //
+  //   // Open the PDF with a viewer or reader app
+  //   OpenFile.open(tempFile.path);
+  // }
 
   @override
   void onReady() {
@@ -1065,7 +1421,18 @@ class PropertyPayPropertyTaxController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+    navigateBackAndFetchData();
   }
 
+  void navigateBackAndFetchData() {
+    // Access the HomeController
+    HomeController homeController = Get.find<HomeController>();
+
+    // Call getCollectionDetail() from HomeController to fetch data
+    homeController.getCollectionDetail();
+
+    // Navigate back to HomeView
+    Get.back();
+  }
   void increment() => count.value++;
 }

@@ -377,7 +377,7 @@ class PropertyNAGeoTaggingView extends GetView<PropertyNewAssessmentController> 
                             TextButton(
                               child: Text("yes"),
                               onPressed: () {},
-                              // Get.off(PendingListView());
+                              // Get.off();
                             ),
                           ],
                         ),

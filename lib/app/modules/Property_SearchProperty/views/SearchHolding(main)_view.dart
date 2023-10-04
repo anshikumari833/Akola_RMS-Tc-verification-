@@ -7,6 +7,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../common/cluster.dart';
 import '../../../routes/app_pages.dart';
+import '../../../widgets/Common_DropdownField.dart';
+import '../../../widgets/Common_TextField.dart';
 import '../../home/views/home_view.dart';
 import '../controllers/SearchHolding_controller.dart';
 import '../search_propert_model.dart';
@@ -29,11 +31,6 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
         title: Center(
           child: Row(
             children: [
-              // Image.network(
-              //   'https://cdn-icons-png.flaticon.com/512/609/609751.png?w=740&t=st=1684829581~exp=1684830181~hmac=a4721d1ba070f3860932478763dc7f523da0cea201eb89186b74ac6b4f1baf0b',
-              //   height: 25,
-              //   width: 30,
-              // ),
               Text(
                 '  Search Holding',
                 style:  GoogleFonts.publicSans(
@@ -44,11 +41,13 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                 ),),
             ],
           ),
-        ), actions: [
-        SizedBox(width: 10,),
-        GestureDetector(onTap: (){Get.to(HomeView());},child: Icon(Icons.home,color: Colors.black,)),
-        SizedBox(width: 14,),
-      ],),
+        ),
+      //   actions: [
+      //   SizedBox(width: 10,),
+      //   GestureDetector(onTap: (){Get.to(HomeView());},child: Icon(Icons.home,color: Colors.black,)),
+      //   SizedBox(width: 14,),
+      // ],
+      ),
       body: SingleChildScrollView(
         child: Container(
           color:  Color(0xFFF0F6F9),
@@ -93,157 +92,369 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                         ),
                       ),
                       SizedBox(height: 5,),
-                      //DROPDOWN
-                      Container(
-                        child: Column(
-                          children: [
-                            DropdownButtonFormField2(
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                contentPadding: EdgeInsets.only(left:10, right: 0, bottom: 1.4),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              isExpanded: true,
-                              hint: const Text(
-                                'Select',
-                                style: TextStyle(fontSize: 16, color: Colors.black45),
-                              ),
-                              icon: Container(
-                                width: 47,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
-                                ),
-                                child: InkWell(
-                                  borderRadius: BorderRadius.horizontal(right: Radius.circular(50)),
-                                  onTap: () {
-                                    // Handle dropdown icon tap event
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.keyboard_arrow_down_outlined,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              iconSize: 46,
-                              buttonPadding: EdgeInsets.only(left:10),
-                              buttonElevation: 2,
-                              dropdownMaxHeight: 270,
-                              dropdownElevation:1,
-                              scrollbarRadius: Radius.circular(40),
-                              scrollbarThickness: 5,
-                              scrollbarAlwaysShow: true,
-                              items: [
-                                DropdownMenuItem(
-                                  child: Text("Select"),
-                                  value: "",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Property Tax No"),
-                                  value: "ptn",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Holding No"),
-                                  value: "holdingNo",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Owner Name"),
-                                  value: "ownerName",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Mobile No"),
-                                  value: "mobileNo",
-                                ),
-                                DropdownMenuItem(
-                                  child: Text("Address"),
-                                  value: "address",
-                                ),
-                              ],
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please select a search criteria';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                controller.filterByValue.value = value.toString();
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      //TEXTFIELD
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: controller.searchByController,
-                              validator: (value) {
-                                if (controller.filterByValue.value == "ptn" && (value == null || value.isEmpty)) {
-                                  return 'Please enter Property Tax No';
-                                }
-                                if (controller.filterByValue.value == "holdingNo" && (value == null || value.isEmpty)) {
-                                  return 'Please enter Holding No';
-                                }
-                                if (controller.filterByValue.value == "ownerName" && (value == null || value.isEmpty)) {
-                                  return 'Please enter Owner Name';
-                                }
-                                if (controller.filterByValue.value == "mobileNo" && (value == null || value.isEmpty)) {
-                                  return 'Please enter Mobile No';
-                                }
-                                if (controller.filterByValue.value == "address" && (value == null || value.isEmpty)) {
-                                  return 'Please enter Address';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                contentPadding: EdgeInsets.only(left: 35, right: 10, bottom: 10),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(50),
-                                    bottomLeft: Radius.circular(50),
-                                  ),
-                                  borderSide: BorderSide.none,
-                                ),
-                                hintStyle: TextStyle(fontSize: 16, color: Colors.black45),
-                                hintText: "Enter Parameter ",
-                              ),
-                            ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(50),
-                              bottomRight: Radius.circular(50),
-                            ),
-                            child: Container(
+                      Obx(() => CustomDropdownFormField(
+                        headingText: 'Zone',
+                        items: controller.isPageLoading.value
+                            ? [
+                          DropdownMenuItem(
+                            value: null,
+                            child:  Center(child:SpinKitThreeBounce(
                               color: Colors.blue,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                },
-                              ),
-                            ),
+                              size: 20.0,
+                            ),),
+                          ),
+                        ]
+                            : controller.zoneList.map<DropdownMenuItem<String>>((circle) {
+                          return DropdownMenuItem<String>(
+                            value: circle['id'].toString(),
+                            child: Text(circle['zone_name'].toString()),
+                          );
+                        }).toList(),
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a search criteria';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) async{
+                          await controller.getWardByZone(zoneId: value.toString());
+                          controller.zoneType.value = value.toString();
+                          controller.newWardNo.value = '';
+                        },
+                      ),),
+                      Obx(() => CustomDropdownFormField(
+                        headingText: 'Ward No ',
+                        items: controller.isPageLoading.value
+                            ? [
+                          DropdownMenuItem(
+                            value: null,
+                            child:  Center(child:SpinKitThreeBounce(
+                              color: Colors.blue,
+                              size: 20.0,
+                            ),),
+                          ),
+                        ]
+                            : controller.WardListByZone.map<DropdownMenuItem<String>>((circle) {
+                          return DropdownMenuItem<String>(
+                            value: circle['id'].toString(),
+                            child: Text(circle['ward_name'].toString()),
+                          );
+                        }).toList(),
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a search criteria';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          controller.newWardNo.value = value.toString();
+                        },
+                      ),),
+                      CustomDropdownFormField(
+                        headingText: 'Fileter By',
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("Select"),
+                            value: "",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Property No"),
+                            value: "propertyNo",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Holding No"),
+                            value: "holdingNo",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Owner Name"),
+                            value: "ownerName",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Mobile No"),
+                            value: "mobileNo",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Address"),
+                            value: "address",
                           ),
                         ],
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a search criteria';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          controller.filterByValue.value = value.toString();
+                        },
                       ),
+                      // Obx(() =>   Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: DropdownButtonFormField2(
+                      //     // Dropdown field code
+                      //     decoration: InputDecoration(
+                      //       filled: true,
+                      //       fillColor: Colors.grey[100],
+                      //       contentPadding: EdgeInsets.zero,
+                      //       enabledBorder: UnderlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide: BorderSide(
+                      //           color: Color(0xff263238),
+                      //           width: 0.1,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     isExpanded: true,
+                      //     hint: const Text(
+                      //       'Select',
+                      //       style: TextStyle(fontSize: 14, color: Colors.black45),
+                      //     ),
+                      //     icon: const Icon(
+                      //       Icons.arrow_drop_down,
+                      //       color: Colors.black45,
+                      //     ),
+                      //     iconSize: 30,
+                      //     buttonHeight: 40,
+                      //     buttonPadding:
+                      //     EdgeInsets.only(left: 20, right: 25, bottom: 10),
+                      //     buttonElevation: 2,
+                      //     itemPadding: EdgeInsets.only(left: 25, right: 25),
+                      //     dropdownMaxHeight: 250,
+                      //     dropdownWidth: 325,
+                      //     dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
+                      //     ),
+                      //     dropdownElevation: 1,
+                      //     scrollbarRadius: Radius.circular(40),
+                      //     scrollbarThickness: 5,
+                      //     scrollbarAlwaysShow: true,
+                      //     items: controller.isDataProcessing.value
+                      //         ? [
+                      //       DropdownMenuItem(
+                      //         value: null,
+                      //         child:  Center(child:SpinKitThreeBounce(
+                      //           color: Colors.blue,
+                      //           size: 20.0,
+                      //         ),),
+                      //       ),
+                      //     ]
+                      //         : controller.zoneList.map((ward) {
+                      //       return DropdownMenuItem(
+                      //         value: ward["id"].toString(),
+                      //         child: Text(ward["zone_name"].toString()),
+                      //       );
+                      //     }).toList(),
+                      //     validator: (value) {
+                      //       if (value == null) {
+                      //         return 'Please select.';
+                      //       }
+                      //     },
+                      //     onChanged: (value) async{
+                      //       await controller.getWardByZone(zoneId: value.toString());
+                      //       controller.zoneType.value = value.toString();
+                      //       controller.newWardNo.value = '';
+                      //     },
+                      //   ),
+                      // ),),
+                      // Obx(() =>   Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: DropdownButtonFormField2(
+                      //     // Dropdown field code
+                      //     decoration: InputDecoration(
+                      //       filled: true,
+                      //       fillColor: Colors.grey[100],
+                      //       contentPadding: EdgeInsets.zero,
+                      //       enabledBorder: UnderlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(5),
+                      //         borderSide: BorderSide(
+                      //           color: Color(0xff263238),
+                      //           width: 0.1,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     isExpanded: true,
+                      //     hint: const Text(
+                      //       'Select',
+                      //       style: TextStyle(fontSize: 14, color: Colors.black45),
+                      //     ),
+                      //     icon: const Icon(
+                      //       Icons.arrow_drop_down,
+                      //       color: Colors.black45,
+                      //     ),
+                      //     iconSize: 30,
+                      //     buttonHeight: 40,
+                      //     buttonPadding:
+                      //     EdgeInsets.only(left: 20, right: 25, bottom: 10),
+                      //     buttonElevation: 2,
+                      //     itemPadding: EdgeInsets.only(left: 25, right: 25),
+                      //     dropdownMaxHeight: 250,
+                      //     dropdownWidth: 325,
+                      //     dropdownDecoration: BoxDecoration(
+                      //       borderRadius: BorderRadius.circular(5),
+                      //     ),
+                      //     dropdownElevation: 1,
+                      //     scrollbarRadius: Radius.circular(40),
+                      //     scrollbarThickness: 5,
+                      //     scrollbarAlwaysShow: true,
+                      //     items: controller.isDataProcessing.value
+                      //         ? [
+                      //       DropdownMenuItem(
+                      //         value: null,
+                      //         child:  Center(child:SpinKitThreeBounce(
+                      //           color: Colors.blue,
+                      //           size: 20.0,
+                      //         ),),
+                      //       ),
+                      //     ]
+                      //         : controller.WardListByZone.map((ward) {
+                      //       return DropdownMenuItem(
+                      //         value: ward["id"].toString(),
+                      //         child: Text(ward["ward_name"].toString()),
+                      //       );
+                      //     }).toList(),
+                      //     validator: (value) {
+                      //       if (value == null) {
+                      //         return 'Please select.';
+                      //       }
+                      //     },
+                      //     onChanged: (value) {
+                      //       // controller.newWardNo.value = '';
+                      //       controller.newWardNo.value = value.toString();
+                      //     },
+                      //   ),
+                      // ),),
+                      //DROPDOWN
+                      // Container(
+                      //   child: Column(
+                      //     children: [
+                      //       DropdownButtonFormField2(
+                      //         decoration: InputDecoration(
+                      //           filled: true,
+                      //           fillColor: Colors.grey[100],
+                      //           contentPadding: EdgeInsets.only(left:10, right: 20, bottom:20),
+                      //           border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.circular(30),
+                      //             borderSide: BorderSide.none,
+                      //           ),
+                      //         ),
+                      //         isExpanded: true,
+                      //         hint: const Text(
+                      //           'Select',
+                      //           style: TextStyle(fontSize: 16, color: Colors.black45),
+                      //         ),
+                      //         iconSize: 30,
+                      //         buttonPadding: EdgeInsets.only(left:10),
+                      //         buttonElevation: 2,
+                      //         dropdownMaxHeight: 270,
+                      //         dropdownElevation:1,
+                      //         scrollbarRadius: Radius.circular(40),
+                      //         scrollbarThickness: 5,
+                      //         scrollbarAlwaysShow: true,
+                      //         items: [
+                      //           DropdownMenuItem(
+                      //             child: Text("Select"),
+                      //             value: "",
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             child: Text("Property No"),
+                      //             value: "propertyNo",
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             child: Text("Holding No"),
+                      //             value: "holdingNo",
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             child: Text("Owner Name"),
+                      //             value: "ownerName",
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             child: Text("Mobile No"),
+                      //             value: "mobileNo",
+                      //           ),
+                      //           DropdownMenuItem(
+                      //             child: Text("Address"),
+                      //             value: "address",
+                      //           ),
+                      //         ],
+                      //         validator: (value) {
+                      //           if (value == null || value.isEmpty) {
+                      //             return 'Please select a search criteria';
+                      //           }
+                      //           return null;
+                      //         },
+                      //         onChanged: (value) {
+                      //           controller.filterByValue.value = value.toString();
+                      //         },
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(height: 10,),
+                      //TEXTFIELD
+                      CustomTextField(
+                        controller: controller.searchByController,
+                        validator: (value) {
+                          if (controller.filterByValue.value == "ptn" && (value == null || value.isEmpty)) {
+                            return 'Please enter Property Tax No';
+                          }
+                          if (controller.filterByValue.value == "holdingNo" && (value == null || value.isEmpty)) {
+                            return 'Please enter Holding No';
+                          }
+                          if (controller.filterByValue.value == "ownerName" && (value == null || value.isEmpty)) {
+                            return 'Please enter Owner Name';
+                          }
+                          if (controller.filterByValue.value == "mobileNo" && (value == null || value.isEmpty)) {
+                            return 'Please enter Mobile No';
+                          }
+                          if (controller.filterByValue.value == "address" && (value == null || value.isEmpty)) {
+                            return 'Please enter Address';
+                          }
+                          return '';
+                        },
+                        headingText: "Search By",
+                        hintText: "Enter Parameter",
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: TextFormField(
+                      //         controller: controller.searchByController,
+                      //         validator: (value) {
+                      //           if (controller.filterByValue.value == "ptn" && (value == null || value.isEmpty)) {
+                      //             return 'Please enter Property Tax No';
+                      //           }
+                      //           if (controller.filterByValue.value == "holdingNo" && (value == null || value.isEmpty)) {
+                      //             return 'Please enter Holding No';
+                      //           }
+                      //           if (controller.filterByValue.value == "ownerName" && (value == null || value.isEmpty)) {
+                      //             return 'Please enter Owner Name';
+                      //           }
+                      //           if (controller.filterByValue.value == "mobileNo" && (value == null || value.isEmpty)) {
+                      //             return 'Please enter Mobile No';
+                      //           }
+                      //           if (controller.filterByValue.value == "address" && (value == null || value.isEmpty)) {
+                      //             return 'Please enter Address';
+                      //           }
+                      //           return null;
+                      //         },
+                      //         decoration: InputDecoration(
+                      //           filled: true,
+                      //           fillColor: Colors.grey[100],
+                      //           contentPadding: EdgeInsets.only(left: 35, right: 10, bottom: 10),
+                      //           border: OutlineInputBorder(
+                      //             borderRadius: BorderRadius.all(Radius.circular(40),
+                      //             ),
+                      //             borderSide: BorderSide.none,
+                      //           ),
+                      //           hintStyle: TextStyle(fontSize: 16, color: Colors.black45),
+                      //           hintText: "Enter Parameter ",
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(height: 10,),
                       //SEARCH BUTTON
                       Row(
@@ -255,13 +466,16 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                               FocusManager.instance.primaryFocus?.unfocus();
                               // Set isDataProcessing flag to true to show loader
                               controller.isDataProcessing.value = true;
-                              if (controller.SearchHoldingFormKey.currentState!.validate()) {
+
+                              // if (controller.SearchHoldingFormKey.currentState!.validate()) {
                                 var page = 1;
                                 await controller.getDetaiBySearch(page);
-                              }
+                              // }
+
                               // Set isDataProcessing flag to false to hide loader
                               controller.isDataProcessing.value = false;
                             },
+
                             child: Text('Search Record'),
                           ),
                         ],
@@ -419,12 +633,14 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               _buildDetailsRow('Holding No', propertyDetails['holding_no'].toString()),
+                                              _buildDetailsRow('Property No', propertyDetails['property_no'].toString()),
+                                              _buildDetailsRow('Zone', propertyDetails['zone_name'].toString()),
                                               _buildDetailsRow('Ward No', propertyDetails['ward_name'].toString()),
                                               _buildDetailsRow('Property Address', propertyDetails['prop_address'].toString()),
-                                              // _buildDetailsRow('Active Status', propertyDetails['active_status'].toString()),
                                               _buildDetailsRow('Mobile No', propertyDetails['mobile_no'].toString()),
                                               _buildDetailsRow('Owner Name', propertyDetails['owner_name'].toString()),
-                                            ],
+                                              _buildPaidStatusRow('Paid Status', propertyDetails['paid_status']),
+                                    ],
                                           ),
                                         ),
                                         Row(
@@ -471,7 +687,6 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                                                 );
                                                 controller.isDataProcessing.value = false;
                                               }
-
                                             }, child: Text('Payment History'))
                                           ],)
                                       ],
@@ -526,4 +741,66 @@ Widget _buildDetailsRow(String label, String value) {
   );
 }
 
+Widget _buildPaidStatusRow(String label, dynamic value) {
+  Color textColor = Colors.black;
+  String textValue = value.toString();
+  if (label == 'Paid Status') {
+    switch (value) {
+      case 1:
+        textValue = 'Paid';
+        textColor = Colors.green;
+        break;
+      case 2:
+        textValue = 'Payment Due';
+        textColor = Colors.red;
+        break;
+      case 3:
+        textValue = 'Not Paid';
+        textColor = Colors.orange;
+        break;
+      case 4:
+        textValue = 'Arrear Overdue';
+        textColor = Colors.amber;
+        break;
+      default:
+        textValue = 'Unknown';
+        textColor = Colors.black;
+        break;
+    }
+  }
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 150,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 7),
+            child: Text(
+              label,
+              style: GoogleFonts.publicSans(
+                fontWeight: FontWeight.w700,
+                fontSize: 14,
+                fontStyle: FontStyle.normal,
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            textValue,
+            style: GoogleFonts.publicSans(
+              color: textColor,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 

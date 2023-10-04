@@ -42,6 +42,9 @@ class PropertyReportProvider extends GetConnect {
       return APIResponse.fromJson({"data": response.body, "error": response.status.hasError});
     }
 
+
+
+
 }
 
 //**API LIST**

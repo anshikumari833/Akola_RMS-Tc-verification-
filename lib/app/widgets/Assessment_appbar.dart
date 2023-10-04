@@ -72,16 +72,6 @@ class AssessmentAppbar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-      // actions: [
-      //   SizedBox(width: 10,),
-      //   GestureDetector(
-      //     onTap: () {
-      //       Get.to(HomeView());
-      //     },
-      //     child: Icon(Icons.home, color: Colors.black,),
-      //   ),
-      //   SizedBox(width: 14,),
-      // ],
     );}
 
   @override

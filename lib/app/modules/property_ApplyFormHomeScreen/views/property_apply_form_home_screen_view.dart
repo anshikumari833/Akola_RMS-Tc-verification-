@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../common/Common_ThemeColor.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/property_apply_form_home_screen_controller.dart';
 
@@ -10,14 +11,19 @@ class PropertyApplyFormHomeScreenView extends GetView<PropertyApplyFormHomeScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF0F6F9),
       appBar: AppBar(
-      backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF0F6F9),
+        foregroundColor: Colors.black,
       title:    Text('  Property  ',
-        style: TextStyle(
-            fontSize: 22,
-            color: Colors.white),
+        style: GoogleFonts.publicSans(
+          fontSize: 20,
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w800,
+          color: Color.fromRGBO(69, 70, 70, 0.9),
+        ),
       ),
-      centerTitle: true,
+      // centerTitle: true,
       elevation: 0,
     ),
       body: SingleChildScrollView(
@@ -91,6 +97,7 @@ itemDashboard(String title,int id, String imagePath, String routeName ) => Gestu
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
+            color: Color(0xFFe0f7fa),
             // shape: BoxShape.circle,
           ),
           child: Image.asset(

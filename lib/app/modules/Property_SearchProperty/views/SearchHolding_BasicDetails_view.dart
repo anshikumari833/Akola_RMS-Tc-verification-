@@ -57,12 +57,13 @@ class PropertyBasicDetailsView extends GetView<PropertyPayPropertyTaxController>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildDetailsRow('Holding No', controller.searchedDataById[0].holdingNo),
-                    _buildDetailsRow('Old Ward No',  controller.searchedDataById[0].oldWardNo.toString()),
-                    _buildDetailsRow('New Ward No',  controller.searchedDataById[0].newWardNo.toString()),
+                    _buildDetailsRow('Property No', controller.searchedDataById[0].propertyNo),
+                    _buildDetailsRow('Zone',controller.searchedDataById[0].zoneName.toString() ),
+                    _buildDetailsRow('Ward No',  controller.searchedDataById[0].wardNo.toString()),
                     _buildDetailsRow('Ownership Type',  controller.searchedDataById[0].ownershipType),
                     _buildDetailsRow('Property Type',  controller.searchedDataById[0].propertyType),
                     _buildDetailsRow('Holding Type',  controller.searchedDataById[0].holdingType),
-                    _buildDetailsRow('Apartment Name',  controller.searchedDataById[0].apartmentName),
+                    _buildDetailsRow('Apartment Name',  controller.searchedDataById[0].appartmentName),
                     _buildDetailsRow('Apartment Code',  controller.searchedDataById[0].apartmentCode),
                   ],
                 ),
@@ -322,42 +323,106 @@ class PropertyBasicDetailsView extends GetView<PropertyPayPropertyTaxController>
                   ],
                 ),
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: controller.searchedDataById[0].floors.length,
-                itemBuilder: (context, index) {
-                  var floor = controller.searchedDataById[0].floors[index];
-                  return Container(
-                    margin: EdgeInsets.all(14.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 2,
-                          blurRadius: 1,
-                          offset: Offset(0, 1),
+              Column(
+                children: [
+                  if (controller.searchedDataById[0].propTypeMstrId == 4)
+                    Container(
+                      margin: EdgeInsets.all(14.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 2,
+                            blurRadius: 1,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                        Text("  No Floors, As Property is Vacant Land   ")
+                        ],
+                      ),
+                    ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: controller.searchedDataById[0].floors.length,
+                    itemBuilder: (context, index) {
+                      var floor = controller.searchedDataById[0].floors[index];
+                      return Container(
+                        margin: EdgeInsets.all(14.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 2,
+                              blurRadius: 1,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildDetailsRow('Floor', floor.floorName.toString() ?? ''),
-                        _buildDetailsRow('Usage Type', floor.usageType.toString() ?? ''),
-                        _buildDetailsRow('Occupancy Type', floor.occupancyType.toString() ?? ''),
-                        _buildDetailsRow('Construction Type', floor.constructionType.toString() ?? ''),
-                        _buildDetailsRow('Built Up Area(Sqt)', floor.builtupArea.toString() ?? ''),
-                        _buildDetailsRow('From Date', floor.dateFrom.toString() ?? ''),
-                        _buildDetailsRow('Upto Date', floor.dateUpto.toString() ?? ''),
-                      ],
-                    ),
-                  );
-                },
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildDetailsRow('Floor', floor.floorName.toString() ?? ''),
+                            _buildDetailsRow('Usage Type', floor.usageType.toString() ?? ''),
+                            _buildDetailsRow('Occupancy Type', floor.occupancyType.toString() ?? ''),
+                            _buildDetailsRow('Construction Type', floor.constructionType.toString() ?? ''),
+                            _buildDetailsRow('Built Up Area(Sqt)', floor.builtupArea.toString() ?? ''),
+                            _buildDetailsRow('From Date', floor.dateFrom.toString() ?? ''),
+                            _buildDetailsRow('Upto Date', floor.dateUpto.toString() ?? ''),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
+
+              // ListView.builder(
+              //   shrinkWrap: true,
+              //   physics: NeverScrollableScrollPhysics(),
+              //   itemCount: controller.searchedDataById[0].floors.length,
+              //   itemBuilder: (context, index) {
+              //     var floor = controller.searchedDataById[0].floors[index];
+              //     return Container(
+              //       margin: EdgeInsets.all(14.0),
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(15.0),
+              //         boxShadow: [
+              //           BoxShadow(
+              //             color: Colors.grey.withOpacity(0.1),
+              //             spreadRadius: 2,
+              //             blurRadius: 1,
+              //             offset: Offset(0, 1),
+              //           ),
+              //         ],
+              //       ),
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         children: [
+              //           _buildDetailsRow('Floor', floor.floorName.toString() ?? ''),
+              //           _buildDetailsRow('Usage Type', floor.usageType.toString() ?? ''),
+              //           _buildDetailsRow('Occupancy Type', floor.occupancyType.toString() ?? ''),
+              //           _buildDetailsRow('Construction Type', floor.constructionType.toString() ?? ''),
+              //           _buildDetailsRow('Built Up Area(Sqt)', floor.builtupArea.toString() ?? ''),
+              //           _buildDetailsRow('From Date', floor.dateFrom.toString() ?? ''),
+              //           _buildDetailsRow('Upto Date', floor.dateUpto.toString() ?? ''),
+              //         ],
+              //       ),
+              //     );
+              //   },
+              // ),
 
               Container(
                 padding: const EdgeInsets.all(10),
@@ -399,7 +464,7 @@ class PropertyBasicDetailsView extends GetView<PropertyPayPropertyTaxController>
                     _buildDetailsRow('Property has Hoarding Board(s)?', controller.searchedDataById[0].isHoardingBoard.toString() == 'true' ? 'Yes' : 'No',),
                     _buildDetailsRow('Is Property a Petrol Pump?',controller.searchedDataById[0].isPetrolPump.toString() == 'true' ? 'Yes' : 'No',),
                     _buildDetailsRow('Rainwater Harvesting Provision?', controller.searchedDataById[0].isWaterHarvesting.toString() == 'true' ? 'Yes' : 'No',),
-                    _buildDetailsRow('Zone',controller.searchedDataById[0].zoneMstrId.toString() ),
+
                   ],
                 ),
               ),

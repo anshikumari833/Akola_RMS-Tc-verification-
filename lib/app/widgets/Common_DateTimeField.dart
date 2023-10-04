@@ -30,7 +30,7 @@ class CustomDateTimeField extends StatelessWidget {
           Container(
             width: 100,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
               child: Text(
                 headingText,
                 style: GoogleFonts.publicSans(
@@ -44,7 +44,7 @@ class CustomDateTimeField extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal:0),
               child: DateTimeField(
                 decoration: InputDecoration(
                   border: InputBorder.none,

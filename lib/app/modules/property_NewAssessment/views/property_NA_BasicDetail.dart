@@ -13,9 +13,8 @@ import '../../Property_SearchProperty/controllers/SearchHolding_controller.dart'
 import '../controllers/property_new_assessment_controller.dart';
 
 class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController> {
-   PropertyNewAssessmentView({Key? key}) : super(key: key);
+  PropertyNewAssessmentView({Key? key}) : super(key: key);
   var title = '';
-
   @override
   Widget build(BuildContext context) {
     Get.put(PropertyPayPropertyTaxController());
@@ -24,7 +23,7 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
-          key: controller.newAssessmentFormKey,
+          key: controller.basicDetailsFormKey,
           child: Column(
             children: [
               Container(
@@ -176,8 +175,7 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                               itemPadding: EdgeInsets.only(left: 25, right: 25),
                               dropdownMaxHeight: 250,
                               dropdownWidth: 325,
-                              dropdownDecoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                              dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
                               ),
                               dropdownElevation: 1,
                               scrollbarRadius: Radius.circular(40),
@@ -341,7 +339,7 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                                 }
                               },
                               onChanged: (value) {
-                                controller.newWardNo.value = '';
+                                // controller.newWardNo.value = '';
                                 controller.newWardNo.value = value.toString();
                               },
                             ),
@@ -584,9 +582,9 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                   ElevatedButton(
                     child: Text('Save & next'),
                     onPressed: () {
-                    Get.to(PropertyPropertyDetailView());
+                     Get.to(PropertyPropertyDetailView());
                       // Get.to(PropertyNATaxCalculationFormView());
-                      // if (controller.newAssessmentFormKey.currentState!.validate()) {
+                      // if (controller.basicDetailsFormKey.currentState!.validate()) {
                       //   // Form is valid, navigate to the next screen
                       //   Get.to(PropertyPropertyDetailView());
                       // }

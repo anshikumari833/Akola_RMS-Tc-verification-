@@ -4,35 +4,35 @@ class SearchSafData {
   String? safNo;
   String? assessmentType;
   String? currentRole;
-  int? oldWardNo;
-  int? newWardNo;
+  String? oldWardNo;
+  String? newWardNo;
   String? propAddress;
   String? appliedby;
   String? mobileNo;
   String? ownerName;
 
-  SearchSafData(
-      {this.id,
-        this.status,
-        this.safNo,
-        this.assessmentType,
-        this.currentRole,
-        this.oldWardNo,
-        this.newWardNo,
-        this.propAddress,
-        this.appliedby,
-       this.mobileNo,
-         this.ownerName});
+  SearchSafData({
+    this.id,
+    this.status,
+    this.safNo,
+    this.assessmentType,
+    this.currentRole,
+    this.oldWardNo,
+    this.newWardNo,
+    this.propAddress,
+    this.appliedby,
+    this.mobileNo,
+    this.ownerName,
+  });
 
   SearchSafData.fromJson(Map<String, dynamic> json) {
-    id = int.tryParse(json['id'].toString());
+    id = json['id'];
     status = json['status'];
     safNo = json['saf_no'];
     assessmentType = json['assessment_type'];
-    currentRole = json['current_role'];
-    currentRole = json['currentRole'];
-    oldWardNo = int.tryParse(json['old_ward_no'].toString());
-    newWardNo = int.tryParse(json['new_ward_no'].toString());
+    currentRole = json['current_role'] ?? json['currentRole']; // Handle both keys
+    oldWardNo = json['old_ward_no'];
+    newWardNo = json['new_ward_no'];
     propAddress = json['prop_address'];
     appliedby = json['appliedby'];
     mobileNo = json['mobile_no'];
@@ -40,22 +40,81 @@ class SearchSafData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['status'] = this.status;
-    data['saf_no'] = this.safNo;
-    data['assessment_type'] = this.assessmentType;
-    data['current_role'] = this.currentRole;
-    data['currentRole'] = this.currentRole;
-    data['old_ward_no'] = this.oldWardNo;
-    data['new_ward_no'] = this.newWardNo;
-    data['prop_address'] = this.propAddress;
-    data['appliedby'] = this.appliedby;
-    data['mobile_no'] = this.mobileNo;
-    data['owner_name'] = this.ownerName;
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['status'] = status;
+    data['saf_no'] = safNo;
+    data['assessment_type'] = assessmentType;
+    data['current_role'] = currentRole;
+    data['old_ward_no'] = oldWardNo;
+    data['new_ward_no'] = newWardNo;
+    data['prop_address'] = propAddress;
+    data['appliedby'] = appliedby;
+    data['mobile_no'] = mobileNo;
+    data['owner_name'] = ownerName;
     return data;
   }
 }
+
+
+// class SearchSafData {
+//   int? id;
+//   String? status;
+//   String? safNo;
+//   String? assessmentType;
+//   String? currentRole;
+//   int? oldWardNo;
+//   int? newWardNo;
+//   String? propAddress;
+//   String? appliedby;
+//   String? mobileNo;
+//   String? ownerName;
+//
+//   SearchSafData(
+//       {this.id,
+//         this.status,
+//         this.safNo,
+//         this.assessmentType,
+//         this.currentRole,
+//         this.oldWardNo,
+//         this.newWardNo,
+//         this.propAddress,
+//         this.appliedby,
+//        this.mobileNo,
+//          this.ownerName});
+//
+//   SearchSafData.fromJson(Map<String, dynamic> json) {
+//     id = int.tryParse(json['id'].toString());
+//     status = json['status'];
+//     safNo = json['saf_no'];
+//     assessmentType = json['assessment_type'];
+//     currentRole = json['current_role'];
+//     currentRole = json['currentRole'];
+//     oldWardNo = int.tryParse(json['old_ward_no'].toString());
+//     newWardNo = int.tryParse(json['new_ward_no'].toString());
+//     propAddress = json['prop_address'];
+//     appliedby = json['appliedby'];
+//     mobileNo = json['mobile_no'];
+//     ownerName = json['owner_name'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['id'] = this.id;
+//     data['status'] = this.status;
+//     data['saf_no'] = this.safNo;
+//     data['assessment_type'] = this.assessmentType;
+//     data['current_role'] = this.currentRole;
+//     data['currentRole'] = this.currentRole;
+//     data['old_ward_no'] = this.oldWardNo;
+//     data['new_ward_no'] = this.newWardNo;
+//     data['prop_address'] = this.propAddress;
+//     data['appliedby'] = this.appliedby;
+//     data['mobile_no'] = this.mobileNo;
+//     data['owner_name'] = this.ownerName;
+//     return data;
+//   }
+// }
 
 
 class SearchGbSafData {

@@ -4,7 +4,7 @@ class SearchedData {
   int? id;
   int? ulbId;
   String? clusterId;
-  int? safId;
+  dynamic safId; // This can be a String or another suitable type
   String? holdingNo;
   String? applicantName;
   String? applicationDate;
@@ -19,13 +19,13 @@ class SearchedData {
   String? electBindBookNo;
   String? electConsCategory;
   String? buildingPlanApprovalNo;
-  int? buildingPlanApprovalDate;
+  String? buildingPlanApprovalDate;
   String? waterConnNo;
   String? waterConnDate;
   String? khataNo;
   String? plotNo;
   String? villageMaujaName;
-  int? roadTypeMstrId;
+  dynamic roadTypeMstrId; // This can be a String or another suitable type
   String? areaOfPlot;
   String? propAddress;
   String? propCity;
@@ -40,7 +40,7 @@ class SearchedData {
   bool? isMobileTower;
   String? towerArea;
   String? towerInstallationDate;
-  bool? isHoardingBoard;
+  dynamic isHoardingBoard; // This can be a String or another suitable type
   String? hoardingArea;
   String? hoardingInstallationDate;
   bool? isPetrolPump;
@@ -48,25 +48,25 @@ class SearchedData {
   String? petrolPumpCompletionDate;
   bool? isWaterHarvesting;
   String? landOccupationDate;
-  int? newWardMstrId;
-  String? entryType;
+  String? newWardMstrId;
+  dynamic entryType; // This can be a String or another suitable type
   int? zoneMstrId;
-  String? newHoldingNo;
+  dynamic newHoldingNo; // This can be a String or another suitable type
   String? flatRegistryDate;
-  String? assessmentType;
-  String? holdingType;
-  int? isOld;
-  int? apartmentDetailsId;
+  dynamic assessmentType; // This can be a String or another suitable type
+  dynamic holdingType; // This can be a String or another suitable type
+  dynamic isOld; // This can be an int or another suitable type
+  dynamic apartmentDetailsId; // This can be a String or another suitable type
   String? ipAddress;
   String? createdAt;
   String? updatedAt;
   int? status;
   int? userId;
-  String? roadWidth;
-  int? oldPropId;
-  String? citizenId;
-  String? safNo;
-  String? ptNo;
+  dynamic roadWidth; // This can be a String or another suitable type
+  dynamic oldPropId; // This can be a String or another suitable type
+  dynamic citizenId; // This can be a String or another suitable type
+  dynamic safNo; // This can be a String or another suitable type
+  dynamic ptNo; // This can be a String or another suitable type
   String? buildingName;
   String? streetName;
   String? location;
@@ -78,136 +78,141 @@ class SearchedData {
   bool? isTrust;
   String? trustType;
   String? isTrustVerified;
-  String? rwhDateFrom;
+  dynamic rwhDateFrom; // This can be a String or another suitable type
+  bool? isWaivedOff;
+  int? categoryId;
+  String? applicantMarathi;
+  String? propertyNo;
   int? activeStatus;
   String? assessment;
-  int? oldWardNo;
-  int? newWardNo;
+  String? wardNo;
   String? ownershipType;
   String? propertyType;
-  String? roadType;
-  String? apartmentName;
+  dynamic roadType; // This can be a String or another suitable type
   String? apartmentCode;
+  String? zoneName;
   List<SearchedFloorsData >? floors;
   List<SerchedOwnersData>? owners;
 
-  SearchedData(
-      {this.id,
-        this.ulbId,
-        this.clusterId,
-        this.safId,
-        this.holdingNo,
-        this.applicantName,
-        this.applicationDate,
-        this.balance,
-        this.wardMstrId,
-        this.ownershipTypeMstrId,
-        this.propTypeMstrId,
-        this.appartmentName,
-        this.noElectricConnection,
-        this.electConsumerNo,
-        this.electAccNo,
-        this.electBindBookNo,
-        this.electConsCategory,
-        this.buildingPlanApprovalNo,
-        this.buildingPlanApprovalDate,
-        this.waterConnNo,
-        this.waterConnDate,
-        this.khataNo,
-        this.plotNo,
-        this.villageMaujaName,
-        this.roadTypeMstrId,
-        this.areaOfPlot,
-        this.propAddress,
-        this.propCity,
-        this.propDist,
-        this.propPinCode,
-        this.propState,
-        this.corrAddress,
-        this.corrCity,
-        this.corrDist,
-        this.corrPinCode,
-        this.corrState,
-        this.isMobileTower,
-        this.towerArea,
-        this.towerInstallationDate,
-        this.isHoardingBoard,
-        this.hoardingArea,
-        this.hoardingInstallationDate,
-        this.isPetrolPump,
-        this.underGroundArea,
-        this.petrolPumpCompletionDate,
-        this.isWaterHarvesting,
-        this.landOccupationDate,
-        this.newWardMstrId,
-        this.entryType,
-        this.zoneMstrId,
-        this.newHoldingNo,
-        this.flatRegistryDate,
-        this.assessmentType,
-        this.holdingType,
-        this.isOld,
-        this.apartmentDetailsId,
-        this.ipAddress,
-        this.createdAt,
-        this.updatedAt,
-        this.status,
-        this.userId,
-        this.roadWidth,
-        this.oldPropId,
-        this.citizenId,
-        this.safNo,
-        this.ptNo,
-        this.buildingName,
-        this.streetName,
-        this.location,
-        this.landmark,
-        this.isGbSaf,
-        this.gbOfficeName,
-        this.gbUsageTypes,
-        this.gbPropUsageTypes,
-        this.isTrust,
-        this.trustType,
-        this.isTrustVerified,
-        this.rwhDateFrom,
-        this.activeStatus,
-        this.assessment,
-        this.oldWardNo,
-        this.newWardNo,
-        this.ownershipType,
-        this.propertyType,
-        this.roadType,
-        this.apartmentName,
-        this.apartmentCode,
-        this.floors,
-        this.owners});
+  SearchedData({
+    this.id,
+    this.ulbId,
+    this.clusterId,
+    this.safId,
+    this.holdingNo,
+    this.applicantName,
+    this.applicationDate,
+    this.balance,
+    this.wardMstrId,
+    this.ownershipTypeMstrId,
+    this.propTypeMstrId,
+    this.appartmentName,
+    this.noElectricConnection,
+    this.electConsumerNo,
+    this.electAccNo,
+    this.electBindBookNo,
+    this.electConsCategory,
+    this.buildingPlanApprovalNo,
+    this.buildingPlanApprovalDate,
+    this.waterConnNo,
+    this.waterConnDate,
+    this.khataNo,
+    this.plotNo,
+    this.villageMaujaName,
+    this.roadTypeMstrId,
+    this.areaOfPlot,
+    this.propAddress,
+    this.propCity,
+    this.propDist,
+    this.propPinCode,
+    this.propState,
+    this.corrAddress,
+    this.corrCity,
+    this.corrDist,
+    this.corrPinCode,
+    this.corrState,
+    this.isMobileTower,
+    this.towerArea,
+    this.towerInstallationDate,
+    this.isHoardingBoard,
+    this.hoardingArea,
+    this.hoardingInstallationDate,
+    this.isPetrolPump,
+    this.underGroundArea,
+    this.petrolPumpCompletionDate,
+    this.isWaterHarvesting,
+    this.landOccupationDate,
+    this.newWardMstrId,
+    this.entryType,
+    this.zoneMstrId,
+    this.newHoldingNo,
+    this.flatRegistryDate,
+    this.assessmentType,
+    this.holdingType,
+    this.isOld,
+    this.apartmentDetailsId,
+    this.ipAddress,
+    this.createdAt,
+    this.updatedAt,
+    this.status,
+    this.userId,
+    this.roadWidth,
+    this.oldPropId,
+    this.citizenId,
+    this.safNo,
+    this.ptNo,
+    this.buildingName,
+    this.streetName,
+    this.location,
+    this.landmark,
+    this.isGbSaf,
+    this.gbOfficeName,
+    this.gbUsageTypes,
+    this.gbPropUsageTypes,
+    this.isTrust,
+    this.trustType,
+    this.isTrustVerified,
+    this.rwhDateFrom,
+    this.isWaivedOff,
+    this.categoryId,
+    this.applicantMarathi,
+    this.propertyNo,
+    this.activeStatus,
+    this.assessment,
+    this.wardNo,
+    this.ownershipType,
+    this.propertyType,
+    this.roadType,
+    this.apartmentCode,
+    this.zoneName,
+  });
 
   SearchedData.fromJson(Map<String, dynamic> json) {
-    id = int.tryParse(json['id'].toString());
+    id = json['id'];
     ulbId = json['ulb_id'];
     clusterId = json['cluster_id'];
-    safId = int.tryParse(json['saf_id'].toString());
+    safId = json['saf_id'];
     holdingNo = json['holding_no'];
     applicantName = json['applicant_name'];
     applicationDate = json['application_date'];
     balance = json['balance'];
     wardMstrId = json['ward_mstr_id'];
-    ownershipTypeMstrId = int.tryParse(json['ownership_type_mstr_id'].toString());
-    propTypeMstrId = int.tryParse(json['prop_type_mstr_id'].toString());
+    ownershipTypeMstrId = json['ownership_type_mstr_id'];
+    propTypeMstrId = json['prop_type_mstr_id'];
     appartmentName = json['appartment_name'];
-    noElectricConnection = boolValue(json['no_electric_connection']);
+    noElectricConnection = json['no_electric_connection'];
     electConsumerNo = json['elect_consumer_no'];
     electAccNo = json['elect_acc_no'];
     electBindBookNo = json['elect_bind_book_no'];
     electConsCategory = json['elect_cons_category'];
     buildingPlanApprovalNo = json['building_plan_approval_no'];
-    buildingPlanApprovalDate = int.tryParse(json['building_plan_approval_date'].toString());
+    buildingPlanApprovalDate = json['building_plan_approval_date'];
     waterConnNo = json['water_conn_no'];
     waterConnDate = json['water_conn_date'];
     khataNo = json['khata_no'];
     plotNo = json['plot_no'];
     villageMaujaName = json['village_mauja_name'];
-    roadTypeMstrId =  int.tryParse(json['road_type_mstr_id'].toString());
+    roadTypeMstrId = json['road_type_mstr_id'];
     areaOfPlot = json['area_of_plot'];
     propAddress = json['prop_address'];
     propCity = json['prop_city'];
@@ -222,30 +227,30 @@ class SearchedData {
     isMobileTower = json['is_mobile_tower'];
     towerArea = json['tower_area'];
     towerInstallationDate = json['tower_installation_date'];
-    isHoardingBoard = boolValue(json['is_hoarding_board']);
+    isHoardingBoard = json['is_hoarding_board'];
     hoardingArea = json['hoarding_area'];
     hoardingInstallationDate = json['hoarding_installation_date'];
-    isPetrolPump = boolValue(json['is_petrol_pump']);
+    isPetrolPump = json['is_petrol_pump'];
     underGroundArea = json['under_ground_area'];
     petrolPumpCompletionDate = json['petrol_pump_completion_date'];
-    isWaterHarvesting = boolValue(json['is_water_harvesting']);
+    isWaterHarvesting = json['is_water_harvesting'];
     landOccupationDate = json['land_occupation_date'];
-    newWardMstrId = int.tryParse(json['new_ward_mstr_id'].toString());
+    newWardMstrId = json['new_ward_mstr_id'];
     entryType = json['entry_type'];
     zoneMstrId = json['zone_mstr_id'];
     newHoldingNo = json['new_holding_no'];
     flatRegistryDate = json['flat_registry_date'];
     assessmentType = json['assessment_type'];
     holdingType = json['holding_type'];
-    isOld =  int.tryParse(json['is_old'].toString());
-    apartmentDetailsId = int.tryParse(json['apartment_details_id'].toString());
+    isOld = json['is_old'];
+    apartmentDetailsId = json['apartment_details_id'];
     ipAddress = json['ip_address'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     status = json['status'];
-    userId = int.tryParse(json['user_id'].toString());
+    userId = json['user_id'];
     roadWidth = json['road_width'];
-    oldPropId = int.tryParse(json['old_prop_id'].toString());
+    oldPropId = json['old_prop_id'];
     citizenId = json['citizen_id'];
     safNo = json['saf_no'];
     ptNo = json['pt_no'];
@@ -253,7 +258,7 @@ class SearchedData {
     streetName = json['street_name'];
     location = json['location'];
     landmark = json['landmark'];
-    isGbSaf = boolValue(json['is_gb_saf']);
+    isGbSaf = json['is_gb_saf'];
     gbOfficeName = json['gb_office_name'];
     gbUsageTypes = json['gb_usage_types'];
     gbPropUsageTypes = json['gb_prop_usage_types'];
@@ -261,110 +266,21 @@ class SearchedData {
     trustType = json['trust_type'];
     isTrustVerified = json['is_trust_verified'];
     rwhDateFrom = json['rwh_date_from'];
-    activeStatus = int.tryParse(json['active_status'].toString());
+    isWaivedOff = json['is_waived_off'];
+    categoryId = json['category_id'];
+    applicantMarathi = json['applicant_marathi'];
+    propertyNo = json['property_no'];
+    activeStatus = json['active_status'];
     assessment = json['assessment'];
-    oldWardNo = json['old_ward_no'];
-    newWardNo =int.tryParse(json['new_ward_no'].toString());
+    wardNo = json['ward_no'];
     ownershipType = json['ownership_type'];
     propertyType = json['property_type'];
     roadType = json['road_type'];
-    apartmentName = json['apartment_name'];
     apartmentCode = json['apartment_code'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['ulb_id'] = this.ulbId;
-    data['cluster_id'] = this.clusterId;
-    data['saf_id'] = this.safId;
-    data['holding_no'] = this.holdingNo;
-    data['applicant_name'] = this.applicantName;
-    data['application_date'] = this.applicationDate;
-    data['balance'] = this.balance;
-    data['ward_mstr_id'] = this.wardMstrId;
-    data['ownership_type_mstr_id'] = this.ownershipTypeMstrId;
-    data['prop_type_mstr_id'] = this.propTypeMstrId;
-    data['appartment_name'] = this.appartmentName;
-    data['no_electric_connection'] = this.noElectricConnection;
-    data['elect_consumer_no'] = this.electConsumerNo;
-    data['elect_acc_no'] = this.electAccNo;
-    data['elect_bind_book_no'] = this.electBindBookNo;
-    data['elect_cons_category'] = this.electConsCategory;
-    data['building_plan_approval_no'] = this.buildingPlanApprovalNo;
-    data['building_plan_approval_date'] = this.buildingPlanApprovalDate;
-    data['water_conn_no'] = this.waterConnNo;
-    data['water_conn_date'] = this.waterConnDate;
-    data['khata_no'] = this.khataNo;
-    data['plot_no'] = this.plotNo;
-    data['village_mauja_name'] = this.villageMaujaName;
-    data['road_type_mstr_id'] = this.roadTypeMstrId;
-    data['area_of_plot'] = this.areaOfPlot;
-    data['prop_address'] = this.propAddress;
-    data['prop_city'] = this.propCity;
-    data['prop_dist'] = this.propDist;
-    data['prop_pin_code'] = this.propPinCode;
-    data['prop_state'] = this.propState;
-    data['corr_address'] = this.corrAddress;
-    data['corr_city'] = this.corrCity;
-    data['corr_dist'] = this.corrDist;
-    data['corr_pin_code'] = this.corrPinCode;
-    data['corr_state'] = this.corrState;
-    data['is_mobile_tower'] = this.isMobileTower;
-    data['tower_area'] = this.towerArea;
-    data['tower_installation_date'] = this.towerInstallationDate;
-    data['is_hoarding_board'] = this.isHoardingBoard;
-    data['hoarding_area'] = this.hoardingArea;
-    data['hoarding_installation_date'] = this.hoardingInstallationDate;
-    data['is_petrol_pump'] = this.isPetrolPump;
-    data['under_ground_area'] = this.underGroundArea;
-    data['petrol_pump_completion_date'] = this.petrolPumpCompletionDate;
-    data['is_water_harvesting'] = this.isWaterHarvesting;
-    data['land_occupation_date'] = this.landOccupationDate;
-    data['new_ward_mstr_id'] = this.newWardMstrId;
-    data['entry_type'] = this.entryType;
-    data['zone_mstr_id'] = this.zoneMstrId;
-    data['new_holding_no'] = this.newHoldingNo;
-    data['flat_registry_date'] = this.flatRegistryDate;
-    data['assessment_type'] = this.assessmentType;
-    data['holding_type'] = this.holdingType;
-    data['is_old'] = this.isOld;
-    data['apartment_details_id'] = this.apartmentDetailsId;
-    data['ip_address'] = this.ipAddress;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['status'] = this.status;
-    data['user_id'] = this.userId;
-    data['road_width'] = this.roadWidth;
-    data['old_prop_id'] = this.oldPropId;
-    data['citizen_id'] = this.citizenId;
-    data['saf_no'] = this.safNo;
-    data['pt_no'] = this.ptNo;
-    data['building_name'] = this.buildingName;
-    data['street_name'] = this.streetName;
-    data['location'] = this.location;
-    data['landmark'] = this.landmark;
-    data['is_gb_saf'] = this.isGbSaf;
-    data['gb_office_name'] = this.gbOfficeName;
-    data['gb_usage_types'] = this.gbUsageTypes;
-    data['gb_prop_usage_types'] = this.gbPropUsageTypes;
-    data['is_trust'] = this.isTrust;
-    data['trust_type'] = this.trustType;
-    data['is_trust_verified'] = this.isTrustVerified;
-    data['rwh_date_from'] = this.rwhDateFrom;
-    data['active_status'] = this.activeStatus;
-    data['assessment'] = this.assessment;
-    data['old_ward_no'] = this.oldWardNo;
-    data['new_ward_no'] = this.newWardNo;
-    data['ownership_type'] = this.ownershipType;
-    data['property_type'] = this.propertyType;
-    data['road_type'] = this.roadType;
-    data['apartment_name'] = this.apartmentName;
-    data['apartment_code'] = this.apartmentCode;
-
-    return data;
+    zoneName = json['zone_name'];
   }
 }
+
 
 class SearchedFloorsData {
   int? id;
@@ -462,6 +378,8 @@ class SearchedFloorsData {
     return data;
   }
 }
+
+
 
 class SerchedOwnersData {
   int? id;

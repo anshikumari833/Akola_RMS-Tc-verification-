@@ -1,14 +1,14 @@
-import 'package:amc_rms/app/modules/water_ConsumerSearch/views/water_ConsumerDetail_view.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:amc_rms/app/modules/water_ConsumerSearch/views/water_ConsumerDetail(BasicDetails)_view.dart';
+import 'package:amc_rms/app/modules/water_ConsumerSearch/views/water_DemandDetail_view.dart';
+import 'package:amc_rms/app/modules/water_ConsumerSearch/views/water_PaymentHistory_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../common/cluster.dart';
-import '../../../routes/app_pages.dart';
-import '../../home/views/home_view.dart';
+import '../../../widgets/Common_DropdownField.dart';
+import '../../../widgets/Common_TextField.dart';
 import '../controllers/water_consumer_search_controller.dart';
 
 class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
@@ -34,11 +34,7 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                 ),),
             ],
           ),
-        ), actions: [
-        SizedBox(width: 10,),
-        GestureDetector(onTap: (){Get.to(HomeView());},child: Icon(Icons.home,color: Colors.black,)),
-        SizedBox(width: 14,),
-      ],),
+        ),),
       body: SingleChildScrollView(
         child: Container(
           color:  Color(0xFFF0F6F9),
@@ -79,113 +75,56 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Filter by',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-                      ),
-                      Text(
-                        "*    ",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: DropdownButtonFormField2(
-                          // DropdownButtonFormField properties
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.grey[100],
-                            contentPadding: EdgeInsets.only(left: 30, right: 15, bottom: 18),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: const Text(
-                            'Select',
-                            style: TextStyle(fontSize: 15, color: Colors.black),
-                          ),
-                          dropdownDecoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          buttonPadding: EdgeInsets.only(left:10),
-                          buttonElevation: 2,
-                          dropdownMaxHeight: 270,
-                          dropdownWidth: 220,
-                          dropdownElevation:1,
-                          scrollbarRadius: Radius.circular(40),
-                          scrollbarThickness: 5,
-                          scrollbarAlwaysShow: true,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text("Select"),
-                              value: "",
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Consumer No"),
-                              value: "consumerNo",
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Holding No"),
-                              value: "holdingNo",
-                            ),
-                            DropdownMenuItem(
-                              child: Text("SAF No"),
-                              value: "safNo",
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Application Name"),
-                              value: "applicantName",
-                            ),
-                            DropdownMenuItem(
-                              child: Text("Mobile No"),
-                              value: "mobileNo",
-                            ),
-                          ],
-                          onChanged: (value) {
-                            controller.filterByValue.value = value.toString();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: 15),
-                  Row(
-                    children: [
-                      Text(
-                        'Search by',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
+                  CustomDropdownFormField(
+                    headingText: 'Filter by',
+                    items: [
+                      DropdownMenuItem(
+                        child: Text("Select"),
+                        value: "",
                       ),
-                      Text(
-                        "*",
-                        style: TextStyle(color: Colors.red),
+                      DropdownMenuItem(
+                        child: Text("Consumer No"),
+                        value: "consumerNo",
                       ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey[100],
-                          ),
-                          child: TextField(
-                            controller: controller.searchByController,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(left: 30, right: 10, bottom: 12,top: 10),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              hintStyle: TextStyle(fontSize: 14, color: Colors.black),
-                              hintText: "Search",
-                            ),
-                          ),
-                        ),
+                      DropdownMenuItem(
+                        child: Text("Holding No"),
+                        value: "holdingNo",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("SAF No"),
+                        value: "safNo",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Application Name"),
+                        value: "applicantName",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Mobile No"),
+                        value: "mobileNo",
                       ),
                     ],
+                    hintText: 'Select an option',
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select an option';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      controller.filterByValue.value = value.toString();
+                    },
+                  ),
+                  CustomTextField(
+                    controller: controller.searchByController,
+                    headingText: "Search by",
+                    hintText: "Enter value",
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'This field is required';
+                      }
+                      return "";
+                    },
                   ),
                   SizedBox(height: 12),
                   Row(
@@ -193,6 +132,7 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           controller.isDataProcessing.value = true;
                           var page = 1;
                           await controller.getDetailBySearch();
@@ -276,9 +216,9 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(30.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Image.asset(
-                            "assets/images/search_img3.png",),
+                            "assets/images/Water_ConsumerSearch.png",),
                         ),
                       ],
                     ),
@@ -294,113 +234,103 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: displayedData.length,
                       itemBuilder: (context, index) {
-                        final propertyDetails = displayedData[index];
-                        return   GestureDetector(
-                          onTap: () async{
-                            GetStorage().remove('assessmentType');
-                            controller.clearAllFields();
-                            controller.isDataProcessing.value = true;
-                              // await controller.searchHoldingById(controller.searchedPropData[index]['id']);
-                              // Get.toNamed(Routes.PROPERTY_NEW_ASSESSMENT, arguments: controller.searchedDataById);
-                            controller.isDataProcessing.value = false;
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.blue[100],
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 5,),
-                                  Text(
-                                    'Details',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
+                        final user_Details = displayedData[index];
+                        return   Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.blue[100],
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 5,),
+                                Text(
+                                  'Details',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
                                   ),
-                                  Card(
-                                    margin: EdgeInsets.all(2.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    elevation: 2,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              _buildDetailsRow('Owners Name', propertyDetails['owner_name'].toString()),
-                                              _buildDetailsRow('Consumer No', propertyDetails['consumer_no'].toString()),
-                                              _buildDetailsRow('Mobile No', propertyDetails['mobile_no'].toString()),
-                                              _buildDetailsRow('Guardian Name', propertyDetails['guardian_name'].toString()),
-                                              _buildDetailsRow('Address', propertyDetails['address'].toString()),
-                                            ],
-                                          ),
+                                ),
+                                Card(
+                                  margin: EdgeInsets.all(2.0),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  elevation: 2,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            _buildDetailsRow('Owners Name', user_Details['owner_name'].toString()),
+                                            _buildDetailsRow('Consumer No', user_Details['consumer_no'].toString()),
+                                            _buildDetailsRow('Property No', user_Details['property_no'].toString()),
+                                            _buildDetailsRow('Mobile No', user_Details['mobile_no'].toString()),
+                                            _buildDetailsRow('Guardian Name', user_Details['guardian_name'].toString()),
+                                            _buildDetailsRow('Address', user_Details['address'].toString()),
+                                            _buildDetailsRow('Bill Amount', user_Details['amount'].toString()),
+                                          ],
                                         ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            //BASIC DETAILS
-                                            TextButton(onPressed:  ()
-                                            async{
-                                              controller.clearAllFields();
-                                              controller.isDataProcessing.value = true;
-                                                // await controller.searchHoldingById(controller.searchedPropData[index]['id']);
-                                                // Get.to(PropertyBasicDetailsView(),
-                                                //   preventDuplicates: true,
-                                                // );
-                                                controller.isDataProcessing.value = false;
-
-                                            },
-                                                child: Text('Consumer Detail')),
-                                            //DEMAND DETAILS
-                                            TextButton(onPressed:  () async{
-                                              controller.clearAllFields();
-                                              controller.isDataProcessing.value = true;
-                                                // await controller.getDemandDetail(propertyDetails['id'],'demand');
-                                                // Get.to(PropertyDemandDetailsView(),
-                                                //   preventDuplicates: true,
-                                                // );
-                                                controller.isDataProcessing.value = false;
-                                            }, child: Text('Meter Detail')),
-                                          ],),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            //DEMAND DETAILS
-                                            TextButton(onPressed:  () async{
-                                              controller.clearAllFields();
-                                              controller.isDataProcessing.value = true;
-                                              // await controller.getDemandDetail(propertyDetails['id'],'demand');
-                                              // Get.to(PropertyDemandDetailsView(),
-                                              //   preventDuplicates: true,
-                                              // );
-                                              controller.isDataProcessing.value = false;
-                                            }, child: Text('Demand Detail')),
-                                            //PAYMENT HISTORY
-                                            TextButton(onPressed:  () async{
-                                              controller.clearAllFields();
-                                              controller.isDataProcessing.value = true;
-                                              // await controller.searchHoldingById(controller.searchedPropData[index]['id']);
-                                              // await controller.getPaymentDetail(propertyDetails['id']);
-                                              // Get.to(PropertyPaymentHistoryView(),
-                                              //   preventDuplicates: true,
-                                              // );
-                                              controller.isDataProcessing.value = false;
-                                            }, child: Text('Payment History'))
-                                          ],)
-                                      ],
-                                    ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          //BASIC DETAILS
+                                          TextButton(onPressed:  ()
+                                          async{
+                                            controller.clearAllFields();
+                                            controller.isDataProcessing.value = true;
+                                            await controller.searchConsumerById(controller.searchedconsumerData[index]['id']);
+                                            Get.to(WaterConsumerDetailView(),
+                                              preventDuplicates: true,
+                                            );
+                                            controller.isDataProcessing.value = false;
+                                          },
+                                              child: Text('Consumer Detail')),
+                                          //DEMAND DETAILS
+                                          TextButton(onPressed:  () async{
+                                            controller.clearAllFields();
+                                            controller.isDataProcessing.value = true;
+                                            // await controller.getDemandDetail(propertyDetails['id'],'demand');
+                                            // Get.to(PropertyDemandDetailsView(),
+                                            //   preventDuplicates: true,
+                                            // );
+                                            controller.isDataProcessing.value = false;
+                                          }, child: Text('Meter Detail')),
+                                        ],),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          //DEMAND DETAILS
+                                          TextButton(onPressed:  () async{
+                                            controller.clearAllFields();
+                                            controller.isDataProcessing.value = true;
+                                            await controller.getConsumerDemandDetail(controller.searchedconsumerData[index]['id']);
+                                            Get.to(WaterDemandDetailView(),
+                                              preventDuplicates: true,
+                                            );
+                                            controller.isDataProcessing.value = false;
+                                          }, child: Text('Demand Detail')),
+                                          //PAYMENT HISTORY
+                                          TextButton(onPressed:  () async{
+                                            controller.clearAllFields();
+                                            controller.isDataProcessing.value = true;
+                                            await controller.getPaymentHistoryDetail(controller.searchedconsumerData[index]['id']);
+                                              Get.to(WaterPaymentHistoryView(),
+                                              preventDuplicates: true,
+                                            );
+                                            controller.isDataProcessing.value = false;
+                                          }, child: Text('Payment History'))
+                                        ],)
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         );

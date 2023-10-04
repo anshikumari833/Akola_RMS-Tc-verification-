@@ -10,7 +10,8 @@ import '../../Property_SearchProperty/controllers/SearchHolding_controller.dart'
 import '../controllers/property_new_assessment_controller.dart';
 
 class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController> {
-  const PropertyPropertyDetailView({Key? key}) : super(key: key);
+   PropertyPropertyDetailView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Get.put(PropertyPayPropertyTaxController());
@@ -18,7 +19,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
       backgroundColor: Color(0xFFF0F6F9),
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
-          // key: controller.newAssessmentFormKey,,
+        key: controller.propertyDetailsFormKey,
         child:Form(
           child: Column(
             children: [
@@ -121,7 +122,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                 hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                               ),
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                if (value == null) {
                                   return 'Please enter khata no';
                                 }
                                 return null;
@@ -167,7 +168,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter plot no';
                                     }
                                     return null;
@@ -211,7 +212,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter village/mauja name';
                                     }
                                     return null;
@@ -257,7 +258,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter area of plot';
                                     }
                                     return null;
@@ -500,7 +501,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter city';
                                     }
                                     return null;
@@ -549,7 +550,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                         fontSize: 16, color: Colors.black),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter district';
                                     }
                                     return null;
@@ -598,7 +599,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                         fontSize: 16, color: Colors.black),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter state';
                                     }
                                     return null;
@@ -647,7 +648,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter pin code';
                                     }
                                     if (value.length < 6) {
@@ -686,7 +687,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter street name';
                                     }
                                     return null;
@@ -722,7 +723,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter location';
                                     }
                                     return null;
@@ -758,7 +759,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter landmark';
                                     }
                                     return null;
@@ -802,7 +803,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter property address';
                                     }
                                     return null;
@@ -965,7 +966,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter city';
                                     }
                                     return null;
@@ -1012,7 +1013,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter district';
                                     }
                                     return null;
@@ -1059,7 +1060,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter state';
                                     }
                                     return null;
@@ -1109,7 +1110,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter pin code';
                                     }
                                     if (value.length < 6) {
@@ -1156,7 +1157,7 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                                     hintStyle: const TextStyle(fontSize: 13, color: Colors.black45),
                                   ),
                                   validator: (value) {
-                                    if (value!.isEmpty) {
+                                    if (value == null) {
                                       return 'Please enter property address';
                                     }
                                     return null;
@@ -1182,8 +1183,8 @@ class PropertyPropertyDetailView extends GetView<PropertyNewAssessmentController
                   ElevatedButton(
                     child: Text('Save & next'),
                     onPressed: () {
-                      Get.to(PropertyElectricityDetailView());
-                      // if (controller.newAssessmentFormKey.currentState!.validate()) {
+                   Get.to(PropertyElectricityDetailView());
+                      // if (controller.propertyDetailsFormKey.currentState!.validate()) {
                       //   Get.to(PropertyElectricityDetailView());
                       // }
                     },

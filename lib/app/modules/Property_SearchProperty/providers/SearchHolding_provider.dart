@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import '../../../common/api_response.dart';
-import '../../../common/function.dart';
 import '../../../common/string.dart';
 
 class SearchHoldingProvider extends GetConnect {
@@ -17,6 +16,8 @@ class SearchHoldingProvider extends GetConnect {
         {
           "page": page,
           "perPage": perPage,
+          "zoneId": data['zone'],
+          "wardId": data['wardNo'],
           "filteredBy": data['filteredBy'],
           "parameter": data['parameter'],
         },
@@ -79,7 +80,7 @@ class SearchHoldingProvider extends GetConnect {
         {"data": response.body, "error": response.status.hasError});
   }
 
-  //PAYMENT
+  //PAYMENT(CASH - CHEQUE- DD -NEFT)
   Future<APIResponse> DemandTaxDuePayment(demand_PropertyId,Map data) async {
     String url = Strings.base_url + '/api/property/offline-payment-holding';
       final response = await post(url, {
@@ -97,19 +98,19 @@ class SearchHoldingProvider extends GetConnect {
   }
 
 
-  //PINLAB PAYMENT ONLINE
+  //PINLAB PAYMENT ONLINE(PAYMENT REF NO )
   Future<APIResponse> Pinelab_PaymentOnline(Map data) async {
-    String url = Strings.base_url + '/api/payment/v1/pinelab/initiate-payment';
+    String url = Strings.base_url + '/api/property/v1/get-billref-no';
     final response = await post(url, {
-     "workflowId":1,
-      "amount":data["amount"],
-      // "moduleId":data["moduleId"],
-      "applicationId":data["applicationId"],
-      "paymentType":"Property"
+    "propId":data["propId"],
+    "isArrear":data["isArrear"],
+    "paymentMode":data["paymentMode"]
     }, headers: Strings.headers,);
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
   }
+
+  //SENDING POS RESPONSE TO BACKEND
   Future<APIResponse> Pinelab_PaymentResponse(Map data) async {
     String url = Strings.base_url + '/api/payment/v1/pinelab/save-response';
     final response = await post(url, {

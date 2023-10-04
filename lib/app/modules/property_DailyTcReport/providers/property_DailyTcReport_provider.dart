@@ -14,7 +14,7 @@ class PropertyDailyTcReportProvider extends GetConnect {
     final response = await post(
         url,
         {
-          "userId":1,
+          // "userId":1,
           "fromDate":data['fromDate'],
           "uptoDate":data['uptoDate'],
           "all":"1",

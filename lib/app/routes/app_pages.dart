@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
 
-import '../modules/Faq/bindings/faq_binding.dart';
-import '../modules/Faq/views/faq_view.dart';
-import '../modules/Home_About/bindings/home_about_binding.dart';
-import '../modules/Home_About/views/home_about_view.dart';
+import '../modules/Drawer_AboutUs/bindings/drawer_about_us_binding.dart';
+import '../modules/Drawer_AboutUs/views/drawer_about_us_view.dart';
+import '../modules/Drawer_Faq/bindings/drawer_faq_binding.dart';
+import '../modules/Drawer_Faq/views/drawer_faq_view.dart';
+import '../modules/Drawer_Profile/bindings/drawer_profile_binding.dart';
+import '../modules/Drawer_Profile/views/drawer_profile_view.dart';
+import '../modules/Drawer_TermsOfUse/bindings/drawer_terms_of_use_binding.dart';
+import '../modules/Drawer_TermsOfUse/views/drawer_terms_of_use_view.dart';
 import '../modules/Property_AddCluster/bindings/property_add_cluster_binding.dart';
 import '../modules/Property_AddCluster/views/property_add_cluster_view.dart';
 import '../modules/Property_Cluster/bindings/property_cluster_binding.dart';
@@ -150,11 +154,6 @@ class AppPages {
       binding: PropertyPayPropertyTaxBinding(),
     ),
     GetPage(
-      name: _Paths.HOME_ABOUT,
-      page: () => const HomeAboutView(),
-      binding: HomeAboutBinding(),
-    ),
-    GetPage(
       name: _Paths.PROPERTY_SEARCH_ASSESSMENT_DETAIL,
       page: () => const SearchAssessmentDetailView(),
       binding: PropertySearchAssessmentDetailBinding(),
@@ -249,10 +248,26 @@ class AppPages {
       page: () => const PropertyDailyTcReportView(),
       binding: PropertyDailyTcReportBinding(),
     ),
+
     GetPage(
-      name: _Paths.FAQ,
-      page: () => const FaqView(),
-      binding: FaqBinding(),
+      name: _Paths.DRAWER_ABOUT_US,
+      page: () => const DrawerAboutUsView(),
+      binding: DrawerAboutUsBinding(),
+    ),
+    GetPage(
+      name: _Paths.DRAWER_TERMS_OF_USE,
+      page: () => const DrawerTermsOfUseView(),
+      binding: DrawerTermsOfUseBinding(),
+    ),
+    GetPage(
+      name: _Paths.DRAWER_FAQ,
+      page: () => const DrawerFaqView(),
+      binding: DrawerFaqBinding(),
+    ),
+    GetPage(
+      name: _Paths.DRAWER_PROFILE,
+      page: () => const DrawerProfileView(),
+      binding: DrawerProfileBinding(),
     ),
   ];
 }

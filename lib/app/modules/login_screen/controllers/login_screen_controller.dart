@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../../../common/function.dart';
 import '../../home/views/home_view.dart';
 import '../providers/login_screen_provider.dart';
 
@@ -54,62 +53,76 @@ class LoginScreenController extends GetxController {
       return false;
     }
        // await Future.delayed(Duration(seconds: 5));
-    //Api Hit for login
+       //Api Hit for login
     var result = await LoginScreenProvider().userLogin(
         {
           'email': emailController.value.text,
           'password': passwordController.value.text,
-          // 'email': 'tc@gmail.com',
-          // 'password': 'Admin1#',
           'type': 'mobile',
         });
-
+    //RESPONSE
     // Handling response
     if (result.error == true) {
       print('Unsuccessful! PLEASE TRY AGAIN');
-      CommonUtils.showSnackBar(
-          'Could not Login', result.errorMessage, Colors.red);
+      GetSnackBar(
+        dismissDirection: DismissDirection.horizontal,
+        title: 'Could not Login',
+        message: result.errorMessage,
+        snackPosition: SnackPosition.TOP,
+         margin: EdgeInsets.all(5),
+        backgroundColor: Color(0xFFf44336),
+        borderRadius: 80,
+        icon: Icon(
+          Icons.error_outline,
+          color: Colors.white,
+        ),
+        duration: Duration(seconds: 19),
+        isDismissible: true,
+      ).show();
       isLoading.value = false;
       return false;
     } else {
-
       // Temporary variable storing
       var token = result.data['token'];
       var userName = result.data['userDetails']['name'];
+      var description = result.data['userDetails']['description'];
       final isTc = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'tax collector');
       final isUtc = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'seniour lipik');
       final isJe = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'junior engineer');
       final isTd = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'tax daroga');
-
       // Storing data to local storage
       GetStorage().write('key', token);
       GetStorage().write('isTc', isTc);
       GetStorage().write('isUtc', isUtc);
       GetStorage().write('userName', userName);
+      GetStorage().write('description', description);
       GetStorage().write('isJe', isJe);
       GetStorage().write('isTd', isTd);
-
       isLoading.value = false;
-
       // Redirecting to Home screen
       Get.offAll(() => HomeView());
       GetStorage().remove('assessmentType');
       // Pop Up message for login success
       print('Successfully logged in');
-      Get.snackbar(
-        'Success',
-        'Logged in successfully',
-        backgroundColor: Colors.red.shade100,
-        snackPosition: SnackPosition.BOTTOM,
+      GetSnackBar(
+        dismissDirection: DismissDirection.horizontal,
+        margin: EdgeInsets.all(5),
+        title: 'Success',
+        message: 'Logged in successfully',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Color(0xFF388e3c),
+        borderRadius: 80,
         icon: Icon(
           Icons.done,
-          color: Colors.green,
+          color: Colors.white,
         ),
-      );
-
+        duration: Duration(seconds: 5),
+        isDismissible: true,
+      ).show();
       return true;
     }
   }
+
     @override
     void onReady() {
       super.onReady();

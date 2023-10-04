@@ -11,7 +11,7 @@ import '../../../widgets/Assessment_appbar.dart';
 import '../controllers/property_new_assessment_controller.dart';
 
 class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
-  const PropertyFloorDetailView({Key? key}) : super(key: key);
+   PropertyFloorDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

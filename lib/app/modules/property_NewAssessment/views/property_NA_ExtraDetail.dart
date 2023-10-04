@@ -9,7 +9,7 @@ import '../../../widgets/Assessment_appbar.dart';
 import '../controllers/property_new_assessment_controller.dart';
 
 class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
-  const PropertyExtraDetailView({Key? key}) : super(key: key);
+   PropertyExtraDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
-          // key:controller.newAssessmentFormKey,
+         // key:controller.extraDetailsFormKey,
           child: Column(
             children: [
               Container(

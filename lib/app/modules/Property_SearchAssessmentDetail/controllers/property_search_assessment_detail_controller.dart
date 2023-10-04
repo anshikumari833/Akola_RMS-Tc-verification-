@@ -69,8 +69,7 @@ class SearchAssessmentDetailController extends GetxController {
             );
           } else {
             searchDetailList.assignAll(
-              (data as List<dynamic>)
-                  .map((data) => SearchOtherData.fromJson(data)).toList(),
+              (data as List<dynamic>).map((data) => SearchOtherData.fromJson(data)).toList(),
             );
           }
           if (page == 1) {

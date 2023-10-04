@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../../common/cluster.dart';
-import '../../../widgets/custom_appbar.dart';
 import '../controllers/SearchHolding_controller.dart';
+import 'package:pdf/widgets.dart' as pdfWidgets;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
 
 class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
   const PropReceiptView({Key? key}) : super(key: key);
@@ -51,11 +51,13 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
               SizedBox(height: 16.0),
               buildRow('Description :', controller.accountDescription),
               SizedBox(height: 8.0),
-              buildRow('Transaction No. :', controller.transactionNo),
+              buildRow('Zone. :', controller.ReceiptZoneNo),
+              SizedBox(height: 8.0),
+              buildRow('Ward No. :', controller.ReceiptWardNo),
               SizedBox(height: 8.0),
               buildRow('Holding No. :', controller.applicationNo),
               SizedBox(height: 8.0),
-              buildRow('Ward No. :', controller.ReceiptWardNo),
+              buildRow('Property No. :', controller.propertyNo),
               SizedBox(height: 8.0),
               buildRow('Tax Ow. Name :', controller.customerName),
               SizedBox(height: 8.0),
@@ -68,11 +70,25 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
                 ],
               ),
               SizedBox(height: 16.0),
+              buildRow('Transaction No. :', controller.transactionNo),
+              SizedBox(height: 8.0),
               buildRow('Paid Upto :', controller.paidUpto),
               SizedBox(height: 8.0),
-              buildRow('Demand Amount :', controller.demandAmount),
+              buildRow('Mode :', controller.paymentMode),
               SizedBox(height: 8.0),
-              buildRow('Payment Mode :', controller.paymentMode),
+              buildRow('Current Demand :', controller.demandAmount),
+              SizedBox(height: 8.0),
+              buildRow('Arrear :', controller.arrearAmount),
+              // Display penalty amounts if available
+              if (controller.penaltyAmounts.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 8.0),
+                    for (var penaltyAmount in controller.penaltyAmounts)
+                      buildRow('Penalty Amount:', penaltyAmount),
+                  ],
+                ),
               SizedBox(height: 8.0),
               buildRow('Bank Name :', controller.bankName),
               SizedBox(height: 8.0),
@@ -82,24 +98,7 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
               SizedBox(height: 8.0),
               buildRow('Cheque Date :', controller.chequeDate),
               SizedBox(height: 8.0),
-              buildRow('Amount Paid :', controller.totalPaidAmount),
-              SizedBox(height: 8.0),
-              // Display penalty amounts if available
-              if (controller.penaltyAmounts.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // SizedBox(height: 16.0),
-                    // Text(
-                    //   'Penalty Amounts:',
-                    //   style: TextStyle(fontWeight: FontWeight.bold),
-                    // ),
-                    SizedBox(height: 8.0),
-                    // Iterate through the penaltyAmounts list and display each amount
-                    for (var penaltyAmount in controller.penaltyAmounts)
-                      buildRow('Penalty Amount:', penaltyAmount),
-                  ],
-                ),
+              buildRow('Total Amount :', controller.totalPaidAmount),
               SizedBox(height: 8.0),
               buildRow('In Words :', controller.paidAmtInWords),
               SizedBox(height: 16.0),
@@ -109,7 +108,6 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
                   Text('****************************************'),
                 ],
               ),
-
               SizedBox(height: 16.0),
               buildRow('TC Name :', controller.tcName),
               SizedBox(height: 8.0),
@@ -139,12 +137,67 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
                 ),
               ),
               SizedBox(height: 40.0),
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     await generateAndSavePDF(context);
+              //   },
+              //   child: Text('Download Receipt as PDF'),
+              // ),
+              ElevatedButton(
+                onPressed: () async {
+                  await controller.getPaymentReceipt(controller.tranNo);
+                  controller.openPrintPOS();
+                },
+                child: Text("Print Receipt"),
+              ),
+               SizedBox(height: 40.0),
             ],
           ),
         ));
   }
 }
 
+Future<void> generateAndSavePDF(BuildContext context) async {
+  final pdf = pdfWidgets.Document();
+
+  // Add content to the PDF here
+  pdf.addPage(
+    pdfWidgets.Page(
+      build: (context) {
+        return pdfWidgets.Center(
+          child: pdfWidgets.Text('Hello, PDF!'),
+        );
+      },
+    ),
+  );
+
+  // Get the document directory on the device
+  final directory = await getApplicationDocumentsDirectory();
+  final path = '${directory.path}/receipt.pdf';
+
+  // Save the PDF file to the device's storage
+  final file = File(path);
+  await file.writeAsBytes(await pdf.save());
+
+  // Show a dialog or navigate to a new screen to allow the user to download the PDF
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Text('Download Receipt'),
+        content: Text('The receipt has been downloaded as a PDF.'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 
 Row buildRow(String label, String value) {
