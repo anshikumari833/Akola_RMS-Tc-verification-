@@ -10,8 +10,6 @@ class DrawerProfileProvider extends GetConnect {
 
   Future<APIResponse> UserDetailData(Map data) async {
     String url = Strings.base_url + '/api/my-profile-details';
-
-    // Construct the URL with query parameters
     final Uri uri = Uri.parse(url).replace(queryParameters: {
       "name": data["name"],
       "mobileNo": data["mobileNo"],
@@ -19,9 +17,7 @@ class DrawerProfileProvider extends GetConnect {
       "dateOfBirth": data["dateOfBirth"],
       "gender": data["gender"],
     });
-
     final response = await get(uri.toString(), headers: Strings.headers);
-
     return APIResponse.fromJson(
       {"data": response.body, "error": response.status.hasError},
     );
