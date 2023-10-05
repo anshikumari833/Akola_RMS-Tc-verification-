@@ -153,7 +153,7 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                         },
                       ),),
                       CustomDropdownFormField(
-                        headingText: 'Fileter By',
+                        headingText: 'Filter By',
                         items: [
                           DropdownMenuItem(
                             child: Text("Select"),

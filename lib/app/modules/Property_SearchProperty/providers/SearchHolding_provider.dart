@@ -70,11 +70,10 @@ class SearchHoldingProvider extends GetConnect {
   }
 
   //PAYMENT RECEIPT
-  Future<APIResponse> PropPaymentReceip(tran_no) async {
+  Future<APIResponse> PropPaymentReceip(tranId) async {
     String url = Strings.base_url + '/api/property/prop-payment-receipt';
-
       final response = await post(url, {
-        "tranNo":tran_no.toString(),
+        "tranId":tranId.toString(),
       }, headers: Strings.headers,);
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
@@ -85,6 +84,7 @@ class SearchHoldingProvider extends GetConnect {
     String url = Strings.base_url + '/api/property/offline-payment-holding';
       final response = await post(url, {
         "id": demand_PropertyId,
+        "deviceId": "01",
         "paymentMode": data["paymentMode"],
         "chequeDate": data["chequeDate"],
         "bankName": data["bankName"],

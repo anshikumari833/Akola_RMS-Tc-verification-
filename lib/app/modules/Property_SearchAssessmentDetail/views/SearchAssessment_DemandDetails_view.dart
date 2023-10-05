@@ -19,35 +19,73 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.blue[100],
-                      borderRadius: BorderRadius.circular(0),
-
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Text( " Total Pending Year - ",
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.indigoAccent,
-                            ),),
-                          Text( controller.tax_pendingYears.toString(),
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.indigoAccent,
-                            ),),
-                          SizedBox(width: 14),
-                        ],
-                      ),
-                    ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.calendar_month_outlined,color: Colors.grey,),
+                      Text( " Total Pending Year - ",
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.indigo,
+                        ),),
+                      Text( controller.tax_pendingYears.toString(),
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.indigo,
+                        ),),
+                      SizedBox(width: 14),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.attach_money_outlined,color: Colors.grey,),
+                      Text( " Total Amount - ",
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.pinkAccent,
+                        ),),
+                      SizedBox(width: 14),
+                      Text(controller.tax_payableAmount.toString(),
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.pinkAccent,
+                        ),),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      Icon(Icons.percent_outlined,color: Colors.grey,),
+                      Text( " Rebate Amount - ",
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.pinkAccent,
+                        ),),
+                      SizedBox(width: 14),
+                      Text( nullToNA(controller.tax_rebateAmount.toString()),
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.pinkAccent,
+                        ),),
+                    ],
                   ),
                 ),
                 SizedBox(height: 10,),
@@ -59,12 +97,13 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           color: Colors.amber.shade100,
-                          borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Column(
 
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -84,7 +123,7 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                               padding:  EdgeInsets.only(right: 8.0,left: 8.0),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -92,7 +131,7 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                                   columnSpacing: 15,
                                   columns: [
                                     DataColumn(label: buildDecoratedContainer(Text('Built-up Area(Sqmt.)'))),
-                                    DataColumn(label: buildDecoratedContainer(Text('   Alv    '))),
+                                    DataColumn(label: buildDecoratedContainer(Text('     Alv        '))),
                                     DataColumn(label: buildDecoratedContainer(Text('Maintenance %'))),
                                     DataColumn(label: buildDecoratedContainer(Text('Maintenance'))),
                                     DataColumn(label: buildDecoratedContainer (Text('Value After Maintenance'))),
@@ -135,11 +174,9 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                                         // DataCell(buildDecoratedContainer(Text(floorTax['cleanlinessTax']))),
                                         // DataCell(buildDecoratedContainer(Text(floorTax['treeTax']))),
                                         // DataCell(buildDecoratedContainer(Text(floorTax['isCommercial'].toString()))),
-
                                       ],
                                     );
                                   }).toList(),
-
                                 ),
                               ),
                             ),
@@ -157,12 +194,13 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           color: Colors.lightGreen.shade100,
-                          borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Column(
 
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -182,7 +220,7 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                               padding:  EdgeInsets.only(right: 8.0,left: 8.0),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -238,12 +276,12 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
                           color: Colors.cyan.shade100,
-                          borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         child: Column(
-
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -264,7 +302,7 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                               padding:  EdgeInsets.only(right: 8.0,left: 8.0),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -308,72 +346,7 @@ class DemandDetailsView extends GetView<SearchAssessmentDetailController> {
                       ),],
                   ),
                 ),
-                SizedBox(height: 10,),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.pink[50],
-                      borderRadius: BorderRadius.circular(0),
-
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Text( " Total Amount - ",
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.pinkAccent,
-                            ),),
-                          SizedBox(width: 14),
-                          Text(controller.tax_payableAmount.toString(),
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.pinkAccent,
-                            ),),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.pink[50],
-                      borderRadius: BorderRadius.circular(0),
-
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Text( " Rebate Amount - ",
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.pinkAccent,
-                            ),),
-                          SizedBox(width: 14),
-                          Text( nullToNA(controller.tax_rebateAmount.toString()),
-                            style: GoogleFonts.publicSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.pinkAccent,
-                            ),),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                SizedBox(height: 30,),
               ],
             ),
           ],

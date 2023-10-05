@@ -245,7 +245,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         shouldHandlePaymentResponse.value = true;
         // Determine the amount to be paid based on the checkbox state
         double amountToPay = isCheckboxChecked.value
-            ? double.parse(arrear.value)
+            ? double.parse(arrearPayableAmt.value)
             : double.parse(payableAmount.value);
 
         // Convert amount to cents format
@@ -332,7 +332,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         shouldHandlePaymentResponse.value = true;
         // Determine the amount to be paid based on the checkbox state
         double amountToPay = isCheckboxChecked.value
-            ? double.parse(arrear.value)
+            ? double.parse(arrearPayableAmt.value)
             : double.parse(payableAmount.value);
 
         // Convert amount to cents format
@@ -419,7 +419,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 "IsCenterAligned": true,
                 "DataToPrint": "Akola Municipal Corporation\n"
                     "Maharashtra\n"
-                    "( Tax Receipt )\n"
+                    "( Payment Receipt )\n"
                     " $paidFrom\n "
               },
               {
@@ -428,7 +428,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 "DataToPrint": "Date: $transactionDate\n"
                     "Time: $transactionTime\n"
                     "   ********************\n"
-                    "Description: $accountDescription\n"
+                    "Desc: $accountDescription\n"
                     "Zone: $ReceiptZoneNo\n"
                     "Ward No.: $ReceiptWardNo\n"
                     "Holding No.: $applicationNo\n"
@@ -444,14 +444,16 @@ class PropertyPayPropertyTaxController extends GetxController {
                     "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque No: $chequeNo\n"}"
                     "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque Date: $chequeDate\n"}"
                 // "${generateConditionalLines(paymentMode)}"
-                    "Current Demand: $demandAmount\n"
-                    "Arrear : $arrearAmount\n"
-                    "Total Amount : $totalPaidAmount\n"
+                //     "Demand: $demandAmount\n"
+                //     "Arrear : $arrearAmount\n"
+                //     "Total Amount Paid: $totalPaidAmount\n"
+                    "Total Amount Paid: $totalPaidAmount\n"
                     "In Words: ${(paidAmtInWords)} only\n"
                     "   ********************\n"
                     "TC Name: $tcName\n"
                     "Mobile No: $tcMobile\n"
               },
+
               {
                 "PrintDataType": "0",
                 "PrinterWidth":24,
@@ -644,6 +646,7 @@ class PropertyPayPropertyTaxController extends GetxController {
   var demandList = <Map<String, dynamic>>[].obs;
   var grandTaxes = <String, dynamic>{}.obs;
   var arrear = ''.obs;
+  var arrearPayableAmt = ''.obs;
   var payableAmount = ''.obs;
   var monthlyPenaltyAmount = '';
   var totalPenaltyIntrest = '';
@@ -683,6 +686,7 @@ class PropertyPayPropertyTaxController extends GetxController {
      demandList.value = List<Map<String, dynamic>>.from(responseData['demandList']);
      grandTaxes.value = Map<String, dynamic>.from(responseData['grandTaxes']);
       arrear.value = nullToNA(responseData['arrear']);
+      arrearPayableAmt.value = nullToNA(responseData['arrearPayableAmt']);
       payableAmount.value = nullToNA(responseData['payableAmt'].toString());
       currentDemand.value = nullToNA(responseData['currentDemand'].toString());
       monthlyPenaltyAmount = nullToNA(responseData['monthlyPenalty'].toString());
@@ -761,21 +765,26 @@ class PropertyPayPropertyTaxController extends GetxController {
   var tcMobile = "";
   var website = "";
   var tollFreeNo = "";
-  List<String> penaltyAmounts = [];
-
-  Future<void> getPaymentReceipt(tran_no) async {
-    APIResponse response = await SearchHoldingProvider().PropPaymentReceip(tran_no);
+  List<Map<String, dynamic>> penaltyRebatesList = [];
+  List<Widget> penaltyRebateWidgets = [];
+  Future<void> getPaymentReceipt(tranId) async {
+    APIResponse response = await SearchHoldingProvider().PropPaymentReceip(tranId);
     if (response.error == false) {
       var data = response.data;
       // Extract penalty amounts and store them in the controller's list
-      if (data['penaltyRebates'] is List) {
-        penaltyAmounts.clear();
-        for (var entry in data['penaltyRebates']) {
-          if (entry is Map) {
-            String penaltyAmount = entry['amount'].toString();
-          penaltyAmounts.add(penaltyAmount);
-          }
-        }
+      // var penaltyRebates = data['penaltyRebates'];
+      // if (penaltyRebates is List) {
+      //   penaltyRebatesList = List<Map<String, dynamic>>.from(penaltyRebates);
+      // }
+      // Check if penaltyRebatesList is not empty and build penalty rebate widgets
+      for (final penaltyRebate in penaltyRebatesList) {
+        final headName = penaltyRebate['head_name'];
+        final amount = penaltyRebate['amount'];
+        final penaltyRebateWidget = ListTile(
+          title: Text('$headName:'),
+          subtitle: Text('Amount: $amount'),
+        );
+        penaltyRebateWidgets.add(penaltyRebateWidget);
       }
       departmentSection = data['receiptDtls']['departmentSection'].toString();
       accountDescription = data['receiptDtls']['accountDescription'].toString();
@@ -822,6 +831,7 @@ class PropertyPayPropertyTaxController extends GetxController {
 //PAYMENT
   var demand_PaymentMode = "".obs;
   var tranNo = "";
+  var tranId = "";
   late TextEditingController bankNameController;
   late TextEditingController branchNameController;
   late TextEditingController chequeNoController;
@@ -872,7 +882,7 @@ class PropertyPayPropertyTaxController extends GetxController {
 
   //PAYMENT (CASH,CHEQUE,DD)
   Future<void> DemandTaxPayment({String type = ''}) async {
-    showLoadingDialog(isPaymentInProgress.value);
+    showLoadingDialog(true);
     isPaymentInProgress.value = true;
     var file1;
    if(type != 'cash') {
@@ -897,12 +907,18 @@ class PropertyPayPropertyTaxController extends GetxController {
       });
       // // Close the loading dialog here
       // Get.back();
-        showLoadingDialog(isPaymentInProgress.value);
+        showLoadingDialog(false);
       if (result.error == false) {
         paymentSuccessful.value = true;
         var data = result.data;
         tranNo = data['TransactionNo'].toString();
+        tranId = data['transactionId'].toString();
+        // Clear the temporary image file
+        if (file1 != null && await file1.exists()) {
+          await file1.delete();
+        }
         await getDemandDetail(demand_PropertyId, "demand");
+        showLoadingDialog(false);
         Get.dialog(
           barrierDismissible: false,
           AlertDialog(
@@ -932,12 +948,13 @@ class PropertyPayPropertyTaxController extends GetxController {
                       clearAllFields();
                       Get.back();
                       Get.back();
+                      Get.back();
                     },
                     child: Text("Close"),
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await getPaymentReceipt(tranNo);
+                      await getPaymentReceipt(tranId);
                       // Get.to(PrintReceipt(),
                       //     transition: Transition.rightToLeft,
                       //     duration: Duration(seconds: 1),
@@ -963,6 +980,7 @@ class PropertyPayPropertyTaxController extends GetxController {
           colorText: Colors.white,
         );
       } else {
+        showLoadingDialog(false);
         Get.snackbar(
           'Oops!!!',
           result.errorMessage,
@@ -1023,7 +1041,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await getPaymentReceipt(tranNo);
+                    await getPaymentReceipt(tranId);
                     openPrintPOS();
                   },
                   child: Text("Print Receipt"),
@@ -1096,7 +1114,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await getPaymentReceipt(tranNo);
+                    await getPaymentReceipt(tranId);
                     openPrintPOS();
                   },
                   child: Text("Print Receipt"),
@@ -1204,7 +1222,6 @@ class PropertyPayPropertyTaxController extends GetxController {
           ),
         ),
       );}
-
       Get.snackbar(
         '😁😁',
         result.errorMessage,

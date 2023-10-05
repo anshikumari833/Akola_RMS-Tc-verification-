@@ -114,12 +114,17 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                                   padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     color: Colors.deepOrange.shade100,
-                                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child: Column(
+                                    
                                     children: [
                                       Row(
                                         children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: Icon(    Icons.auto_graph_outlined),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
@@ -138,7 +143,7 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                                         padding:  EdgeInsets.only(right: 8.0,left: 8.0),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
                                         ),
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
@@ -197,12 +202,16 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                                   padding: const EdgeInsets.all(2),
                                   decoration: BoxDecoration(
                                     color: Colors.amber.shade100,
-                                    borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                    borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child: Column(
                                     children: [
                                       Row(
                                         children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 10),
+                                            child: Icon(    Icons.auto_graph_outlined),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
@@ -222,7 +231,7 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                                         padding:  EdgeInsets.only(right: 8.0,left: 8.0),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
                                         ),
                                         child: SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
@@ -291,125 +300,134 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.lightGreen[100],
-                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.green[300],
+                                borderRadius: BorderRadius.circular(20),
 
                               ),
-                              child: Column(
-                                children: [
-                                  SizedBox(height:5,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      children: [
-                                        Text( "  Total Arrear Amount - ",
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                        SizedBox(width: 14),
-                                        Text(controller.arrear.toString(),
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                      ],
-                                    ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.lightGreen[100],
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  // Padding(
-                                  //   padding: const EdgeInsets.all(10.0),
-                                  //   child: Row(
-                                  //     children: [
-                                  //       Text( "  Monthly Penalty - ",
-                                  //         style: GoogleFonts.publicSans(
-                                  //           fontWeight: FontWeight.w600,
-                                  //           fontSize: 15,
-                                  //           fontStyle: FontStyle.normal,
-                                  //           color: Colors.black,
-                                  //         ),),
-                                  //       SizedBox(width: 14),
-                                  //       Text(controller.monthlyPenaltyAmount.toString(),
-                                  //         style: GoogleFonts.publicSans(
-                                  //           fontWeight: FontWeight.w600,
-                                  //           fontSize: 15,
-                                  //           fontStyle: FontStyle.normal,
-                                  //           color: Colors.black,
-                                  //         ),),
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      children: [
-                                        Text( "  Total Penalty Intrest - ",
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                        SizedBox(width: 14),
-                                        Text(controller.totalPenaltyIntrest.toString(),
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                      ],
-                                    ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height:5,),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Text( " 🔸 Total Arrear Amount - ",
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                            SizedBox(width: 14),
+                                            Text(controller.arrear.toString(),
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                          ],
+                                        ),
+                                      ),
+                                      // Padding(
+                                      //   padding: const EdgeInsets.all(10.0),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       Text( "  Monthly Penalty - ",
+                                      //         style: GoogleFonts.publicSans(
+                                      //           fontWeight: FontWeight.w600,
+                                      //           fontSize: 15,
+                                      //           fontStyle: FontStyle.normal,
+                                      //           color: Colors.black,
+                                      //         ),),
+                                      //       SizedBox(width: 14),
+                                      //       Text(controller.monthlyPenaltyAmount.toString(),
+                                      //         style: GoogleFonts.publicSans(
+                                      //           fontWeight: FontWeight.w600,
+                                      //           fontSize: 15,
+                                      //           fontStyle: FontStyle.normal,
+                                      //           color: Colors.black,
+                                      //         ),),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Text( " 🔸 Total Penalty Interest - ",
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                            SizedBox(width: 14),
+                                            Text(controller.totalPenaltyIntrest.toString(),
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Text( " 🔸 Current Demand - ",
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                            SizedBox(width: 14),
+                                            Text(controller.currentDemand.toString(),
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Row(
+                                          children: [
+                                            Text( " 🔸 Total Amount - ",
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                            SizedBox(width: 14),
+                                            Text(controller.payableAmount.toString(),
+                                              style: GoogleFonts.publicSans(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 15,
+                                                fontStyle: FontStyle.normal,
+                                                color: Colors.black,
+                                              ),),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height:5,),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      children: [
-                                        Text( "  Current Demand - ",
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                        SizedBox(width: 14),
-                                        Text(controller.currentDemand.toString(),
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(
-                                      children: [
-                                        Text( "  Total Amount - ",
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                        SizedBox(width: 14),
-                                        Text(controller.payableAmount.toString(),
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(height:5,),
-                                ],
+                                ),
                               ),
                             ),
                           ),
@@ -435,572 +453,671 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
 
                           //PAYMENT FIELDS
                           Divider(),
-                          Obx(() => Container(
-                            margin: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[50],
-                              borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 8,),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.info_outlined, color: Colors.red,size: 23,),
-                                      Text(
-                                        ' Please Select Payment Option',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 16,
-                                          fontStyle: FontStyle.normal,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5,),
-                                  if(controller.arrear.toString() != "0.00" )
-                                    Obx(() =>  Row(
-                                      children: [
-                                        Checkbox(
-                                          onChanged: (value) {
-                                            // Update the checkbox state when it's clicked
-                                            controller.isCheckboxChecked.value = value ?? false;
-                                          },
-                                          value: controller.isCheckboxChecked.value,
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            'Please Select if you want to pay only arrear amount',
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 14,
-                                              fontStyle: FontStyle.normal,
-                                              // fontWeight: FontWeight.,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                                  Visibility(
-                                    visible: (
-                                        controller.isCheckboxChecked.value
+                          Obx(() =>
+                              Container(
+                                margin: EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[50],
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
                                     ),
                                     child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Row(
-                                        children: [
-                                          Flexible(
-                                            child: Text(
-                                              "Total Arrear Amount to be paid is ${controller.arrear.toString()}",
-                                              style: GoogleFonts.publicSans(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15,
-                                                fontStyle: FontStyle.normal,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-
-                                  SizedBox(height:10,),
-                                  //SELECT PAYMENT METHOD
-                                  CustomDropdownFormField(
-                                    headingText: 'Payment Method',
-                                    items: [
-                                      DropdownMenuItem(
-                                        child: Text("Cash"),
-                                        value: "CASH",
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text("Cheque"),
-                                        value: "CHEQUE",
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text("DD"),
-                                        value: "DD",
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text("NEFT"),
-                                        value: "NEFT",
-                                      ),
-                                      DropdownMenuItem(
-                                        child: Text("ONILNE"),
-                                        value: "ONLINE",
-                                      ),
-                                    ],
-                                    hintText: 'Select an option',
-                                    validator: (value) {
-                                      if (value == null) {
-                                        return 'Please select an option';
-                                      }
-                                      return null;
-                                    },
-                                    onChanged: (DemandPayment) {
-                                      controller.demand_PaymentMode.value = DemandPayment.toString();
-                                    },
-                                  ),
-                                  Visibility(
-                                  visible: controller.demand_PaymentMode.value == '',
-                                  child: SizedBox(height: 30),
-                                  ),
-                              //IN CASE OF CASH PAYEMNT
-                                  if (controller.demand_PaymentMode.value == 'CASH')
-                                    Container(
+                                      padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         children: [
-                                          SizedBox(height:20,),
-                                          Container(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      onPressed: controller.isPaymentInProgress.value ? null : () => controller.DemandTaxPayment(type : 'cash'),
-                                                      child: controller.isPaymentInProgress.value
-                                                          ? Text('Processing Payment...')
-                                                          : Obx(() {
-                                                        if (controller.isCheckboxChecked.value) {
-                                                          // Show the arrear amount when the checkbox is selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.arrear.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        } else {
-                                                          // Show the payable amount when the checkbox is not selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.payableAmount.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        }
-                                                      }),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  //IN CASE OF CHEQUE/DD
-                                  if (controller.demand_PaymentMode.value == 'CHEQUE'||controller.demand_PaymentMode.value == 'DD')
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          //BANK NAME
-                                          CustomTextField(
-                                            controller: controller.bankNameController,
-                                            headingText: "Bank Name", hintText: "Enter Bank Name",validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'This field is required';
-                                            }
-                                            return "";
-                                          },),
-                                          //BRANCH NAME
-                                          CustomTextField(
-                                            controller: controller.branchNameController,
-                                            headingText: "Branch Name", hintText: "Enter Branch Name",validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'This field is required';
-                                            }
-                                            return "";
-                                          },),
-                                          //CHEQUE /DD NO
-                                          CustomTextField(
-                                            controller: controller.chequeNoController,
-                                            headingText: "Cheque/DD No", hintText: "Enter Cheque/DD No",validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'This field is required';
-                                            }
-                                            return "";
-                                          },),
-                                          //CHEQUE DD/DATE
-                                          CustomDateTimeField(
-                                            headingText: 'Cheque/DD Date ',
-                                            controller: controller.chequeDateController,
-                                            decoration: InputDecoration(
-                                              labelText: 'Date',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            format: DateFormat("yyyy-MM-dd"),
-                                            onShowPicker: (context, currentValue) {
-                                              return showDatePicker(
-                                                  context: context,
-                                                  firstDate: DateTime(1900),
-                                                  initialDate: currentValue ?? DateTime.now(),
-                                                  lastDate: DateTime(2100));
-                                            },
-                                            validator: (value) {
-                                              if (value == null) {
-                                                return 'Please select a date and time';
-                                              }
-                                              // Add more validation if needed
-                                              return null;
-                                            },
-                                          ),
-                                          SizedBox(height: 30),
-                                          Obx(() => controller.selectedImage1Path == ''
-                                              ? Padding(
-                                            padding: const EdgeInsets.only(top: 20.0),
-                                            child: Center(
-                                              child: Text(
-                                                'Select image from camera/gallery',
-                                                style: TextStyle(fontSize: 10, color: Colors.black),
-                                              ),
-                                            ),
-                                          )
-                                              : Column(
+                                          SizedBox(height: 8,),
+                                          Row(
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Center(
-                                                  child: Image.file(
-                                                    File(controller.selectedImage1Path.value),
+                                              Icon(Icons.info_outlined, color: Colors.red,size: 23,),
+                                              Text(
+                                                ' Please Select Payment Option',
+                                                style: GoogleFonts.publicSans(
+                                                  fontSize: 16,
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+                                          if(controller.arrearPayableAmt.toString() != "0.00" )
+                                            Obx(() =>  Row(
+                                              children: [
+                                                Checkbox(
+                                                  onChanged: (value) {
+                                                    // Update the checkbox state when it's clicked
+                                                    controller.isCheckboxChecked.value = value ?? false;
+                                                  },
+                                                  value: controller.isCheckboxChecked.value,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    'Please Select if you want to pay only arrear amount',
+                                                    style: GoogleFonts.publicSans(
+                                                      fontSize: 14,
+                                                      fontStyle: FontStyle.normal,
+                                                      // fontWeight: FontWeight.,
+                                                      color: Colors.red,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              Obx(() => Center(
-                                                child: Text(
-                                                  controller.selectedImage1Size.value,
-                                                  style: TextStyle(fontSize: 12, color: Colors.black),
-                                                ),
-                                              )),
-                                            ],
-                                          )),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              MaterialButton(
-                                                color: Colors.blueGrey.shade300,
-                                                child: Text(
-                                                  "Camera",
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  controller.getImage1(ImageSource.camera);
-                                                },
-                                              ),
-                                              MaterialButton(
-                                                color: Colors.teal.shade300,
-                                                child: Text(
-                                                  "Device",
-                                                  style: TextStyle(color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  controller.getImage1(ImageSource.gallery);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height:30,),
-                                          Container(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        controller.DemandTaxPayment();
-                                                      },
-                                                      child: Obx(() {
-                                                        if (controller.isCheckboxChecked.value) {
-                                                          // arrear amount to be shown  when the checkbox is selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.arrear.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        } else {
-                                                          // payable amount to be shown when the checkbox is not selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.payableAmount.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        }
-                                                      }),
-                                                    )
-                                                  ],
-                                                ),
                                               ],
+                                            )),
+                                          Visibility(
+                                            visible: (
+                                                controller.isCheckboxChecked.value
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10.0),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: Text(
+                                                          "( Arrear Amount + Penalty Interest )",
+                                                          style: GoogleFonts.publicSans(
+                                                            fontWeight: FontWeight.w400,
+                                                            fontSize: 12,
+                                                            fontStyle: FontStyle.normal,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height: 2,),
+                                                  Row(
+                                                    children: [
+                                                      Flexible(
+                                                        child: Text(
+                                                          "Total Arrear Amount to be paid is ${controller.arrearPayableAmt.toString()}",
+                                                          style: GoogleFonts.publicSans(
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 15,
+                                                            fontStyle: FontStyle.normal,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                          SizedBox(height:30,),
-                                        ],
-                                      ),
-                                    ),
-                                  //IN CASE OF NEFT
-                                  if (controller.demand_PaymentMode.value == 'NEFT')
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          //CHEQUE DD/DATE
-                                          CustomDateTimeField(
-                                            headingText: 'Date ',
-                                            controller: controller.chequeDateController,
-                                            decoration: InputDecoration(
-                                              labelText: 'Date',
-                                              border: OutlineInputBorder(),
-                                            ),
-                                            format: DateFormat("yyyy-MM-dd"),
-                                            onShowPicker: (context, currentValue) {
-                                              return showDatePicker(
-                                                  context: context,
-                                                  firstDate: DateTime(1900),
-                                                  initialDate: currentValue ?? DateTime.now(),
-                                                  lastDate: DateTime(2100));
-                                            },
+
+                                          SizedBox(height:10,),
+                                          //SELECT PAYMENT METHOD
+                                          CustomDropdownFormField(
+                                            headingText: 'Payment Method',
+                                            items: [
+                                              DropdownMenuItem(
+                                                child: Text("Cash"),
+                                                value: "CASH",
+                                              ),
+                                              DropdownMenuItem(
+                                                child: Text("Cheque"),
+                                                value: "CHEQUE",
+                                              ),
+                                              DropdownMenuItem(
+                                                child: Text("DD"),
+                                                value: "DD",
+                                              ),
+                                              DropdownMenuItem(
+                                                child: Text("NEFT"),
+                                                value: "NEFT",
+                                              ),
+                                              DropdownMenuItem(
+                                                child: Text("ONILNE"),
+                                                value: "ONLINE",
+                                              ),
+                                            ],
+                                            hintText: 'Select an option',
                                             validator: (value) {
                                               if (value == null) {
-                                                return 'Please select a date and time';
+                                                return 'Please select an option';
                                               }
-                                              // Add more validation if needed
                                               return null;
                                             },
+                                            onChanged: (DemandPayment) {
+                                              controller.demand_PaymentMode.value = DemandPayment.toString();
+                                            },
                                           ),
-                                          //
-                                          CustomTextField(
-                                            controller: controller.chequeNoController,
-                                            headingText: "Trans Ref No/UTR No", hintText: "Enter UTR No",validator: (value) {
-                                            if (value == null || value.isEmpty) {
-                                              return 'This field is required';
-                                            }
-                                            return "";
-                                          },),
-                                          SizedBox(height:20,),
-                                          Container(
-                                            padding: const EdgeInsets.all(6),
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        controller.DemandTaxPayment();
-                                                      },
-                                                      child: Obx(() {
-                                                        if (controller.isCheckboxChecked.value) {
-                                                          // arrear amount to be shown  when the checkbox is selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.arrear.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        } else {
-                                                          // payable amount to be shown when the checkbox is not selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('Pay Now: '),
-                                                              Text(
-                                                                controller.payableAmount.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        }
-                                                      }),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                          Visibility(
+                                            visible: controller.demand_PaymentMode.value == '',
+                                            child: SizedBox(height: 30),
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  //IN CASE OF ONLINE PAYMENT (PINELAB)
-                                  Visibility(
-                                    visible: (
-                                        controller.demand_PaymentMode.value == 'ONLINE'
-                                    ),
-                                    child:   Container(
-                                      padding: const EdgeInsets.all(0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(height: 20,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              //UPI BUTTON
-                                              ElevatedButton(
-                                                onPressed: () async {
-                                                  await controller.DemandOnlineUpiPayment();
-                                                  // await controller.openPineUPIPOS();
-                                                },
-                                                child: Obx(() {
-                                                  if (controller.isCheckboxChecked.value) {
-                                                    // arrear amount to be shown  when the checkbox is selected
-                                                    return Row(
+                                          //IN CASE OF CASH PAYEMNT
+                                          if (controller.demand_PaymentMode.value == 'CASH')
+                                            Container(
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(height:20,),
+                                                  Container(
+                                                    padding: const EdgeInsets.all(6),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        Text('  UPI  : '),
-                                                        Text(
-                                                          controller.arrear.toString(),
-                                                          style: GoogleFonts.publicSans(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 15,
-                                                            fontStyle: FontStyle.normal,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  } else {
-                                                    // Show the payable amount when the checkbox is not selected
-                                                    return Row(
-                                                      children: [
-                                                        Text('  UPI  : '),
-                                                        Text(
-                                                          controller.payableAmount.toString(),
-                                                          style: GoogleFonts.publicSans(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 15,
-                                                            fontStyle: FontStyle.normal,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }
-                                                }),
-                                              ),
-                                              //CARD BUTTON
-                                              ElevatedButton(
-                                                onPressed: () async {
-                                                  await controller.DemandOnlineCardPayment();
-                                                  // await controller.openPineCardPOS();
-                                                },
-                                                child: Obx(() {
-                                                  if (controller.isCheckboxChecked.value) {
-                                                    // arrear amount to be shown  when the checkbox is selected
-                                                    return Row(
-                                                      children: [
-                                                        Text(' CARD  :   '),
-                                                        Text(
-                                                          controller.arrear.toString(),
-                                                          style: GoogleFonts.publicSans(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 15,
-                                                            fontStyle: FontStyle.normal,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  } else {
-                                                    // payable amount to be shown when the checkbox is not selected
-                                                    return Row(
-                                                      children: [
-                                                        Text(' CARD  :   '),
-                                                        Text(
-                                                          controller.payableAmount.toString(),
-                                                          style: GoogleFonts.publicSans(
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 15,
-                                                            fontStyle: FontStyle.normal,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  }
-                                                }),
-                                              ),
-                                            ],
-                                          ),
-                                          if(controller.pineLabStatus.value == true )
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                ElevatedButton(onPressed: () async {await controller.getUpiStatus();},
-                                                    child: Row(
-                                                      children: [
-                                                        Text(' GET STATUS   ',style: GoogleFonts.publicSans(
-                                                          fontWeight: FontWeight.w600,
-                                                          fontSize: 15,
-                                                          fontStyle: FontStyle.normal,
-                                                          color: Colors.white,
-                                                        ),),
-                                                      ],
-                                                    )),
-                                              ],
-                                            ),
-                                        ],
-                                      ),
-                                    ),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            // ElevatedButton(
+                                                            //   onPressed: controller.isPaymentInProgress.value ? null : () => controller.DemandTaxPayment(type : 'cash'),
+                                                            //   child: controller.isPaymentInProgress.value
+                                                            //       ? Text('Processing Payment...')
+                                                            //       : Obx(() {
+                                                            //     if (controller.isCheckboxChecked.value) {
+                                                            //       // Show the arrear amount when the checkbox is selected
+                                                            //       return Row(
+                                                            //         children: [
+                                                            //           Text('Pay Now: '),
+                                                            //           Text(
+                                                            //             controller.arrearPayableAmt.toString(),
+                                                            //             style: GoogleFonts.publicSans(
+                                                            //               fontWeight: FontWeight.w600,
+                                                            //               fontSize: 15,
+                                                            //               fontStyle: FontStyle.normal,
+                                                            //               color: Colors.white,
+                                                            //             ),
+                                                            //           ),
+                                                            //         ],
+                                                            //       );
+                                                            //     } else {
+                                                            //       // Show the payable amount when the checkbox is not selected
+                                                            //       return Row(
+                                                            //         children: [
+                                                            //           Text('Pay Now: '),
+                                                            //           Text(
+                                                            //             controller.payableAmount.toString(),
+                                                            //             style: GoogleFonts.publicSans(
+                                                            //               fontWeight: FontWeight.w600,
+                                                            //               fontSize: 15,
+                                                            //               fontStyle: FontStyle.normal,
+                                                            //               color: Colors.white,
+                                                            //             ),
+                                                            //           ),
+                                                            //         ],
+                                                            //       );
+                                                            //     }
+                                                            //   }),
+                                                            // ),
+                                                            ElevatedButton(
+                                                              onPressed: controller.isPaymentInProgress.value
+                                                                  ? null
+                                                                  : () {
+                                                                // Show a confirmation dialog
+                                                                showDialog(
+                                                                  context: context, // Replace 'context' with the appropriate context
+                                                                  builder: (BuildContext context) {
+                                                                    return AlertDialog(
+                                                                      title: Text("Confirmation"),
+                                                                      content: Text("Are you sure you want to proceed with the payment?"),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed: () {
+                                                                            Navigator.of(context).pop(); // Close the dialog
+                                                                          },
+                                                                          child: Text("Cancel"),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed: () {
+                                                                            Navigator.of(context).pop(); // Close the dialog
+                                                                            controller.DemandTaxPayment(type: 'cash');
+                                                                          },
+                                                                          child: Text("Confirm"),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: controller.isPaymentInProgress.value
+                                                                  ? Text('Processing Payment...')
+                                                                  : Obx(() {
+                                                                if (controller.isCheckboxChecked.value) {
+                                                                  // Show the arrear amount when the checkbox is selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.arrearPayableAmt.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                } else {
+                                                                  // Show the payable amount when the checkbox is not selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.payableAmount.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                }
+                                                              }),
+                                                            )
 
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          //IN CASE OF CHEQUE/DD
+                                          if (controller.demand_PaymentMode.value == 'CHEQUE'||controller.demand_PaymentMode.value == 'DD')
+                                            Container(
+                                              child: Column(
+                                                children: [
+                                                  //BANK NAME
+                                                  CustomTextField(
+                                                    controller: controller.bankNameController,
+                                                    headingText: "Bank Name", hintText: "Enter Bank Name",validator: (value) {
+                                                    if (value == null || value.isEmpty) {
+                                                      return 'This field is required';
+                                                    }
+                                                    return "";
+                                                  },),
+                                                  //BRANCH NAME
+                                                  CustomTextField(
+                                                    controller: controller.branchNameController,
+                                                    headingText: "Branch Name", hintText: "Enter Branch Name",validator: (value) {
+                                                    if (value == null || value.isEmpty) {
+                                                      return 'This field is required';
+                                                    }
+                                                    return "";
+                                                  },),
+                                                  //CHEQUE /DD NO
+                                                  CustomTextField(
+                                                    controller: controller.chequeNoController,
+                                                    headingText: "Cheque/DD No", hintText: "Enter Cheque/DD No",validator: (value) {
+                                                    if (value == null || value.isEmpty) {
+                                                      return 'This field is required';
+                                                    }
+                                                    return "";
+                                                  },),
+                                                  //CHEQUE DD/DATE
+                                                  CustomDateTimeField(
+                                                    headingText: 'Cheque/DD Date ',
+                                                    controller: controller.chequeDateController,
+                                                    decoration: InputDecoration(
+                                                      labelText: 'Date',
+                                                      border: OutlineInputBorder(),
+                                                    ),
+                                                    format: DateFormat("yyyy-MM-dd"),
+                                                    onShowPicker: (context, currentValue) {
+                                                      return showDatePicker(
+                                                          context: context,
+                                                          firstDate: DateTime(1900),
+                                                          initialDate: currentValue ?? DateTime.now(),
+                                                          lastDate: DateTime(2100));
+                                                    },
+                                                    validator: (value) {
+                                                      if (value == null) {
+                                                        return 'Please select a date and time';
+                                                      }
+                                                      // Add more validation if needed
+                                                      return null;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 30),
+                                                  Obx(() => controller.selectedImage1Path == ''
+                                                      ? Padding(
+                                                    padding: const EdgeInsets.only(top: 20.0),
+                                                    child: Center(
+                                                      child: Text(
+                                                        'Select image from camera/gallery',
+                                                        style: TextStyle(fontSize: 10, color: Colors.black),
+                                                      ),
+                                                    ),
+                                                  )
+                                                      : Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding: const EdgeInsets.all(8.0),
+                                                        child: Center(
+                                                          child: Image.file(
+                                                            File(controller.selectedImage1Path.value),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Obx(() => Center(
+                                                        child: Text(
+                                                          controller.selectedImage1Size.value,
+                                                          style: TextStyle(fontSize: 12, color: Colors.black),
+                                                        ),
+                                                      )),
+                                                    ],
+                                                  )),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: <Widget>[
+                                                      MaterialButton(
+                                                        color: Colors.blueGrey.shade300,
+                                                        child: Text(
+                                                          "Camera",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          controller.getImage1(ImageSource.camera);
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        color: Colors.teal.shade300,
+                                                        child: Text(
+                                                          "Device",
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          controller.getImage1(ImageSource.gallery);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(height:30,),
+                                                  Container(
+                                                    padding: const EdgeInsets.all(6),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                controller.DemandTaxPayment();
+                                                              },
+                                                              child: Obx(() {
+                                                                if (controller.isCheckboxChecked.value) {
+                                                                  // arrear amount to be shown  when the checkbox is selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.arrearPayableAmt.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                } else {
+                                                                  // payable amount to be shown when the checkbox is not selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.payableAmount.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                }
+                                                              }),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height:30,),
+                                                ],
+                                              ),
+                                            ),
+                                          //IN CASE OF NEFT
+                                          if (controller.demand_PaymentMode.value == 'NEFT')
+                                            Container(
+                                              child: Column(
+                                                children: [
+                                                  //CHEQUE DD/DATE
+                                                  CustomDateTimeField(
+                                                    headingText: 'Date ',
+                                                    controller: controller.chequeDateController,
+                                                    decoration: InputDecoration(
+                                                      labelText: 'Date',
+                                                      border: OutlineInputBorder(),
+                                                    ),
+                                                    format: DateFormat("yyyy-MM-dd"),
+                                                    onShowPicker: (context, currentValue) {
+                                                      return showDatePicker(
+                                                          context: context,
+                                                          firstDate: DateTime(1900),
+                                                          initialDate: currentValue ?? DateTime.now(),
+                                                          lastDate: DateTime(2100));
+                                                    },
+                                                    validator: (value) {
+                                                      if (value == null) {
+                                                        return 'Please select a date and time';
+                                                      }
+                                                      // Add more validation if needed
+                                                      return null;
+                                                    },
+                                                  ),
+                                                  //
+                                                  CustomTextField(
+                                                    controller: controller.chequeNoController,
+                                                    headingText: "Trans Ref No/UTR No", hintText: "Enter UTR No",validator: (value) {
+                                                    if (value == null || value.isEmpty) {
+                                                      return 'This field is required';
+                                                    }
+                                                    return "";
+                                                  },),
+                                                  SizedBox(height:20,),
+                                                  Container(
+                                                    padding: const EdgeInsets.all(6),
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                controller.DemandTaxPayment();
+                                                              },
+                                                              child: Obx(() {
+                                                                if (controller.isCheckboxChecked.value) {
+                                                                  // arrear amount to be shown  when the checkbox is selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.arrearPayableAmt.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                } else {
+                                                                  // payable amount to be shown when the checkbox is not selected
+                                                                  return Row(
+                                                                    children: [
+                                                                      Text('Pay Now: '),
+                                                                      Text(
+                                                                        controller.payableAmount.toString(),
+                                                                        style: GoogleFonts.publicSans(
+                                                                          fontWeight: FontWeight.w600,
+                                                                          fontSize: 15,
+                                                                          fontStyle: FontStyle.normal,
+                                                                          color: Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  );
+                                                                }
+                                                              }),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          //IN CASE OF ONLINE PAYMENT (PINELAB)
+                                          Visibility(
+                                            visible: (
+                                                controller.demand_PaymentMode.value == 'ONLINE'
+                                            ),
+                                            child:   Container(
+                                              padding: const EdgeInsets.all(0),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(height: 20,),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      //UPI BUTTON
+                                                      ElevatedButton(
+                                                        onPressed: () async {
+                                                          await controller.DemandOnlineUpiPayment();
+                                                          // await controller.openPineUPIPOS();
+                                                        },
+                                                        child: Obx(() {
+                                                          if (controller.isCheckboxChecked.value) {
+                                                            // arrear amount to be shown  when the checkbox is selected
+                                                            return Row(
+                                                              children: [
+                                                                Text('  UPI  : '),
+                                                                Text(
+                                                                  controller.arrearPayableAmt.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          } else {
+                                                            // Show the payable amount when the checkbox is not selected
+                                                            return Row(
+                                                              children: [
+                                                                Text('  UPI  : '),
+                                                                Text(
+                                                                  controller.payableAmount.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          }
+                                                        }),
+                                                      ),
+                                                      //CARD BUTTON
+                                                      ElevatedButton(
+                                                        onPressed: () async {
+                                                          await controller.DemandOnlineCardPayment();
+                                                          // await controller.openPineCardPOS();
+                                                        },
+                                                        child: Obx(() {
+                                                          if (controller.isCheckboxChecked.value) {
+                                                            // arrear amount to be shown  when the checkbox is selected
+                                                            return Row(
+                                                              children: [
+                                                                Text(' CARD  :   '),
+                                                                Text(
+                                                                  controller.arrearPayableAmt.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          } else {
+                                                            // payable amount to be shown when the checkbox is not selected
+                                                            return Row(
+                                                              children: [
+                                                                Text(' CARD  :   '),
+                                                                Text(
+                                                                  controller.payableAmount.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          }
+                                                        }),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  if(controller.pineLabStatus.value == true )
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        ElevatedButton(onPressed: () async {await controller.getUpiStatus();},
+                                                            child: Row(
+                                                              children: [
+                                                                Text(' GET STATUS   ',style: GoogleFonts.publicSans(
+                                                                  fontWeight: FontWeight.w600,
+                                                                  fontSize: 15,
+                                                                  fontStyle: FontStyle.normal,
+                                                                  color: Colors.white,
+                                                                ),),
+                                                              ],
+                                                            )),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+
+                                          ),
+                                          SizedBox(height: 15,),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  SizedBox(height: 15,),
-                                ],
-                              ),
-                            ),
-                          ),)
+                                ),
+                              ),)
                         ],
                       );
                     }
@@ -1010,46 +1127,67 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                     if (!controller.demandError.value && controller.paymentStatus.value == '1') {
                       return Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.green[200],
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/property_DemandPaid.png",),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(width: 14),
-                                Expanded(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        WidgetSpan(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 3, right: 4, bottom: 1),
-                                            child: Icon(Icons.info_outlined,
-                                                color: Colors.black, size: 20),
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text:
-                                          " ALL DEMAND ARE CLEARED ",
-                                          style: GoogleFonts.publicSans(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 15,
-                                            fontStyle: FontStyle.normal,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                            Icon(Icons.info_outlined,
+                                color: Colors.redAccent, size: 20),
+                                Text(' ALL DEMAND ARE CLEARED',style: GoogleFonts.publicSans(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                  fontStyle: FontStyle.normal,
+                                  color: Colors.blueAccent,
+                                ),),
                               ],
-                            ),
-                          ),
+                            )
+                          ],
                         ),
+
+                        // Container(
+                        //   decoration: BoxDecoration(
+                        //     color: Colors.green[200],
+                        //     borderRadius: BorderRadius.circular(15.0),
+                        //   ),
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: Row(
+                        //       children: [
+                        //         SizedBox(width: 14),
+                        //         Expanded(
+                        //           child: RichText(
+                        //             text: TextSpan(
+                        //               children: [
+                        //                 WidgetSpan(
+                        //                   child: Padding(
+                        //                     padding: EdgeInsets.only(
+                        //                         top: 3, right: 4, bottom: 1),
+                        //                     child: Icon(Icons.info_outlined,
+                        //                         color: Colors.black, size: 20),
+                        //                   ),
+                        //                 ),
+                        //                 TextSpan(
+                        //                   text:
+                        //                   " ALL DEMAND ARE CLEARED ",
+                        //                   style: GoogleFonts.publicSans(
+                        //                     fontWeight: FontWeight.w500,
+                        //                     fontSize: 15,
+                        //                     fontStyle: FontStyle.normal,
+                        //                     color: Colors.black,
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       );
                     }
                     return Container();}),

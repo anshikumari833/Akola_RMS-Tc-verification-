@@ -16,6 +16,12 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
           padding: EdgeInsets.all(20.0),
           child: Column(
             children: [
+              Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.red,),
+                  Flexible(child: Text("  This Receipt on Screen is only for Tc to view   \n   all Details",style: TextStyle(color: Colors.red),))
+                ],
+              ),
               SizedBox(height: 40,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -79,15 +85,14 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
               buildRow('Current Demand :', controller.demandAmount),
               SizedBox(height: 8.0),
               buildRow('Arrear :', controller.arrearAmount),
-              // Display penalty amounts if available
-              if (controller.penaltyAmounts.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 8.0),
-                    for (var penaltyAmount in controller.penaltyAmounts)
-                      buildRow('Penalty Amount:', penaltyAmount),
-                  ],
+              // Dynamic rows for penalty rebates
+              if (controller.penaltyRebatesList.isNotEmpty)
+                SizedBox(height: 8.0),
+              // Create rows for penalty rebates
+              for (final penaltyRebate in controller.penaltyRebatesList)
+                buildRow(
+                  penaltyRebate['head_name'],
+                  'Amount: ${penaltyRebate['amount']}',
                 ),
               SizedBox(height: 8.0),
               buildRow('Bank Name :', controller.bankName),
@@ -145,7 +150,7 @@ class PropReceiptView extends GetView<PropertyPayPropertyTaxController> {
               // ),
               ElevatedButton(
                 onPressed: () async {
-                  await controller.getPaymentReceipt(controller.tranNo);
+                  await controller.getPaymentReceipt(controller.tranId);
                   controller.openPrintPOS();
                 },
                 child: Text("Print Receipt"),

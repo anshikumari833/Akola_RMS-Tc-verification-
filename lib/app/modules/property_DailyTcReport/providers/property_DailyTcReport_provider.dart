@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../../../common/api_response.dart';
 import '../../../common/string.dart';
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../common/cluster.dart';
 import '../../../widgets/Common_TextField.dart';
 import '../controllers/drawer_profile_controller.dart';
 
@@ -92,105 +95,69 @@ class DrawerProfileView extends GetView<DrawerProfileController> {
             //   ],
             // ),
             // SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 340,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(25),
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                    color: Colors.white,
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return  Card(
+                  margin: EdgeInsets.all(8.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  child:Column(
-                    children: [SizedBox(height: 20),
-                      CustomTextField(
-                     controller: controller.userNameController,
-                        headingText: "Name",
-                        hintText: "Enter Name",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return "";
-                        },
-                      ),
-                      CustomTextField(
-                        controller: controller.mobileNoController,
-                        headingText: "Mobile No",
-                        hintText: "Enter Mobile No",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return "";
-                        },
-                      ),
-                      CustomTextField(
-                    controller: controller.emailController,
-                        headingText: "Email",
-                        hintText: "Enter Email",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return "";
-                        },
-                      ),
-                      CustomTextField(
-                 controller: controller.dobController,
-                        headingText: "Date Of Birth",
-                        hintText: "Enter Date Of Birth",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return "";
-                        },
-                      ),
-                      CustomTextField(
-                       controller: controller.genderController,
-                        headingText: "Gender",
-                        hintText: "Enter Gender",
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'This field is required';
-                          }
-                          return "";
-                        },
+                  elevation: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 10,),
+                            _buildDetailsRow('Description', controller.name.value.toString()),
+                            SizedBox(height: 10,),
+                            _buildDetailsRow('User Name',controller.user_name.value.toString()),
+                            SizedBox(height:10,),
+                            _buildDetailsRow('Mobile No', controller.mobile.value.toString()),
+                            SizedBox(height: 10,),
+                            _buildDetailsRow('Email',controller.email.value.toString()),
+                            SizedBox(height: 10,),
+                            _buildDetailsRow('Ulb', controller.ulb_name.value.toString()),
+                            SizedBox(height: 10,),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
+                );
+              }
+            }),
+
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30,vertical:10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.submit_UserDetailData();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      backgroundColor: Color(0xFF7E49FF),
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                    ),
-                    child: Text('Edit Profile',style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Plus Jakarta Sans',
-                      fontWeight: FontWeight.w600,
-                    )),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     controller.submit_UserDetailData();
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //     backgroundColor: Color(0xFF7E49FF),
+                  //     padding: EdgeInsets.symmetric(horizontal: 20),
+                  //   ),
+                  //   child: Text('Edit Profile',style: TextStyle(
+                  //     fontSize: 14,
+                  //     fontFamily: 'Plus Jakarta Sans',
+                  //     fontWeight: FontWeight.w600,
+                  //   )),
+                  // ),
                   ElevatedButton(
                     onPressed: () {
                       _showChangePasswordDialog(context);
@@ -218,39 +185,97 @@ class DrawerProfileView extends GetView<DrawerProfileController> {
   }
 }
 
+Widget _buildDetailsRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 5.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 150,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 7),
+            child: Text(
+              label,
+              style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  fontStyle:
+                  FontStyle.normal),
+            ),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            // value.isNotEmpty ? value : 'N/A',
+            nullToNA(value),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
-
-// Function to show the change password dialog
 void _showChangePasswordDialog(BuildContext context) {
   DrawerProfileController controller = Get.find<DrawerProfileController>();
+
   showDialog(
     context: context,
+    barrierDismissible: false, // Prevent dismissing the dialog by tapping outside
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text('Change Password'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: controller.oldPasswordController,
-              decoration: InputDecoration(labelText: 'Current Password'),
-            ),
-            TextField(
-              controller: controller.newPasswordController,
-              decoration: InputDecoration(labelText: 'New Password'),
-            ),
-          ],
+        content: StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: controller.oldPasswordController,
+                  decoration: InputDecoration(labelText: 'Current Password'),
+                ),
+                TextField(
+                  controller: controller.newPasswordController,
+                  decoration: InputDecoration(labelText: 'New Password'),
+                ),
+                SizedBox(height: 16.0),
+
+                // Show the loader when isLoading is true
+                controller.isLoading.value
+                    ? Center(
+                  child: SpinKitThreeBounce(
+                    color: Colors.indigo,
+                    size: 40.0,
+                  ),
+                )
+                    : Container(),
+
+                SizedBox(height: 16.0),
+              ],
+            );
+          },
         ),
         actions: [
           ElevatedButton(
-            onPressed: () {
-              controller.submit_UserPassword();
+            onPressed: () async {
+              // Set isLoading to true to show the loader
+              controller.isLoading.value = true;
+
+              // Call the submit_UserPassword function
+              await controller.submit_UserPassword();
+
+              // Set isLoading to false to hide the loader
+              controller.isLoading.value = false;
+
+              // Close the dialog
+              Navigator.of(context).pop();
             },
             child: Text('Change'),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
+              // Close the dialog without making any changes
+              Navigator.of(context).pop();
             },
             child: Text('Cancel'),
           ),
@@ -259,3 +284,5 @@ void _showChangePasswordDialog(BuildContext context) {
     },
   );
 }
+
+

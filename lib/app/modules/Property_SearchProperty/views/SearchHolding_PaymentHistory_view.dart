@@ -119,7 +119,7 @@ class PropertyPaymentHistoryView
                             DataColumn(label: Center(child: Text('From Qtr/Year'))),
                             DataColumn(label: Center(child: Text('Upto Qtr/Year'))),
                             DataColumn(label: Center(child: Text('Amount'))),
-                            DataColumn(label: Center(child: Text('Receipt 1'))),
+                            DataColumn(label: Center(child: Text('Receipt '))),
                           ],
                           rows: [
                             for (var holding in controller.holdingData)
@@ -132,7 +132,7 @@ class PropertyPaymentHistoryView
                                   DataCell(Center(child: Text('${holding['from_qtr']}/${holding['from_fyear']}'))),
                                   DataCell(Center(child: Text('${holding['to_qtr']}/${holding['to_fyear']}'))),
                                   DataCell(Center(child: Text(holding['amount']))),
-                                  DataCell(Center(child: ElevatedButton(onPressed: () { controller.getPaymentReceipt(holding['tran_no']);},child:Text('  View \nReceipt')))),
+                                  DataCell(Center(child: ElevatedButton(onPressed: () { controller.getPaymentReceipt(holding['id']);},child:Text('  View \nReceipt')))),
                                 ],
                               ),
                             for (var saf in controller.safData)

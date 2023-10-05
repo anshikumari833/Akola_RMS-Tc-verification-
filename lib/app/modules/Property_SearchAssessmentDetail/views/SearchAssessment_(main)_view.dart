@@ -81,14 +81,12 @@ class SearchAssessmentDetailView
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: 6, bottom: 4, left: 6, right: 0),
+                        padding: EdgeInsets.only(top: 6, bottom: 4, left: 6, right: 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Icon(CupertinoIcons.search_circle),
-                            Text(
-                              '  Search Applications...',
+                            Text('  Search Applications...',
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
