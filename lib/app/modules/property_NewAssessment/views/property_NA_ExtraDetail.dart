@@ -17,7 +17,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
-         // key:controller.extraDetailsFormKey,
+         key:controller.extraDetailsFormKey,
           child: Column(
             children: [
               Container(
@@ -85,7 +85,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Property Have Mobile Tower(s)? - ',
+                                      'Property Have Mobile Tower(s)? ',
                                       style: GoogleFonts.literata(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -250,7 +250,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Property Have Hoarding Board(s)? - ',
+                                      'Property Have Hoarding Board(s)? ',
                                       style: GoogleFonts.literata(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -415,7 +415,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Is Property a Petrol Pump? - ',
+                                      'Is Property a Petrol Pump? ',
                                       style: GoogleFonts.literata(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -580,7 +580,7 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Rainwater Harvesting Provision? - ',
+                                      'Rainwater Harvesting Provision? ',
                                       style: GoogleFonts.literata(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 14,
@@ -814,12 +814,16 @@ class PropertyExtraDetailView extends GetView<PropertyNewAssessmentController> {
                 children: [
                   ElevatedButton(
                       onPressed: () {
-                        Get.to(PropertyDetailsView());
+                        if (controller.extraDetailsFormKey.currentState!.validate()) {
+                          // Form is valid, navigate to the next screen
+                          Get.to(PropertyDetailsView());
+                        }
+                        // Get.to(PropertyDetailsView());
                       },
                       child: Text('Save & next'))
                 ],
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: 80,),
             ],
           ),
         ),

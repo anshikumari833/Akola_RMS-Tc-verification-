@@ -2,6 +2,7 @@ import 'package:amc_rms/app/Api_List/Water_ApiList.dart';
 import 'package:get/get.dart';
 import '../../../common/api_response.dart';
 import '../../../common/string.dart';
+import 'package:http/http.dart' as http;
 
 class WaterConsumerSearchProvider extends GetConnect {
   @override
@@ -38,7 +39,7 @@ class WaterConsumerSearchProvider extends GetConnect {
   }
 
 //Demand Detail(BY ID)
-  Future<APIResponse> ComsumerListDemandDetails(consumerId) async {
+  Future<APIResponse> ConsumerListDemandDetails(consumerId) async {
     String url = Strings.base_url + water_ApiEndpoints.listDemands;
     final response = await post(url, {
       "ConsumerId": consumerId.toString()
@@ -71,14 +72,74 @@ class WaterConsumerSearchProvider extends GetConnect {
   }
 
 
-  //Payment
-  Future<APIResponse> ComsumerDemandPayment(consumerId) async {
+  //DEMAND PAYMENT
+  Future<APIResponse> ConsumerDemandPayment(Map data) async {
     String url = Strings.base_url + water_ApiEndpoints.payDemand;
     final response = await post(url, {
-      "consumerId": consumerId.toString()
+      "consumerId": data['consumerId'],
+      "demandUpto": data['demandUpto'],
+      "amount": data['amount'],
+      "paymentMode": data['paymentMode'],
+      "bankName": data['bankName'],
+      "branchName": data['branchName'],
+      "chequeNo": data['chequeNo'],
+      "chequeDate": data['chequeDate'],
+      "remarks": data['remarks'],
     },  headers: Strings.headers,
     );
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
   }
+
+
+  //CALCULATE DEMAND
+  Future<APIResponse> CalculateConsumerDeamnd(Map data) async {
+    String url = Strings.base_url + water_ApiEndpoints.calculateDemand;
+    final response = await post(url, {
+      "consumerId": data['consumerId'],
+      "demandUpto": data['demandUpto'],
+    },  headers: Strings.headers,
+    );
+    return APIResponse.fromJson(
+        {"data": response.body, "error": response.status.hasError});
+  }
+  // Generate Demand
+  // Future<APIResponse> GenerateConsumerDemand(consumerId, Map data) async {
+  //   String url = Strings.base_url + water_ApiEndpoints.generateDemand;
+  //   final response = await post(url, {
+  //     "consumerId": consumerId.toString(),
+  //     "finalRading": data['finalRading'],
+  //     "demandUpto": data['demandUpto'],
+  //     "document": data['document'],
+  //   },  headers: Strings.headers,
+  //   );
+  //   return APIResponse.fromJson(
+  //       {"data": response.body, "error": response.status.hasError});
+  // }
+
+
+Future<APIResponse> GenerateConsumerDemand(consumerId, Map data) async {
+  String url = Strings.base_url + water_ApiEndpoints.generateDemand;
+
+  // Create a multipart request
+  final request = http.MultipartRequest('POST', Uri.parse(url));
+  request.headers.addAll(Strings.headers);
+  // Add text fields to the request
+  request.fields['consumerId'] = consumerId;
+  request.fields['finalRading'] = data["finalRading"];
+  request.fields['demandUpto'] = data["demandUpto"];
+
+  // Add the image file to the request
+  if (data["imagePath[0]"] != null) {
+    final imageFile = data["imagePath[0]"];
+    request.files.add(await http.MultipartFile.fromPath('document', imageFile.path));
+  }
+
+  // Send the request
+  final response = await request.send();
+
+  // Process the response and return the APIResponse
+  final responseStream = await response.stream.bytesToString();
+    return APIResponse.fromJson({"data": responseStream, "error": false});
+}
 }

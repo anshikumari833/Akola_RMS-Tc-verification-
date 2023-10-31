@@ -92,38 +92,6 @@ class PropertyNewAssessmentProvider extends GetConnect {
         "category": data['category'],
         "floor": data['newfloors'],
         "owner": data['owners'],
-        // "ulbId": "2",
-        // "assessmentType": assess,
-        // "ulbId": data['ulbId'],
-        // "holdingNo": data['holdingNo'],
-        // "transferModeId": data['transferModeId'],
-        // "ward": data['ward'],
-        // "newWard": data['newWard'],
-        // "apartmentId": data['apartmentId'],
-        // "ownershipType": data['ownershipType'],
-        // "roadType": data['roadType'],
-        // "isOwnerChanged": data['isOwnerChanged'] == true ? 1 : 0,
-        // "isMobileTower": data['isMobileTower'] == true ? 1 : 0,
-        // "mobileTower": {
-        //   "area": data['totalAreaOfMobileTower'],
-        //   "dateFrom": data['installationOfMobileTower']
-        // },
-        // "isHoardingBoard": data['isHoardingBoard'] == true ? 1 : 0,
-        // "hoardingBoard": {
-        //   "area": data['totalAreaOfHoardingBoard'],
-        //   "dateFrom": data['installationOfHoardingBoard']
-        // },
-        // "isPetrolPump": data['isPetrolPump'] == true ? 1 : 0,
-        // "petrolPump": {
-        //   "area": data['petrolPumpArea'],
-        //   "dateFrom": data['petrolPumpDate']
-        // },
-        // "landOccupationDate": data['landOccupationDate'],
-        // "isWaterHarvesting": data['isWaterHarvesting'] == true ? 1 : 0,
-        // "rwhDateFrom": data['rwhDateFrom'],
-        // "trustType": data['isTrust'],
-        // "zone": data['zone'],
-
       }, headers: Strings.headers,
       );
       return APIResponse.fromJson(

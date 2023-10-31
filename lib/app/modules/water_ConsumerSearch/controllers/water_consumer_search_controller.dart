@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,10 +8,15 @@ import '../providers/water_consumer_search_provider.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+
+import '../views/generate_demand_view.dart';
+import '../views/water_ConsumerSearch(main)_view.dart';
 
 class WaterConsumerSearchController extends GetxController {
   var searchedconsumerData = List<dynamic>.empty(growable: true).obs;
   var searchedConsumerDataById = List<dynamic>.empty(growable: true).obs;
+  var generatedDemandList = List<dynamic>.empty(growable: true).obs;
   var PaymentHistoryById = List<dynamic>.empty(growable: true).obs;
   var isDataProcessing = false.obs;
   var propertyId = "48306";
@@ -25,7 +31,15 @@ class WaterConsumerSearchController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+   finalMeterReading = TextEditingController();
+   demandDateUpto = TextEditingController();
     searchByController  = TextEditingController();
+    bankNameController = TextEditingController();
+    branchNameController = TextEditingController();
+    chequeNoController = TextEditingController();
+    chequeDateController = TextEditingController();
+    remarksController = TextEditingController();
+
   }
 
   var currentPage = 1.obs;
@@ -52,6 +66,7 @@ class WaterConsumerSearchController extends GetxController {
   var consumer_Id = <String>[];
   Future<void> getDetailBySearch() async {
     isPageLoading.value = true;
+    consumer_Id.clear();
     searchedconsumerData.clear();
     APIResponse response = await WaterConsumerSearchProvider().searchConsumerDetail( {
       "filteredBy": filterByValue.value.toString(),
@@ -64,7 +79,6 @@ class WaterConsumerSearchController extends GetxController {
         totalPages.value = responseData["last_page"];
       }
       List<dynamic> data = List<dynamic>.from(responseData["data"]);
-      // Iterate through the data and collect all the id values
       for (var consumerId in data) {
         if (consumerId.containsKey("id")) {
           consumer_Id.add(consumerId["id"].toString());
@@ -76,18 +90,20 @@ class WaterConsumerSearchController extends GetxController {
   }
 
 
-
+  var consumer_id_pay = "";
   //Consumer Basic Details(BY ID)
   searchConsumerById(int consumerId) async {
     await getConsumerDetail(consumerId);
   }
   //Consumer Basic Details(BY ID)
   Future<bool> getConsumerDetail(consumerId) async {
+    consumer_id_pay = "";
     APIResponse response = await WaterConsumerSearchProvider().SearchedComsumerData(consumerId);
     searchedConsumerDataById.clear();
     if (response.error == false) {
-      Map<String, dynamic> id_Data = response.data;
-      searchedConsumerDataById.add(id_Data);
+      Map<String, dynamic> idData = response.data;
+       consumer_id_pay = idData['id'].toString();
+      searchedConsumerDataById.add(idData);
       return true;
     } else {
       Get.snackbar(
@@ -103,21 +119,26 @@ class WaterConsumerSearchController extends GetxController {
   //Demand Detail(BY ID)
   var consumerDemands = <Map<String, dynamic>>[].obs;
   var meterDetails = <String, dynamic>{}.obs;
-  var totalSumDemand;
-  var totalPenalty;
+  var basicDetails = <String, dynamic>{}.obs;
+  var totalSumDemand = "".obs;
+  var totalPenalty = "".obs;
   Future<void> getConsumerDemandDetail(consumerId) async {
-    APIResponse response = await WaterConsumerSearchProvider().ComsumerListDemandDetails(consumerId);
-    consumerDemands.clear();
-    meterDetails.clear();
-    totalSumDemand = '';
-    totalPenalty = '';
+   isDataProcessing.value == true;
+    consumerDemands.value.clear();
+    meterDetails.value.clear();
+    basicDetails.value.clear();
+    totalSumDemand.value = '';
+    totalPenalty.value = '';
+    APIResponse response = await WaterConsumerSearchProvider().ConsumerListDemandDetails(consumerId);
     if (response.error == false) {
       Map<String, dynamic> DemandDetailData = response.data;
       consumerDemands.value = List<Map<String, dynamic>>.from(DemandDetailData['consumerDemands']);
       meterDetails.value = Map<String, dynamic>.from(DemandDetailData['meterDetails']);
-      totalSumDemand = DemandDetailData['totalSumDemand'].toString();
-      totalPenalty = DemandDetailData['totalPenalty'].toString();
+      basicDetails.value = Map<String, dynamic>.from(DemandDetailData['meterDetails']['basicDetails']);
+      totalSumDemand.value = DemandDetailData['totalSumDemand'].toString();
+      totalPenalty.value = DemandDetailData['totalPenalty'].toString();
     } else {
+      // Get.to(GenerateDemandView());
       Get.snackbar(
         'Oops!!!',
         response.errorMessage,
@@ -125,6 +146,94 @@ class WaterConsumerSearchController extends GetxController {
         colorText: Colors.white,
       );
     }
+   isDataProcessing.value == false;
+  }
+  RxBool isLoading = false.obs;
+var selectDateUpto = "".obs;
+  var Calculation_totalPayAmount = "".obs;
+  var Calculation_totalPenalty = "".obs;
+  var Calculation_totalDemand = "".obs;
+  var Calculation_totalAdvance = "".obs;
+  var Calculation_totalRebate = "".obs;
+  var Calculation_remaningAdvanceAmount = "".obs;
+
+  //CALCULATE DEMAND
+  Future<void> getCalculationDemandDetails() async {
+    isLoading.value = true;
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    Calculation_totalPayAmount.value = "";
+    Calculation_totalPenalty.value = "";
+    Calculation_totalDemand.value = "";
+    Calculation_totalAdvance.value = "";
+    Calculation_totalRebate.value = "";
+    Calculation_remaningAdvanceAmount.value = "";
+    APIResponse response = await WaterConsumerSearchProvider().CalculateConsumerDeamnd(
+      {
+        "consumerId": consumer_id_pay.toString(),
+        "demandUpto": selectDateUpto.value.toString(),
+      }
+    );
+    if (response.error == false) {
+      Map<String, dynamic> CalculatedDemandDetailData = response.data;
+      Calculation_totalPayAmount.value = CalculatedDemandDetailData['totalPayAmount'].toString();
+      Calculation_totalPenalty.value = CalculatedDemandDetailData['totalPenalty'].toString();
+      Calculation_totalDemand.value = CalculatedDemandDetailData['totalDemand'].toString();
+      Calculation_totalAdvance.value = CalculatedDemandDetailData['totalAdvance'].toString();
+      Calculation_totalRebate.value = CalculatedDemandDetailData['totalRebate'].toString();
+      Calculation_remaningAdvanceAmount.value = CalculatedDemandDetailData['remaningAdvanceAmount'].toString();
+      isLoading.value = false;
+      Get.back();
+    } else {
+      isLoading.value = false;
+      Get.back();
+      Get.snackbar(
+        'Oops!!!',
+        response.errorMessage,
+        backgroundColor: Colors.pinkAccent,
+        colorText: Colors.white,
+      );
+    }
+    isLoading.value = false;
+  }
+  //PAYMENT
+  var demand_PaymentMode = "".obs;
+  late TextEditingController bankNameController;
+  late TextEditingController branchNameController;
+  late TextEditingController chequeNoController;
+  late TextEditingController chequeDateController;
+  late TextEditingController remarksController;
+
+
+  Future<void>DemandPaymentDetail() async {
+    isLoading.value = true;
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    APIResponse response = await WaterConsumerSearchProvider().ConsumerDemandPayment({
+      'consumerId': consumer_id_pay.toString(),
+      'demandUpto': selectDateUpto.value.toString(),
+      'amount': Calculation_totalPayAmount.value,
+      'paymentMode': demand_PaymentMode.value.toString(),
+      'bankName': bankNameController.value.text,
+      'branchName': branchNameController.value.text,
+      'chequeNo': chequeNoController.value.text,
+      'chequeDate': chequeDateController.value.text,
+      'remarks': remarksController.value.text,
+    });
+    if (response.error == false) {
+      // Map<String, dynamic> AfterPaymentData = response.data;
+      isLoading.value = false;
+      Get.back();
+      Get.off(WaterConsumerSearchView());
+    } else {
+      isLoading.value = false;
+      Get.back();
+      Get.snackbar(
+        'Oops!!!',
+        response.errorMessage,
+        backgroundColor: Colors.pinkAccent,
+        colorText: Colors.white,
+      );
+    }
+    isLoading.value = false;
   }
 
 
@@ -135,8 +244,8 @@ class WaterConsumerSearchController extends GetxController {
     APIResponse response = await WaterConsumerSearchProvider().ComsumerPaymentHistory(consumerId);
     PaymentHistoryById.clear();
     if (response.error == false) {
-      Map<String, dynamic> id_Data = response.data;
-      consumerReceiptDetails.value = List<Map<String, dynamic>>.from(id_Data['Consumer']);
+      Map<String, dynamic> idData = response.data;
+      consumerReceiptDetails.value = List<Map<String, dynamic>>.from(idData['Consumer']);
      // PaymentHistoryById.add(id_Data);
     } else {
       Get.snackbar(
@@ -148,7 +257,55 @@ class WaterConsumerSearchController extends GetxController {
     }
   }
 
-  void clearAllFields() {
+
+  late TextEditingController finalMeterReading;
+  late TextEditingController demandDateUpto;
+  //***DEMAND DETAIL
+  //GENERATE DEMAND
+  Future<bool> generateDemand(consumerId,{String type = ''}) async {
+    isDataProcessing.value == true;
+    Get.dialog(Center(child: CircularProgressIndicator()), barrierDismissible: false);
+    var file1;
+    if(type != 'Fixed') {
+      String _img64Image1;
+      final bytes1 = await _selectedFile1!.readAsBytes();
+      _img64Image1 = base64Encode(bytes1);
+      // Create temporary files to save base64 encoded image data
+      // final tempDir = await getTemporaryDirectory();
+      final bytes01 = base64Decode(_img64Image1);
+      final directory = await getApplicationDocumentsDirectory();
+      file1 = await File('${directory.path}/image1.png').create();
+      await file1.writeAsBytes(bytes01);
+    }
+    APIResponse response = await WaterConsumerSearchProvider().GenerateConsumerDemand(consumerId ,{
+      'finalRading':finalMeterReading.text.toString(),
+      'demandUpto':demandDateUpto.text.toString(),
+      'imagePath[0]': file1,
+    });
+    if (response.error == false) {
+      var data = response.data;
+      generatedDemandList.add(data);
+      Get.back();
+      return true;
+    } else {
+      Get.back();
+      Get.snackbar(
+        'Oops!!!',
+        response.errorMessage,
+        backgroundColor: Colors.pinkAccent,
+        colorText: Colors.white,
+      );
+      isDataProcessing.value == false;
+      return false;
+    }
+  }
+
+  void clearPaymentFields() {
+     bankNameController.clear();
+     branchNameController.clear();
+     chequeNoController.clear();
+     chequeDateController.clear();
+     remarksController.clear();
   }
 
 

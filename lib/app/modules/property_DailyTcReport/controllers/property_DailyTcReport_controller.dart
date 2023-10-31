@@ -159,7 +159,7 @@ class PropertyDailyTcReportController extends GetxController {
         String footerData = generateFooterData(report_footerData);
         final Map<String, dynamic> payload = {
           "Header": {
-            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
             "UserId": "user1234",
             "MethodId": "1002",
             "VersionNo": "1.0"

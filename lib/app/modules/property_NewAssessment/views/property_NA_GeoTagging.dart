@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../widgets/Assessment_appbar.dart';
 import '../../../widgets/location_widget.dart';
+import '../../home/views/home_view.dart';
 import '../controllers/property_new_assessment_controller.dart';
 
 class PropertyNAGeoTaggingView extends GetView<PropertyNewAssessmentController> {
@@ -376,8 +377,7 @@ class PropertyNAGeoTaggingView extends GetView<PropertyNewAssessmentController> 
                             ),
                             TextButton(
                               child: Text("yes"),
-                              onPressed: () {},
-                              // Get.off();
+                              onPressed: () {Get.to(HomeView());},
                             ),
                           ],
                         ),

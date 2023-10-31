@@ -19,6 +19,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
+          key: controller.floorDetailsFormKey,
             child: Column(
               children: [
                 Container(
@@ -107,14 +108,13 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                         ),
                                                       ),
                                                       Container(
-                                                        padding:
-                                                        EdgeInsets.all(15),
+                                                        padding: EdgeInsets.all(15),
                                                         child: Column(
                                                           children: [
                                                             Row(
                                                               children: [
                                                                 Text(
-                                                                  "Floor",
+                                                                  "Floor No",
                                                                   style: GoogleFonts.literata(
                                                                       fontWeight: FontWeight.w600,
                                                                       fontSize: 14,
@@ -137,8 +137,8 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               ),
                                                               isExpanded: true,
                                                               hint: const Text('Select',
-                                                                style: TextStyle(fontSize: 16,
-                                                                  color: Colors.black,
+                                                                style: TextStyle(fontSize: 12,
+                                                                  color: Colors.grey,
                                                                 ),
                                                               ),
                                                               icon:
@@ -174,7 +174,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                 }
                                                               },
                                                               onChanged: (value) {
-                                                                controller.floorType.value = value.toString();
+                                                                controller.floorType.value[currentIndex] = value.toString();
                                                               },
                                                             ),
 
@@ -222,8 +222,8 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               isExpanded: true,
                                                               hint: const Text('Select',
                                                                 style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Colors.black,
+                                                                  fontSize: 12,
+                                                                  color: Colors.grey,
                                                                 ),
                                                               ),
                                                               icon:
@@ -257,7 +257,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               },
                                                               onChanged:
                                                                   (value) {
-                                                                controller.floorUseType.value = value.toString();
+                                                                controller.floorUseType.value[currentIndex] = value.toString();
                                                               },
                                                             )
                                                           ],
@@ -303,8 +303,8 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               true,
                                                               hint:
                                                               const Text('Select', style:
-                                                              TextStyle(fontSize: 16,
-                                                                color: Colors.black,
+                                                              TextStyle(fontSize: 12,
+                                                                color: Colors.grey,
                                                               ),
                                                               ),
                                                               icon:
@@ -338,7 +338,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               },
                                                               onChanged:
                                                                   (value) {
-                                                                controller.floorOccupancyType.value = value.toString();
+                                                                controller.floorOccupancyType.value[currentIndex] = value.toString();
                                                               },
                                                             ),
                                                           ],
@@ -394,13 +394,11 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               iconSize: 30,
                                                               buttonHeight: 60,
                                                               buttonPadding:
-                                                              EdgeInsets.only(left: 20,
-                                                                  right: 25),
+                                                              EdgeInsets.only(left: 20, right: 25),
                                                               buttonElevation: 2,
                                                               itemHeight: 60,
                                                               itemPadding:
-                                                              EdgeInsets.only(left: 25,
-                                                                  right: 25),
+                                                              EdgeInsets.only(left: 25, right: 25),
                                                               dropdownMaxHeight: 250,
                                                               dropdownWidth: 240,
                                                               dropdownDecoration:
@@ -423,7 +421,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                               },
                                                               onChanged:
                                                                   (value) {
-                                                                controller.floorConstructionType.value = value.toString();
+                                                                controller.floorConstructionType.value[currentIndex] = value.toString();
                                                               },
                                                             ),
                                                           ],
@@ -446,9 +444,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                 ),
                                                                 Text(
                                                                   " *",
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                      Colors.red),
+                                                                  style: TextStyle(color: Colors.red),
                                                                 ),
                                                               ],
                                                             ),
@@ -477,9 +473,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                 ),
                                                                 Text(
                                                                   " *",
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                      Colors.red),
+                                                                  style: TextStyle(color: Colors.red),
                                                                 ),
                                                               ],
                                                             ),
@@ -492,8 +486,8 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                 hintText:
                                                                 'yyyy-mm-dd',
                                                                 hintStyle: const TextStyle(
-                                                                    fontSize: 16,
-                                                                    color: Colors.black),
+                                                                    fontSize: 12,
+                                                                    color: Colors.grey),
                                                               ),
                                                               format: DateFormat("yyyy-MM-dd"),
                                                               onShowPicker:
@@ -523,12 +517,6 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                       fontSize: 14,
                                                                       fontStyle: FontStyle.normal),
                                                                 ),
-                                                                Text(
-                                                                  " *",
-                                                                  style: TextStyle(
-                                                                      color:
-                                                                      Colors.red),
-                                                                ),
                                                               ],
                                                             ),
                                                             DateTimeField(
@@ -539,7 +527,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                 Icon(Icons.calendar_month_outlined),
                                                                 hintText: 'yyyy-mm-dd',
                                                                 hintStyle: const TextStyle(
-                                                                    fontSize: 16, color: Colors.black),
+                                                                    fontSize: 12, color: Colors.grey),
                                                               ),
                                                               format: DateFormat("yyyy-MM-dd"),
                                                               onShowPicker: (context, currentValue) {
@@ -556,15 +544,14 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                       ElevatedButton(
                                                         child: Text('Add'),
                                                         onPressed: () {
-                                                          Map<String, dynamic>
-                                                          floorData = {
-                                                            'floorNo': controller.floorList.firstWhere((item) => item['id'].toString() == controller.floorType.value)['floor_name'],
-                                                            'userType': controller.usageList.firstWhere((item) => item['id'].toString() == controller.floorUseType.value)['usage_type'],
-                                                            'occupancyType': controller.occuppancyList.firstWhere((item) => item['id'].toString() == controller.floorOccupancyType.value)['occupancy_type'],
-                                                            'constructionType': controller.constructionList.firstWhere((item) => item['id'].toString() == controller.floorConstructionType.value)['construction_type'],
-                                                            'builtUpArea': controller.floorBuiltUpController[currentIndex].text,
-                                                            'fromDate': controller.floorDateFromController[currentIndex].text,
-                                                            'uptoDate': controller.floordateUptoController[currentIndex].text,
+                                                          Map<String, dynamic> floorData = {
+                                                            'floorNo': controller.floorList.firstWhere((item) => item['id'].toString() == controller.floorType[currentIndex])['floor_name'],
+                                                            'userType': controller.usageList.firstWhere((item) => item['id'].toString() == controller.floorUseType[currentIndex])['usage_type'],
+                                                            'occupancyType': controller.occuppancyList.firstWhere((item) => item['id'].toString() == controller.floorOccupancyType[currentIndex])['occupancy_type'],
+                                                            'constructionType': controller.constructionList.firstWhere((item) => item['id'].toString() == controller.floorConstructionType[currentIndex])['construction_type'],
+                                                            'builtUpArea': controller.floorBuiltUpController[currentIndex],
+                                                            'fromDate': controller.floorDateFromController[currentIndex],
+                                                            'uptoDate': controller.floordateUptoController[currentIndex],
                                                           };
                                                           setState(() {
                                                             controller.floorDataList.add(floorData);
@@ -572,6 +559,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                           Navigator.of(context).pop();
                                                         },
                                                       ),
+
                                                     ],
                                                   ),
                                                 ),
@@ -582,7 +570,12 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                       },
                                     );
                                   },
-                                  child: Text("Add Floor"),
+                                  child: Column(
+                                    children: [
+                                      Text("Add Floor"),
+                                      Icon(Icons.add_home_work_outlined)
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -672,7 +665,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                     columns: [
                                       DataColumn(label: Center(child: Text('#'))),
                                       DataColumn(label: Center(child: Text('Floor no'))),
-                                      DataColumn(label: Center(child: Text('User Type'))),
+                                      DataColumn(label: Center(child: Text('Usage Type'))),
                                       DataColumn(label: Center(child: Text('Occupancy Type'))),
                                       DataColumn(label: Center(child: Text('Construction Type'))),
                                       DataColumn(label: Center(child: Text('Built up Area'))),
@@ -691,9 +684,9 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                             DataCell(Center(child: Text(floorData['userType']))),
                                             DataCell(Center(child: Text(floorData['occupancyType']))),
                                             DataCell(Center(child: Text(floorData['constructionType']))),
-                                            DataCell(Center(child: Text(floorData['builtUpArea']))),
-                                            DataCell(Center(child: Text(floorData['fromDate']))),
-                                            DataCell(Center(child: Text(floorData['uptoDate']))),
+                                            DataCell(Center(child: Text(floorData['builtUpArea'].text.toString()))),
+                                            DataCell(Center(child: Text(floorData['fromDate'].text.toString()))),
+                                            DataCell(Center(child: Text(floorData['uptoDate'].text.toString()))),
                                             DataCell(
                                               Center(
                                                 child: Row(
@@ -772,7 +765,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                                 Row(
                                                                                   children: [
                                                                                     Text(
-                                                                                      "Floor",
+                                                                                      "Floor No",
                                                                                       style: GoogleFonts.literata(
                                                                                           fontWeight: FontWeight.w600,
                                                                                           fontSize: 14,
@@ -832,7 +825,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                                     }
                                                                                   },
                                                                                   onChanged: (value) {
-                                                                                    controller.floorType.value = value.toString();
+                                                                                    controller.floorType.value[currentIndex] = value.toString();
                                                                                   },
                                                                                 ),
 
@@ -915,7 +908,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                                   },
                                                                                   onChanged:
                                                                                       (value) {
-                                                                                    controller.floorUseType.value = value.toString();
+                                                                                    controller.floorUseType.value[currentIndex] = value.toString();
                                                                                   },
                                                                                 )
                                                                               ],
@@ -994,7 +987,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                                   },
                                                                                   onChanged:
                                                                                       (value) {
-                                                                                    controller.floorOccupancyType.value = value.toString();
+                                                                                    controller.floorOccupancyType.value[currentIndex] = value.toString();
                                                                                   },
                                                                                 ),
                                                                               ],
@@ -1079,7 +1072,7 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                                                   },
                                                                                   onChanged:
                                                                                       (value) {
-                                                                                    controller.floorConstructionType.value = value.toString();
+                                                                                    controller.floorConstructionType.value[currentIndex] = value.toString();
                                                                                   },
                                                                                 ),
                                                                               ],
@@ -1239,7 +1232,6 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                                                         );
                                                       },
                                                     ),
-
                                                     IconButton(
                                                       icon: Icon(Icons.delete),
                                                       onPressed: () {
@@ -1267,13 +1259,40 @@ class PropertyFloorDetailView extends GetView<PropertyNewAssessmentController> {
                 Column(
                   children: [
                     ElevatedButton(
-                        onPressed: () {
+                      onPressed: () {
+                        if (controller.remarkControllers.isEmpty) {
+                          // Show a validation message if there are no owners added.
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Validation Error'),
+                                content: Text('At least one floor is required.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
                           Get.to(PropertyExtraDetailView());
-                        },
-                        child: Text('Save & next'))
+                        }
+                      },
+                      child: Text('Save & next'),
+                    ),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       Get.to(PropertyExtraDetailView());
+                    //     },
+                    //     child: Text('Save & next'))
                   ],
                 ),
-                SizedBox(height: 40,),
+                SizedBox(height: 80,),
               ],
             )
         ),

@@ -1,8 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../common/cluster.dart';
 import '../controllers/trade_track_license_controller.dart';
 
 class TradeTrackLicenseView extends GetView<TradeTrackLicenseController> {
@@ -112,27 +114,27 @@ class TradeTrackLicenseView extends GetView<TradeTrackLicenseController> {
                                 ),
                                 DropdownMenuItem(
                                   child: Text("Application No"),
-                                  value: "ptn",
+                                  value: "APPLICATION",
                                 ),
                                 DropdownMenuItem(
                                   child: Text("License No"),
-                                  value: "holdingNo",
+                                  value: "LICENSE",
                                 ),
                                 DropdownMenuItem(
                                   child: Text("Mobile No"),
-                                  value: "mobileNo",
+                                  value: "MOBILE",
                                 ),
                                 DropdownMenuItem(
                                   child: Text("Firm Name"),
-                                  value: "address",
+                                  value: "FIRM",
                                 ),
                                 DropdownMenuItem(
                                   child: Text("Owner Name"),
-                                  value: "address",
+                                  value: "OWNER",
                                 ),
                               ],
                             onChanged: (value) {
-
+                              controller.filterByValue.value = value.toString();
                             }
                           ),
                         ],
@@ -145,7 +147,7 @@ class TradeTrackLicenseView extends GetView<TradeTrackLicenseController> {
                       children: [
                         Container(
                           child: TextField(
-
+                            controller: controller.searchByController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey[100],
@@ -172,11 +174,15 @@ class TradeTrackLicenseView extends GetView<TradeTrackLicenseController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async{
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            controller.isPageLoading.value = true;
+                            await controller.getLicenseDetailBySearch();
+                            controller.isPageLoading.value = false;
+                          },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  10.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                           child: Text('Search'),
@@ -192,10 +198,204 @@ class TradeTrackLicenseView extends GetView<TradeTrackLicenseController> {
                   thickness: 2,
                 ),
               ),
+              Container(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 5, bottom:0, left: 30, right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Application List',
+                        style:  GoogleFonts.publicSans(
+                          fontSize: 18,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                        ),),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.keyboard_double_arrow_left),
+                            onPressed: controller.previousPage,
+                            disabledColor: Colors.grey,
+                          ),
+                          Obx(() => Text(
+                            ' ${controller.currentPage.value}' ' to ${controller.totalPages.value}',
+                            style:  GoogleFonts.publicSans(
+                              fontSize: 16,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          )),
+                          IconButton(
+                            icon: Icon(Icons.keyboard_double_arrow_right),
+                            onPressed: controller.nextPage,
+                            disabledColor: Colors.grey,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Obx(() {
+                if (controller.isPageLoading.value == true) {
+                  return Container(
+                    height: 450,
+                    width: 390,
+                    child:  Center(
+                      child:  SpinKitSpinningLines(
+                        color: Colors.blue,
+                        size: 70.0,
+                      ),
+                    ),
+                  );
+                }  else if (controller.searchedLicenseData.isEmpty) {
+                  return Container(
+                    child:  Column(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 25,),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Image.asset(
+                            "assets/images/trade_SearchLicenseimg.png",),
+                        ),
+                      ],
+                    ),
+                  );
+                }else {
+                  final startIndex = (controller.currentPage.value - 1) * controller.perPage;
+                  final endIndex = startIndex + controller.perPage;
+                  final displayedData = startIndex < controller.searchedLicenseData.length ? controller.searchedLicenseData.sublist(startIndex,
+                    endIndex < controller.searchedLicenseData.length ? endIndex : controller.searchedLicenseData.length,) : [];
+                  return SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: displayedData.length,
+                      itemBuilder: (context, index) {
+                        final user_Details = displayedData[index];
+                        return   Stack(
+                          children: [
+                              Padding(
+                                 padding: const EdgeInsets.all(8.0),
+                                 child:
+                                 Container(
+                                 decoration: BoxDecoration(
+                                 color: Colors.blue[100],
+                                 borderRadius: BorderRadius.circular(20.0),
+                                 ),
+                                 child: Column(
+                                 children: [
+                                 Card(
+                                 margin: EdgeInsets.all(2.0),
+                                 shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(20.0),
+                                 ),
+                                 elevation: 2,
+                                 child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                                 children: [
+                                 Container(
+                                 padding: const EdgeInsets.all(10.0),
+                                 child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                 _buildDetailsRow('Application No', user_Details['application_no'].toString()),
+                                 _buildDetailsRow('License No', user_Details['license_no'].toString()),
+                                 _buildDetailsRow('Apply Date', user_Details['application_date'].toString()),
+                                 _buildDetailsRow('Apply From', user_Details['apply_from'].toString()),
+                                 _buildDetailsRow('Firm Name', user_Details['firm_name'].toString()),
+                                 _buildDetailsRow('Mobile No', user_Details['mobile_no'].toString()),
+                                 _buildDetailsRow('Application Type', user_Details['application_type'].toString()),
+                                 ],
+                                 ),
+                                 ),
+                                 Row(
+                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                 children: [
+                                 //BASIC DETAILS
+                                 TextButton(onPressed:  ()
+                                 async{
+                                 controller.getapplicantDetail(controller.searchedLicenseData[index]['id']);
+                                 Get.to(TradeTrackLicenseView());
+                                 }, child: Text('View Details')),
+                                 //DEMAND DETAILS
+                                 TextButton(onPressed:  () async{}, child: Text('Payment')),
+                                 //PAYMENT HISTORY
+                                 TextButton(onPressed:  () async{}, child: Text('Payment History'))
+                                 ],),
+                                 ],
+                                 ),
+                                 ),
+                                 ],
+                                 ),
+                                 ),
+                                 ),
+                              Positioned(
+                              // top: 10.0,
+                              right: 10.0,
+                              child: Container(
+                                width: 30.0,
+                                height: 30.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[200],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+
+
+Widget _buildDetailsRow(String label, String value) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 3.0,horizontal: 5.0),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 150,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 7),
+            child: Text(
+              label,
+              style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  fontStyle:
+                  FontStyle.normal),
+            ),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            nullToNA(value),
+          ),
+        ),
+      ],
+    ),
+  );
 }

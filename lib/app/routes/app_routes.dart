@@ -48,6 +48,11 @@ abstract class Routes {
   static const DRAWER_TERMS_OF_USE = _Paths.DRAWER_TERMS_OF_USE;
   static const DRAWER_FAQ = _Paths.DRAWER_FAQ;
   static const DRAWER_PROFILE = _Paths.DRAWER_PROFILE;
+  static const MUNICIPAL_RENTAL_ADD_TOLL = _Paths.MUNICIPAL_RENTAL_ADD_TOLL;
+  static const MUNICIPAL_RENTAL_PAY_TOLL_RENT =
+      _Paths.MUNICIPAL_RENTAL_PAY_TOLL_RENT;
+  static const MUNICIPAL_RENTAL_TOLL_DAILY_REPORT =
+      _Paths.MUNICIPAL_RENTAL_TOLL_DAILY_REPORT;
 }
 
 abstract class _Paths {
@@ -95,4 +100,9 @@ abstract class _Paths {
   static const DRAWER_TERMS_OF_USE = '/drawer-terms-of-use';
   static const DRAWER_FAQ = '/drawer-faq';
   static const DRAWER_PROFILE = '/drawer-profile';
+  static const MUNICIPAL_RENTAL_ADD_TOLL = '/municipal-rental-add-toll';
+  static const MUNICIPAL_RENTAL_PAY_TOLL_RENT =
+      '/municipal-rental-pay-toll-rent';
+  static const MUNICIPAL_RENTAL_TOLL_DAILY_REPORT =
+      '/municipal-rental-toll-daily-report';
 }

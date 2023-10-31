@@ -1,3 +1,5 @@
+//PHASE - 1 (CODE OF DEMAND PAYMENT WITHOUT PART PAYMENT)
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -117,7 +119,6 @@ class PropertyDemandDetailsView extends GetView<PropertyPayPropertyTaxController
                                     borderRadius: BorderRadius.all(Radius.circular(10)),
                                   ),
                                   child: Column(
-                                    
                                     children: [
                                       Row(
                                         children: [

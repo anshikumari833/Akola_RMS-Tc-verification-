@@ -305,6 +305,98 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
             ),
+            if(GetStorage().read('isTc'))
+            Container(
+              margin: EdgeInsets.all(14.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        offset: Offset(1, 1),
+                        color: Colors.grey.shade300,
+                        spreadRadius: 1,
+                        blurRadius: 1)
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Padding(
+                          padding:
+                          EdgeInsets.symmetric(horizontal:10,vertical: 10),
+                          child: Text("Trade",style:GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(width: 20,),
+                        // itemDashboard('Apply \n  Connection', CupertinoIcons.viewfinder_circle, Colors.red.shade50, Routes.PROPERTY_HOME_SCREEN),
+                        itemDashboard('Track License', CupertinoIcons.search, Color(0xFFe1f5fe), Routes.TRADE_TRACK_LICENSE),
+                        // itemDashboard('Search \n  Application', CupertinoIcons.doc_text_search, Colors.red.shade50, Routes.PROPERTY_HOME_SCREEN),
+                        // itemDashboard('See All', CupertinoIcons.arrow_right, Colors.red.shade50, Routes.WATER_HOME_SCREEN),
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+            if(GetStorage().read('isTc'))
+              Container(
+                margin: EdgeInsets.all(14.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: Offset(1, 1),
+                          color: Colors.grey.shade300,
+                          spreadRadius: 1,
+                          blurRadius: 1)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+
+                        children: [
+                          Padding(
+                            padding:
+                            EdgeInsets.symmetric(horizontal:10,vertical: 10),
+                            child: Text("Municipal Rental",style:GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                        itemDashboard('Add Toll', CupertinoIcons.viewfinder_circle, Color(0xFFe1f5fe), Routes.MUNICIPAL_RENTAL_ADD_TOLL),
+                          itemDashboard('Pay Toll \n Rent', CupertinoIcons.search, Color(0xFFe1f5fe), Routes.MUNICIPAL_RENTAL_PAY_TOLL_RENT),
+                           itemDashboard('Collection \n Report', CupertinoIcons.doc_text_search, Color(0xFFe1f5fe), Routes.MUNICIPAL_RENTAL_TOLL_DAILY_REPORT),
+                          // itemDashboard('See All', CupertinoIcons.arrow_right, Colors.red.shade50, Routes.WATER_HOME_SCREEN),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
             // //CONTAINER OF TRADE
             // Container(
             //   margin: EdgeInsets.all(14.0),

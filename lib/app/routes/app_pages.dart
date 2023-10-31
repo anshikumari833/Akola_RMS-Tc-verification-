@@ -8,6 +8,12 @@ import '../modules/Drawer_Profile/bindings/drawer_profile_binding.dart';
 import '../modules/Drawer_Profile/views/drawer_profile_view.dart';
 import '../modules/Drawer_TermsOfUse/bindings/drawer_terms_of_use_binding.dart';
 import '../modules/Drawer_TermsOfUse/views/drawer_terms_of_use_view.dart';
+import '../modules/MunicipalRental_AddToll/bindings/municipal_rental_add_toll_binding.dart';
+import '../modules/MunicipalRental_AddToll/views/municipal_rental_add_toll_view.dart';
+import '../modules/MunicipalRental_PayTollRent/bindings/municipal_rental_pay_toll_rent_binding.dart';
+import '../modules/MunicipalRental_PayTollRent/views/municipalRentalPay(main)_view.dart';
+import '../modules/MunicipalRental_TollDailyReport/bindings/municipal_rental_toll_daily_report_binding.dart';
+import '../modules/MunicipalRental_TollDailyReport/views/municipal_rental_toll_daily_report_view.dart';
 import '../modules/Property_AddCluster/bindings/property_add_cluster_binding.dart';
 import '../modules/Property_AddCluster/views/property_add_cluster_view.dart';
 import '../modules/Property_Cluster/bindings/property_cluster_binding.dart';
@@ -248,7 +254,6 @@ class AppPages {
       page: () => const PropertyDailyTcReportView(),
       binding: PropertyDailyTcReportBinding(),
     ),
-
     GetPage(
       name: _Paths.DRAWER_ABOUT_US,
       page: () => const DrawerAboutUsView(),
@@ -268,6 +273,21 @@ class AppPages {
       name: _Paths.DRAWER_PROFILE,
       page: () => const DrawerProfileView(),
       binding: DrawerProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.MUNICIPAL_RENTAL_ADD_TOLL,
+      page: () => const MunicipalRentalAddTollView(),
+      binding: MunicipalRentalAddTollBinding(),
+    ),
+    GetPage(
+      name: _Paths.MUNICIPAL_RENTAL_PAY_TOLL_RENT,
+      page: () => const MunicipalRentalPayTollRentView(),
+      binding: MunicipalRentalPayTollRentBinding(),
+    ),
+    GetPage(
+      name: _Paths.MUNICIPAL_RENTAL_TOLL_DAILY_REPORT,
+      page: () => const MunicipalRentalTollDailyReportView(),
+      binding: MunicipalRentalTollDailyReportBinding(),
     ),
   ];
 }

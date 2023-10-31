@@ -386,7 +386,9 @@ class SerchedOwnersData {
   int? propertyId;
   int? safId;
   String? ownerName;
+  String? ownerMarathiName;
   String? guardianName;
+  String? guardianMarathiName;
   String? relationType;
   int? mobileNo;
   String? email;
@@ -407,7 +409,9 @@ class SerchedOwnersData {
         this.propertyId,
         this.safId,
         this.ownerName,
+        this.ownerMarathiName,
         this.guardianName,
+        this.guardianMarathiName,
         this.relationType,
         this.mobileNo,
         this.email,
@@ -428,7 +432,9 @@ class SerchedOwnersData {
     propertyId = json['property_id'];
     safId = int.tryParse(json['saf_id'].toString());
     ownerName = json['owner_name'];
+    ownerMarathiName = json['owner_name_marathi'];
     guardianName = json['guardian_name'];
+    guardianMarathiName = json['guardian_name_marathi'];
     relationType = json['relation_type'];
     mobileNo = int.tryParse(json['mobile_no'].toString());
     email = json['email'];

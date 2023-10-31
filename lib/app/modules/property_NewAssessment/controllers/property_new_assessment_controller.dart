@@ -13,6 +13,7 @@ import '../../../common/api_response.dart';
 import '../../../common/function.dart';
 import '../../Property_SearchProperty/controllers/SearchHolding_controller.dart';
 import '../../fieldVerification_pending_list/providers/field_verification_pending_list_provider.dart';
+import '../../home/views/home_view.dart';
 import '../providers/property_new_assessment_provider.dart';
 import '../views/Property_NA_FormSubmitPreview.dart';
 import '../views/property_NA_TaxCalculationForm.dart';
@@ -24,6 +25,29 @@ class PropertyNewAssessmentController extends GetxController {
   final GlobalKey<FormState> ownerDetailsFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> floorDetailsFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> extraDetailsFormKey = GlobalKey<FormState>();
+
+  // Helper function to validate all form keys
+  Map<GlobalKey<FormState>, String> validateAllForms() {
+    final Map<GlobalKey<FormState>, String> errors = {};
+    final List<GlobalKey<FormState>> formKeys = [
+      basicDetailsFormKey,
+      propertyDetailsFormKey,
+      // electricityDetailsFormKey,
+      ownerDetailsFormKey,
+      floorDetailsFormKey,
+      extraDetailsFormKey,
+    ];
+
+    for (var formKey in formKeys) {
+      if (formKey.currentState == null) {
+        errors[formKey] = "Form key is not associated with a form.";
+      } else if (!formKey.currentState!.validate()) {
+        errors[formKey] = "Form validation failed.";
+      }
+    }
+    return errors;
+  }
+
   //FOR PREFILL DATA FROM PAY PROPERTY TAX
   final PropertyPayPropertyTaxController payPropertyTaxController = Get.find();
   // Access the searched data by ID from payPropertyTaxController
@@ -37,7 +61,6 @@ class PropertyNewAssessmentController extends GetxController {
   var ruleSet1Data;
   var ruleSet2Data;
   var ruleSet3Data;
-
   var data;
   var safNo;
   var userID = '';
@@ -133,9 +156,23 @@ class PropertyNewAssessmentController extends GetxController {
   late TextEditingController chequeNoController;
   late TextEditingController chequeDateController;
   late TextEditingController remarksController;
-
+  var isLoading = false.obs;
   var isDataProcessing = false.obs;
 
+  FocusNode marathiFocusNode = FocusNode();
+  FocusNode guardianMarathiFocusNode = FocusNode();
+  String convertToMarathi(String inputKey) {
+    // Here, you would define a mapping from English characters to Marathi characters.
+    // This is just a simple example.
+    Map<String, String> marathiMapping = {
+      'a': 'अ',
+      'b': 'ब',
+      // Add more mapping as needed
+    };
+
+    // Convert the input key to Marathi if a mapping exists.
+    return marathiMapping[inputKey] ?? ''; // Return an empty string if not found.
+  }
 
   clearForm() {
     latePurchaseDateController.clear();
@@ -376,10 +413,10 @@ class PropertyNewAssessmentController extends GetxController {
   //ADD FLOOR DETAILS KEY
   var floorDataList = List<dynamic>.empty(growable: true).obs;
   //ADD FLOOR
-  var floorType ="".obs;
-  var floorUseType = "".obs;
-  var floorOccupancyType = "".obs;
-  var floorConstructionType = "".obs;
+  var floorType =[].obs;
+  var floorUseType = [].obs;
+  var floorOccupancyType = [].obs;
+  var floorConstructionType = [].obs;
   final floorBuiltUpController = [].obs;
   final floorDateFromController = [].obs;
   final floordateUptoController = [].obs;
@@ -388,10 +425,26 @@ class PropertyNewAssessmentController extends GetxController {
   //REMOVE FLOOR
   void removeFloor(int index) {
     remarkControllers.removeAt(index);
+    floorDataList.removeAt(index);
+    // floorType.value = "";
+    // floorUseType.value = "";
+    // floorOccupancyType.value = "";
+    // floorConstructionType.value = "";
+    floorBuiltUpController.removeAt(index);
+    floorDateFromController.removeAt(index);
+    floordateUptoController.removeAt(index);
   }
-  //DELETE FLOOR
+
   void deleteFloorData(int index) {
     floorDataList.removeAt(index);
+    // floorType.value = "";
+    // floorUseType.value = "";
+    // floorOccupancyType.value = "";
+    // floorConstructionType.value = "";
+    floorBuiltUpController.removeAt(index);
+    floorDateFromController.removeAt(index);
+    floordateUptoController.removeAt(index);
+    remarkControllers.removeAt(index);
   }
   //EDIT FLOOR
   void editFloorData(int index, Map<String, dynamic> newData) {
@@ -400,6 +453,11 @@ class PropertyNewAssessmentController extends GetxController {
   //ADD FLOOR
   void addFloor() {
     remarkControllers.add(TextEditingController());
+    // Add elements to the other observable lists
+    floorType.add(floorType.value);
+    floorUseType.add(floorUseType.value);
+    floorOccupancyType.add(floorOccupancyType.value);
+    floorConstructionType.add(floorConstructionType.value);
     floorBuiltUpController.add(TextEditingController());
     floorDateFromController.add(TextEditingController());
     floordateUptoController.add(TextEditingController());
@@ -410,46 +468,6 @@ class PropertyNewAssessmentController extends GetxController {
   }
 
 
-  // RxString marathiText = ''.obs;
-  //
-  // Future<void> convertToMarathi(String input) async {
-  //   final apiKey = 'YOUR_GOOGLE_API_KEY';
-  //   final url =
-  //       'https://inputtools.google.com/request?ime=transliteration_en_mr&num=1&cp=0&cs=0&ie=utf-8&oe=utf-8&app=jsapi&text=$input';
-  //
-  //   final response = await get(Uri.parse(url));
-  //   if (response.statusCode == 200) {
-  //     final jsonData = json.decode(response.body);
-  //     final marathiResult = jsonData[0]['result'][0][0]['translit'];
-  //     marathiText.value = marathiResult;
-  //   }
-  // }
-
-
-  // // Reactive state variables
-  // var inputText = ''.obs;
-  // var translatedText = ''.obs;
-  //
-  // Future<void> translateText(String apiKey, String text) async {
-  //   final url = 'https://translation.googleapis.com/language/translate/v2?key=$apiKey';
-  //   final headers = {'Content-Type': 'application/json'};
-  //   final body = json.encode({
-  //     'q': text,
-  //     'source': 'en',  // Source language (English)
-  //     'target': 'mr',  // Target language (Marathi)
-  //   });
-  //
-  //   final response = await http.post(Uri.parse(url), headers: headers, body: body);
-  //
-  //   if (response.statusCode == 200) {
-  //     final jsonData = json.decode(response.body);
-  //     final translated = jsonData['data']['translations'][0]['translatedText'];
-  //     // Update reactive state variables
-  //     translatedText.value = translated;
-  //   } else {
-  //     print('Translation API error: ${response.reasonPhrase}');
-  //   }
-  // }
 
   //ADD OWNERS DETAILS KEY
   var ownerDataList = List<dynamic>.empty(growable: true).obs;
@@ -460,9 +478,36 @@ class PropertyNewAssessmentController extends GetxController {
     ownersController.removeAt(index);
   }
   //DELETE OWNERS
+  // void deleteOwnerData(int index) {
+  //   ownerDataList.removeAt(index);
+  //
+  // }
+
   void deleteOwnerData(int index) {
+    // Remove the owner data at the specified index
     ownerDataList.removeAt(index);
+
+    // Remove the corresponding text field controllers and values
+    ownerNameController.removeAt(index);
+    ownerMarathiNameController.removeAt(index);
+    dobController.removeAt(index);
+    guardianNameController.removeAt(index);
+    guardianMarathiNameController.removeAt(index);
+    mobileNoController.removeAt(index);
+    aadharNoController.removeAt(index);
+    panNoController.removeAt(index);
+    emailController.removeAt(index);
+
+    // Remove the owner from the ownersController list
+    ownersController.removeAt(index);
+
+    // Remove the associated data in other variables
+    // gender.value = "";  // You may need to set the default value here.
+    // relation.value = "";
+    // isArmedForce.value = "";
+    // isSpeciallyAbled.value = "";
   }
+
   //EDIT OWNERS
   void editOwnerData(int index, Map<String, dynamic> newData) {
     ownerDataList[index] = newData;
@@ -478,12 +523,13 @@ class PropertyNewAssessmentController extends GetxController {
   final aadharNoController = [].obs;
   final panNoController = [].obs;
   final emailController = [].obs;
-  var gender ="".obs;
-  var relation = "".obs;
-  var isArmedForce ="".obs;
-  var isSpeciallyAbled = "".obs;
+  var gender = [].obs;
+  var relation = [].obs;
+  var isArmedForce = [].obs;
+  var isSpeciallyAbled = [].obs;
  //ADD OWNERS
   void addOwners() {
+
     ownersController.add(TextEditingController());
     ownerNameController.add(TextEditingController());
     ownerMarathiNameController.add(TextEditingController());
@@ -494,6 +540,10 @@ class PropertyNewAssessmentController extends GetxController {
     aadharNoController.add(TextEditingController());
     panNoController.add(TextEditingController());
     emailController.add(TextEditingController());
+    gender.add(gender.value);
+    relation.add(relation.value);
+    isArmedForce.add(isArmedForce.value);
+    isSpeciallyAbled.add(isSpeciallyAbled.value);
     // clear the values of the previous text fields
     ownerNameController.last.clear();
     ownerMarathiNameController.last.clear();
@@ -504,7 +554,6 @@ class PropertyNewAssessmentController extends GetxController {
     aadharNoController.last.clear();
     panNoController.last.clear();
     emailController.last.clear();
-
   }
 
   //data of tax calculation being stored
@@ -520,40 +569,49 @@ class PropertyNewAssessmentController extends GetxController {
   Future<void> TaxDescriptionForm() async {
     tax_fyearWiseTaxesList.clear();
     tax_floorsTaxesList.clear();
-    final isValid = newAssessmentFormKey.currentState!.validate();
-    if (!isValid) {
+    isLoading.value = true;
+    // Validate all forms
+    final Map<GlobalKey<FormState>, String> errors = validateAllForms();
+    if (errors.isNotEmpty) {
+      // Show error messages for each form key
+      errors.forEach((formKey, errorMessage) {
+        print("Validation Error for ${formKey.toString()} : $errorMessage");
+      });
+      isLoading.value = false;
       return;
     }
-    newAssessmentFormKey.currentState!.save();
 
+    // newAssessmentFormKey.currentState!.save();
     List<Map<String, dynamic>> floorDataList = [];
     for (int i = 0; i < remarkControllers.length; i++) {
       Map<String, dynamic> floorData = {
-        'floorNo': floorType.value.toString(),
-        'usageType': floorUseType.value.toString(),
-        'occupancyType': floorOccupancyType.value.toString(),
-        'constructionType': floorConstructionType.value.toString(),
-        'buildupArea': floorBuiltUpController[i].text,
-        'dateFrom': floorDateFromController[i].text,
-        'dateUpto': floordateUptoController[i].text,
+        'floorNo': floorType[i],
+        'usageType': floorUseType[i],
+        'occupancyType': floorOccupancyType[i],
+        'constructionType': floorConstructionType[i],
+        'buildupArea': floorBuiltUpController[i].text.toString(),
+        'dateFrom': floorDateFromController[i].text.toString(),
+        'dateUpto': floordateUptoController[i].text.toString(),
       };
       floorDataList.add(floorData);
     }
 
     List<Map<String, dynamic>> ownersDataList = [];
-    for (int i = 0; i < remarkControllers.length; i++) {
+    for (int i = 0; i < ownersController.length; i++) {
       Map<String, dynamic> ownerData = {
         'ownerName': ownerNameController[i].text,
-        'gender': gender.value.toString(),
+        'ownerMarathiName': ownerMarathiNameController[i].text,
+        'gender': gender[i],
         'dob': dobController[i].text,
         'guardianName': guardianNameController[i].text,
-        'relation': relation.value.toString(),
+        'guardianMarathiName': guardianMarathiNameController[i].text,
+        'relation': relation[i],
         'mobileNo': mobileNoController[i].text,
         'aadhar': aadharNoController[i].text,
         'pan':panNoController[i].text,
         'email':emailController[i].text,
-        'isArmedForce': isArmedForce.value,
-        'isSpeciallyAbled': isSpeciallyAbled.value,
+        'isArmedForce': isArmedForce[i],
+        'isSpeciallyAbled': isSpeciallyAbled[i],
       };
       ownersDataList.add(ownerData);}
 
@@ -615,9 +673,7 @@ class PropertyNewAssessmentController extends GetxController {
       'newfloors': floorDataList,
     });
     if(!result.error){
-
       //  condition in response data status
-
          tax_pendingYears = result.data['demandPendingYrs'].toString();
          tax_payableAmount = result.data['payableAmt'].toString();
          tax_rebateAmount = result.data['rebateAmt'].toString();
@@ -635,6 +691,8 @@ class PropertyNewAssessmentController extends GetxController {
          // grandTaxesList  contains data from grandTaxes
          Map<String, dynamic> grandTaxes = result.data['grandTaxes'];
          tax_grandTaxesList.add(grandTaxes);
+         isLoading.value = false;
+         Get.to(PropertyNATaxCalculationFormView());
       } else {
         Get.snackbar(
           'Oops!!!',
@@ -643,8 +701,7 @@ class PropertyNewAssessmentController extends GetxController {
           colorText: Colors.white,
         );
       }
-    isDataProcessing.value = false;
-    Get.to(PropertyNATaxCalculationFormView());
+    isLoading.value = false;
   }
 
 
@@ -670,7 +727,6 @@ class PropertyNewAssessmentController extends GetxController {
     APIResponse response = await PropertyNewAssessmentProvider().ulbDataToPrefill();
     // condition for response error
     if ( response.error == false) {
-
         Map<String, dynamic> responseData = Map<String, dynamic>.from(response.data);
         cityName =  responseData["city_name"].toString();
         stateName = responseData["name"].toString();
@@ -685,7 +741,6 @@ class PropertyNewAssessmentController extends GetxController {
           colorText: Colors.white,
         );
       }
-
       isDataProcessing.value = false;
     }
 
@@ -707,7 +762,26 @@ class PropertyNewAssessmentController extends GetxController {
   List<Map<String, dynamic>> saf_floorsTaxesList = [];
   List<Map<String, dynamic>> saf_fyearWiseTaxesList = [];
   List<Map<String, dynamic>> saf_grandTaxesList = [];
+
   Future<void> validateForm() async {
+    isLoading.value = true;
+    // Validate all forms
+    final Map<GlobalKey<FormState>, String> errors = validateAllForms();
+    if (errors.isNotEmpty) {
+      // Show error messages for each form key
+      errors.forEach((formKey, errorMessage) {
+        print("Validation Error for ${formKey.toString()} : $errorMessage");
+      });
+      isLoading.value = false;
+      return;
+    }
+    // // Call validateAllForms to validate all the form keys  //
+    // bool isValid = validateAllForms();
+    //     if (!isValid) {
+    //       isLoading.value = false;
+    //       return;
+    //     }
+
     // final isValid = newAssessmentFormKey.currentState!.validate();
     // if (!isValid) {
     //   return;
@@ -719,42 +793,55 @@ class PropertyNewAssessmentController extends GetxController {
     List<Map<String, dynamic>> floorDataList = [];
     for (int i = 0; i < remarkControllers.length; i++) {
       Map<String, dynamic> floorData = {
-        'floorNo': floorType.value.toString(),
-        'usageType': floorUseType.value.toString(),
-        'occupancyType': floorOccupancyType.value.toString(),
-        'constructionType': floorConstructionType.value.toString(),
-        'buildupArea': floorBuiltUpController[i].text,
-        'dateFrom': floorDateFromController[i].text,
-        'dateUpto': floordateUptoController[i].text,
+        'floorNo': floorType[i],
+        'usageType': floorUseType[i],
+        'occupancyType': floorOccupancyType[i],
+        'constructionType': floorConstructionType[i],
+        'buildupArea': floorBuiltUpController[i].text.toString(),
+        'dateFrom': floorDateFromController[i].text.toString(),
+        'dateUpto': floordateUptoController[i].text.toString(),
       };
       floorDataList.add(floorData);
     }
-
+    // List<Map<String, dynamic>> floorDataList = [];
+    // for (int i = 0; i < remarkControllers.length; i++) {
+    //   Map<String, dynamic> floorData = {
+    //     'floorNo': floorType[i].value.toString(),
+    //     'usageType': floorUseType[i].value.toString(),
+    //     'occupancyType': floorOccupancyType[i].value.toString(),
+    //     'constructionType': floorConstructionType[i].value.toString(),
+    //     'buildupArea': floorBuiltUpController[i].text.toString(),
+    //     'dateFrom': floorDateFromController[i].text.toString(),
+    //     'dateUpto': floordateUptoController[i].text.toString(),
+    //   };
+    //   floorDataList.add(floorData);
+    // }
     List<Map<String, dynamic>> ownersDataList = [];
-    for (int i = 0; i < remarkControllers.length; i++) {
+    for (int i = 0; i < ownersController.length; i++) {
       Map<String, dynamic> ownerData = {
         'ownerName': ownerNameController[i].text,
         'ownerNameMarathi': ownerMarathiNameController[i].text,
-        'guardianNameMarathi': guardianMarathiNameController[i].text,
-        'gender': gender.value.toString(),
+        'gender': gender[i],
         'dob': dobController[i].text,
         'guardianName': guardianNameController[i].text,
-        'relation': relation.value.toString(),
+        'guardianNameMarathi': guardianMarathiNameController[i].text,
+        'relation': relation[i],
         'mobileNo': mobileNoController[i].text,
         'aadhar': aadharNoController[i].text,
         'pan':panNoController[i].text,
         'email':emailController[i].text,
-        'isArmedForce': isArmedForce.value,
-        'isSpeciallyAbled': isSpeciallyAbled.value,
+        'isArmedForce': isArmedForce[i],
+        'isSpeciallyAbled': isSpeciallyAbled[i],
       };
       ownersDataList.add(ownerData);}
+
     var result = await PropertyNewAssessmentProvider().saveReAssessment({
       'assessmentType': assessmentType.value.toString(),
       'ward': oldWardNo.value,
       'newWard': newWardNo.value,
       'ownershipType': ownershipType.value,
       'propertyType': propertyType.value,
-      'apartmentId': appartment.value,
+      // 'apartmentId': appartment.value,
       'zone': zoneType.value,
       'dateOfPurchase': latePurchaseDateController.value.text,
       'khataNo': khataNoController.value.text,
@@ -806,9 +893,7 @@ class PropertyNewAssessmentController extends GetxController {
       'newfloors': floorDataList,
     });
     if(!result.error){
-
-      //  condition in response data status
-
+      // condition in response data status
         propertySafNo = result.data['safNo'].toString();
         propertySafId = result.data['safId'].toString();
         propertyApplyDate = result.data['applyDate'].toString();
@@ -829,7 +914,25 @@ class PropertyNewAssessmentController extends GetxController {
         // grandTaxesList  contains data from grandTaxes
         Map<String, dynamic> grandTaxes = result.data['calculatedTaxes']['grandTaxes'];
         saf_grandTaxesList.add(grandTaxes);
+        isLoading.value = false;
+        AwesomeDialog(
+          context: Get.context!,
+          dialogType: DialogType.success,
+          title: 'Success',
+          desc: 'Your property form has been submitted successfully.',
+          btnOkOnPress: () {
+            Get.to(PropertySubmittedFormView());
+          },
+        )..show();
       } else {
+      AwesomeDialog(
+        context: Get.context!,
+        dialogType: DialogType.error,
+        title: 'Error',
+        desc: result.errorMessage,
+        btnOkOnPress: () {Get.back();
+        },
+      )..show();
         Get.snackbar(
           'Oops!!!',
           result.errorMessage,
@@ -837,17 +940,7 @@ class PropertyNewAssessmentController extends GetxController {
           colorText: Colors.white,
         );
       }
-
-    isDataProcessing.value = false;
-    AwesomeDialog(
-      context: Get.context!,
-      dialogType: DialogType.success,
-      title: 'Success',
-      desc: 'Your property form has been submitted successfully.',
-      btnOkOnPress: () {
-        Get.to(PropertySubmittedFormView());
-      },
-    )..show();
+    isLoading.value = false;
   }
 
 
@@ -896,26 +989,25 @@ class PropertyNewAssessmentController extends GetxController {
       if(safReceipts1.data != null) {
         Map<String, dynamic> data = safReceipts1.data;
         ptransactionDate =  data["transactionDate"]?? '';
-        ptransactionNo =  data["transactionNo"] ==null ? '' : data["transactionNo"].toString();
-        papplicationNo =  data["applicationNo"] ==null ? '' : data["applicationNo"].toString();
-        pnewApplicationNo =  data["applicationNo"] ==null ? '' : data["applicationNo"].toString();
-        poldWardNo =  data["oldWardNo"] ==null ? '' : data["oldWardNo"].toString();
-        pcustomerName =  data["customerName"] ==null ? '' : data["customerName"].toString();
-        paddress =  data["address"] ==null ? '' : data["address"].toString();
-        ppaidFrom = data["paidFrom"] ==null ? '' : data["paidFrom"].toString();
-        ppaidUpto =  data["paidUpto"] ==null ? '' : data["paidUpto"].toString();
-        pdemandAmount = data["demandAmount"] ==null ? '' : data["demandAmount"].toString();
-        ptotalPenalty = data["totalPenalty"] ==null ? '' : data["totalPenalty"].toString();
-        ptotalRebate =  data["totalRebate"] ==null ? '' : data["totalRebate"].toString();
-        ptotalPaidAmount =  data["totalPaidAmount"] ==null ? '' : data["totalPaidAmount"].toString();
-        ppaymentMode =  data["paymentMode"] ==null ? '' : data["paymentMode"].toString();
-        ptcName =  data["tcName"] ==null ? '' : data["tcName"].toString();
-        ptcMobile =  data["tcMobile"] ==null ? '' : data["tcMobile"].toString();
+        ptransactionNo =  data["transactionNo"] == null ? '' : data["transactionNo"].toString();
+        papplicationNo =  data["applicationNo"] == null ? '' : data["applicationNo"].toString();
+        pnewApplicationNo =  data["applicationNo"] == null ? '' : data["applicationNo"].toString();
+        poldWardNo =  data["oldWardNo"] == null ? '' : data["oldWardNo"].toString();
+        pcustomerName =  data["customerName"] == null ? '' : data["customerName"].toString();
+        paddress =  data["address"] == null ? '' : data["address"].toString();
+        ppaidFrom = data["paidFrom"] == null ? '' : data["paidFrom"].toString();
+        ppaidUpto =  data["paidUpto"] == null ? '' : data["paidUpto"].toString();
+        pdemandAmount = data["demandAmount"] == null ? '' : data["demandAmount"].toString();
+        ptotalPenalty = data["totalPenalty"] == null ? '' : data["totalPenalty"].toString();
+        ptotalRebate =  data["totalRebate"] == null ? '' : data["totalRebate"].toString();
+        ptotalPaidAmount =  data["totalPaidAmount"] == null ? '' : data["totalPaidAmount"].toString();
+        ppaymentMode =  data["paymentMode"] == null ? '' : data["paymentMode"].toString();
+        ptcName =  data["tcName"] == null ? '' : data["tcName"].toString();
+        ptcMobile =  data["tcMobile"] == null ? '' : data["tcMobile"].toString();
       }
     } else {
       CommonUtils.showSnackBar('Could not Save', safReceipts1.errorMessage, Colors.red);
     }
-
     return true;
   }
 
@@ -943,12 +1035,12 @@ class PropertyNewAssessmentController extends GetxController {
       CommonUtils.showSnackBar('Success', response.errorMessage, Colors.blue);
       var data = response.data;
       paysafNo = data['basicDetails']['saf_no'];
-      payPropAddress= data['basicDetails']['prop_address'];
-      payOldWard= data['basicDetails']['old_ward_no'].toString();
-      payNewWard= data['basicDetails']['new_ward_no'].toString();
-      payPropType= data['basicDetails']['property_type'].toString();
-      payPropHoldingType= data['basicDetails']['holding_type'].toString();
-      payOwnerShipType= data['basicDetails']['ownership_type'].toString();
+      payPropAddress = data['basicDetails']['prop_address'];
+      payOldWard = data['basicDetails']['old_ward_no'].toString();
+      payNewWard = data['basicDetails']['new_ward_no'].toString();
+      payPropType = data['basicDetails']['property_type'].toString();
+      payPropHoldingType = data['basicDetails']['holding_type'].toString();
+      payOwnerShipType = data['basicDetails']['ownership_type'].toString();
       paydemandAmount = data['amounts'].toString();
       payTotalTax = data['amounts']['totalTax'].toString();
       payTotalOnePercPenalty = data['amounts']['totalOnePercPenalty'].toString();
@@ -958,13 +1050,10 @@ class PropertyNewAssessmentController extends GetxController {
       payPayableAmount = data['amounts']['payableAmount'].toString();
     }
     return true;
-
   }
 
   getPrintString1() {
     var retStr = "";
-    // retStr += " Payment Receipt\n" ;
-    // retStr += "===========================\n" ;
     retStr += "Date :" + ptransactionDate + "\n" ;
     retStr += "POS ID :" + 'xxxxxxxxxxxxx' + "\n" ;
     retStr += "Transaction No :" + ptransactionNo+ "\n" ;
@@ -973,7 +1062,6 @@ class PropertyNewAssessmentController extends GetxController {
     retStr += "Ward No :" + poldWardNo + "\n" ;
     retStr += "Citizen Name :" + pcustomerName.toString() + "\n" ;
     retStr += "Address :" + paddress.toString() + "\n" ;
-
     return retStr;
   }
 
@@ -1026,6 +1114,7 @@ class PropertyNewAssessmentController extends GetxController {
   late TextEditingController latitude1Controller = TextEditingController();
   late TextEditingController longitude2Controller = TextEditingController();
   late TextEditingController latitude2Controller = TextEditingController();
+
   //GEOTAGGING - TC
   Future<void> geotagging() async {
     String _img64Image1, _img64Image2, _img64Image3;
@@ -1071,6 +1160,7 @@ class PropertyNewAssessmentController extends GetxController {
           backgroundColor: Colors.redAccent,
           colorText: Colors.white,
         );
+        Get.to(HomeView());
       } else {
         Get.snackbar(
           'Oops!!!',
@@ -1080,8 +1170,11 @@ class PropertyNewAssessmentController extends GetxController {
         );
       }
       isDataProcessing(false);
-
   }
+
+
+
+
 
   void getImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(
@@ -1310,3 +1403,57 @@ class PropertyNewAssessmentController extends GetxController {
 
   void increment() => count.value++;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// RxString marathiText = ''.obs;
+//
+// Future<void> convertToMarathi(String input) async {
+//   final apiKey = 'YOUR_GOOGLE_API_KEY';
+//   final url =
+//       'https://inputtools.google.com/request?ime=transliteration_en_mr&num=1&cp=0&cs=0&ie=utf-8&oe=utf-8&app=jsapi&text=$input';
+//
+//   final response = await get(Uri.parse(url));
+//   if (response.statusCode == 200) {
+//     final jsonData = json.decode(response.body);
+//     final marathiResult = jsonData[0]['result'][0][0]['translit'];
+//     marathiText.value = marathiResult;
+//   }
+// }
+
+
+// // Reactive state variables
+// var inputText = ''.obs;
+// var translatedText = ''.obs;
+//
+// Future<void> translateText(String apiKey, String text) async {
+//   final url = 'https://translation.googleapis.com/language/translate/v2?key=$apiKey';
+//   final headers = {'Content-Type': 'application/json'};
+//   final body = json.encode({
+//     'q': text,
+//     'source': 'en',  // Source language (English)
+//     'target': 'mr',  // Target language (Marathi)
+//   });
+//
+//   final response = await http.post(Uri.parse(url), headers: headers, body: body);
+//
+//   if (response.statusCode == 200) {
+//     final jsonData = json.decode(response.body);
+//     final translated = jsonData['data']['translations'][0]['translatedText'];
+//     // Update reactive state variables
+//     translatedText.value = translated;
+//   } else {
+//     print('Translation API error: ${response.reasonPhrase}');
+//   }
+// }

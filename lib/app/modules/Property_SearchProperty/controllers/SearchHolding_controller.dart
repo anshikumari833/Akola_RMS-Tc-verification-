@@ -214,6 +214,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     chequeNoController = TextEditingController();
     chequeDateController = TextEditingController();
     remarksController = TextEditingController();
+    partPaymentAmountController = TextEditingController();
     const platform = MethodChannel("com.amcakola.tc_verification_app/com.pinelabs.masterapp");
     platform. setMethodCallHandler((call) async {
       if (call.method == 'handleResponse') {
@@ -260,7 +261,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -300,7 +301,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -348,7 +349,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         final Map<String, dynamic> payload = {
           "Detail": paymentDetail,
           "Header": {
-            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
             "MethodId": "1001",
             "UserId": "1234",
             "VersionNo": "1.0",
@@ -404,7 +405,7 @@ class PropertyPayPropertyTaxController extends GetxController {
         shouldHandlePaymentResponse.value = false;
         final Map<String, dynamic> payload = {
           "Header": {
-            "ApplicationId": "8a555650d06c407e97bc73fc7d69a673",
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
             "UserId": "user1234",
             "MethodId": "1002",
             "VersionNo": "1.0"
@@ -427,6 +428,8 @@ class PropertyPayPropertyTaxController extends GetxController {
                 "PrinterWidth":24,
                 "DataToPrint": "Date: $transactionDate\n"
                     "Time: $transactionTime\n"
+                    "Book No: $bookNo\n"
+                    "Receipt Book No: $receiptNo\n"
                     "   ********************\n"
                     "Desc: $accountDescription\n"
                     "Zone: $ReceiptZoneNo\n"
@@ -436,7 +439,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                     "Tax Ow. Name: $customerName\n"
                     "Address: $ReceiptAddress\n"
                     "   ********************\n"
-                    "Transaction No.: $transactionNo\n"
+                    "Trans No.: $transactionNo\n"
                     "Paid Upto: $paidUpto\n"
                     "Mode: $paymentMode\n"
                     "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Bank Name: $bankName\n"}"
@@ -453,7 +456,6 @@ class PropertyPayPropertyTaxController extends GetxController {
                     "TC Name: $tcName\n"
                     "Mobile No: $tcMobile\n"
               },
-
               {
                 "PrintDataType": "0",
                 "PrinterWidth":24,
@@ -495,6 +497,7 @@ class PropertyPayPropertyTaxController extends GetxController {
   void handlePaymentResponse(String response) {
     try {
       final Map<String, dynamic> responseData = jsonDecode(response);
+       //Storing pinelab response
        if (shouldHandlePaymentResponse.value) {
          SenddPinelabResponse(responseData);
       }
@@ -660,6 +663,9 @@ class PropertyPayPropertyTaxController extends GetxController {
 
   //DEMAND- DETAIL
   Future<void> getDemandDetail(propertyId,type) async {
+
+    isPaymentInProgress.value = false;
+
     // Clear the previous data when fetching data for a different propertyId
    //  demandError = false;
    //  demandList = [];
@@ -683,8 +689,8 @@ class PropertyPayPropertyTaxController extends GetxController {
     if (response.error == false) {
       Map<String, dynamic> responseData = response.data;
       paymentStatus.value = nullToNA(responseData['paymentStatus'].toString());
-     demandList.value = List<Map<String, dynamic>>.from(responseData['demandList']);
-     grandTaxes.value = Map<String, dynamic>.from(responseData['grandTaxes']);
+      demandList.value = List<Map<String, dynamic>>.from(responseData['demandList']);
+      grandTaxes.value = Map<String, dynamic>.from(responseData['grandTaxes']);
       arrear.value = nullToNA(responseData['arrear']);
       arrearPayableAmt.value = nullToNA(responseData['arrearPayableAmt']);
       payableAmount.value = nullToNA(responseData['payableAmt'].toString());
@@ -765,10 +771,57 @@ class PropertyPayPropertyTaxController extends GetxController {
   var tcMobile = "";
   var website = "";
   var tollFreeNo = "";
+  var tranId = "";
+  var bookNo = "";
+  var receiptNo = "";
+
   List<Map<String, dynamic>> penaltyRebatesList = [];
   List<Widget> penaltyRebateWidgets = [];
-  Future<void> getPaymentReceipt(tranId) async {
-    APIResponse response = await SearchHoldingProvider().PropPaymentReceip(tranId);
+
+  Future<void> getPaymentReceipt(printTranId) async {
+    tranId = printTranId.toString();
+    departmentSection = "";
+    accountDescription = "";
+    transactionDate = "";
+    transactionNo = "";
+    transactionTime = "";
+    applicationNo = "";
+    customerName = "";
+    mobileNo = "";
+    receiptWard = "";
+    ReceiptAddress  = "";
+    paidFrom = "";
+    paidFromQtr = "";
+    paidUpto = "";
+    paidUptoQtr = "";
+    paymentMode = "";
+    bankName = "";
+    branchName = "";
+    chequeNo = "";
+    chequeDate = "";
+    demandAmount = "";
+    taxDetails = "";
+    totalRebate = "";
+    arrearAmount = "";
+    totalPenalty = "";
+    ReceiptUlbId = "";
+    ReceiptWardNo = "";
+    ReceiptZoneNo = "";
+    ReceiptnewWardNo = "";
+    towards = "";
+    propertyNo = "";
+    tax_description = "";
+    totalPaidAmount = "";
+    paidAmtInWords = "";
+    tcName = "";
+    tcMobile = "";
+    website = "";
+    tollFreeNo = "";
+    bookNo = "";
+    receiptNo = "";
+
+
+    APIResponse response = await SearchHoldingProvider().PropPaymentReceip(printTranId);
     if (response.error == false) {
       var data = response.data;
       // Extract penalty amounts and store them in the controller's list
@@ -815,6 +868,8 @@ class PropertyPayPropertyTaxController extends GetxController {
       tcMobile = data['receiptDtls']['tcMobile'].toString();
       website = data['receiptDtls']['ulbDetails']['website'].toString();
       tollFreeNo = data['receiptDtls']['ulbDetails']['toll_free_no'].toString();
+      bookNo = data['receiptDtls']['bookNo'].toString();
+      receiptNo = data['receiptDtls']['receiptNo'].toString();
     } else {
       Get.snackbar(
         'Oops!!!',
@@ -829,9 +884,12 @@ class PropertyPayPropertyTaxController extends GetxController {
 
   //PAY DEMAND TAX
 //PAYMENT
+  var demand_PaymentMethod = "".obs;
   var demand_PaymentMode = "".obs;
+
   var tranNo = "";
-  var tranId = "";
+  // var tranId = "";
+  late TextEditingController partPaymentAmountController;
   late TextEditingController bankNameController;
   late TextEditingController branchNameController;
   late TextEditingController chequeNoController;
@@ -880,12 +938,15 @@ class PropertyPayPropertyTaxController extends GetxController {
       }
   }
 
-  //PAYMENT (CASH,CHEQUE,DD)
+  //PHASE - 2 (version 2)(CODE OF DEMAND PAYMENT WITH PART PAYMENT)
+  // PAYMENT (CASH,CHEQUE,DD)
   Future<void> DemandTaxPayment({String type = ''}) async {
     showLoadingDialog(true);
     isPaymentInProgress.value = true;
+    tranNo = '';
+    tranId = '';
     var file1;
-   if(type != 'cash') {
+    if(type != 'cash') {
       String _img64Image1;
       final bytes1 = await _selectedFile1!.readAsBytes();
       _img64Image1 = base64Encode(bytes1);
@@ -897,100 +958,102 @@ class PropertyPayPropertyTaxController extends GetxController {
       await file1.writeAsBytes(bytes01);
     }
     var result = await SearchHoldingProvider().DemandTaxDuePayment(demand_PropertyId, {
-        'paymentMode': demand_PaymentMode.value.toString(),
-        'bankName': bankNameController.value.text,
-        'branchName': branchNameController.value.text,
-        'chequeNo': chequeNoController.value.text,
-        'chequeDate': chequeDateController.value.text,
-        'isArrear': isCheckboxChecked.value,
-        'imagePath[0]': file1,
-      });
-      // // Close the loading dialog here
-      // Get.back();
-        showLoadingDialog(false);
-      if (result.error == false) {
-        paymentSuccessful.value = true;
-        var data = result.data;
-        tranNo = data['TransactionNo'].toString();
-        tranId = data['transactionId'].toString();
-        // Clear the temporary image file
-        if (file1 != null && await file1.exists()) {
-          await file1.delete();
-        }
-        await getDemandDetail(demand_PropertyId, "demand");
-        showLoadingDialog(false);
-        Get.dialog(
-          barrierDismissible: false,
-          AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.task_alt_rounded, size: 85.0, color: Colors.green),
-                SizedBox(height: 7,),
-                Text(
-                  result.errorMessage,
-                  style: GoogleFonts.publicSans(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.green,
-                  ),
+      'paymentType': demand_PaymentMethod.value.toString(),
+      'paidAmount': partPaymentAmountController.value.text,
+      'paymentMode': demand_PaymentMode.value.toString(),
+      'bankName': bankNameController.value.text,
+      'branchName': branchNameController.value.text,
+      'chequeNo': chequeNoController.value.text,
+      'chequeDate': chequeDateController.value.text,
+      'imagePath[0]': file1,
+    });
+    // // Close the loading dialog here
+    // Get.back();
+    showLoadingDialog(false);
+    if (result.error == false) {
+      paymentSuccessful.value = true;
+      var data = result.data;
+      tranNo = data['TransactionNo'].toString();
+      tranId = data['transactionId'].toString();
+      // Clear the temporary image file
+      if (file1 != null && await file1.exists()) {
+        await file1.delete();
+      }
+      await getDemandDetail(demand_PropertyId, "demand");
+      showLoadingDialog(false);
+      Get.dialog(
+        barrierDismissible: false,
+        AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.task_alt_rounded, size: 85.0, color: Colors.green),
+              SizedBox(height: 7,),
+              Text(
+                result.errorMessage,
+                style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.green,
                 ),
-                SizedBox(height: 5,),
-              ],
-            ),
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      clearAllFields();
-                      Get.back();
-                      Get.back();
-                      Get.back();
-                    },
-                    child: Text("Close"),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await getPaymentReceipt(tranId);
-                      // Get.to(PrintReceipt(),
-                      //     transition: Transition.rightToLeft,
-                      //     duration: Duration(seconds: 1),
-                      //     arguments: [
-                      //       { 'print_string1': getPrintString1()},
-                      //       { 'print_string2': getPrintString2()},
-                      //       { 'print_string3': getPrintString3()},
-                      //     ],
-                      //     preventDuplicates: true);
-                      openPrintPOS();
-                    },
-                    child: Text("Print Receipt"),
-                  ),
-                ],
               ),
+              SizedBox(height: 5,),
             ],
           ),
-        );
-        Get.snackbar(
-          '😁😁',
-          result.errorMessage,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-      } else {
-        showLoadingDialog(false);
-        Get.snackbar(
-          'Oops!!!',
-          result.errorMessage,
-          backgroundColor: Colors.redAccent,
-          colorText: Colors.white,
-        );
-      }
-      isPaymentInProgress.value = false;
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    clearAllFields();
+                    Get.back();
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text("Close"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await getPaymentReceipt(tranId);
+                    // Get.to(PrintReceipt(),
+                    //     transition: Transition.rightToLeft,
+                    //     duration: Duration(seconds: 1),
+                    //     arguments: [
+                    //       { 'print_string1': getPrintString1()},
+                    //       { 'print_string2': getPrintString2()},
+                    //       { 'print_string3': getPrintString3()},
+                    //     ],
+                    //     preventDuplicates: true);
+                    openPrintPOS();
+                  },
+                  child: Text("Print Receipt"),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      Get.snackbar(
+        '😁😁',
+        result.errorMessage,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } else {
+      showLoadingDialog(false);
+      Get.snackbar(
+        'Oops!!!',
+        result.errorMessage,
+        backgroundColor: Colors.redAccent,
+        colorText: Colors.white,
+      );
+    }
+    isPaymentInProgress.value = false;
 
   }
+
 
 
 
@@ -1150,6 +1213,7 @@ class PropertyPayPropertyTaxController extends GetxController {
       "BillingRefNo":billRefNo.toString(),
       'amount': payableAmount.toString(),
       'applicationId': demand_PropertyId.toString(),
+      //Sending pinelab response to backed
       "pinelabResponseBody": responseData});
     showLoadingDialog(false);
     if (result.error == false) {
@@ -1239,7 +1303,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     isPaymentInProgress.value = false;
   }
 
-  //PRINT RECEIPT
+  //PRINT RECEIPT(BLUETOOTH THERMAL PRINTER)
   getPrintString1() {
     var retStr = "";
     retStr += "( Tax Receipt )\n";
@@ -1288,6 +1352,8 @@ class PropertyPayPropertyTaxController extends GetxController {
     chequeNoController.clear();
     chequeDateController.clear();
     remarksController.clear();
+    partPaymentAmountController.clear();
+    demand_PaymentMethod.value = "";
     demand_PaymentMode.value = "";
     isCheckboxChecked.value = false;
   }
@@ -1453,3 +1519,124 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
   void increment() => count.value++;
 }
+
+
+
+
+
+// PHASE - 1(version 1)
+// CODE OF PAYMENT (CASH,CHEQUE,DD)
+// Future<void> DemandTaxPayment({String type = ''}) async {
+//   showLoadingDialog(true);
+//   isPaymentInProgress.value = true;
+//   tranNo = '';
+//   tranId = '';
+//   var file1;
+//  if(type != 'cash') {
+//     String _img64Image1;
+//     final bytes1 = await _selectedFile1!.readAsBytes();
+//     _img64Image1 = base64Encode(bytes1);
+//     // Create temporary files to save base64 encoded image data
+//     // final tempDir = await getTemporaryDirectory();
+//     final bytes01 = base64Decode(_img64Image1);
+//     final directory = await getApplicationDocumentsDirectory();
+//     file1 = await File('${directory.path}/image1.png').create();
+//     await file1.writeAsBytes(bytes01);
+//   }
+//   var result = await SearchHoldingProvider().DemandTaxDuePayment(demand_PropertyId, {
+//       'paymentMode': demand_PaymentMode.value.toString(),
+//       'bankName': bankNameController.value.text,
+//       'branchName': branchNameController.value.text,
+//       'chequeNo': chequeNoController.value.text,
+//       'chequeDate': chequeDateController.value.text,
+//       'isArrear': isCheckboxChecked.value,
+//       'imagePath[0]': file1,
+//     });
+//     // // Close the loading dialog here
+//     // Get.back();
+//       showLoadingDialog(false);
+//     if (result.error == false) {
+//       paymentSuccessful.value = true;
+//       var data = result.data;
+//       tranNo = data['TransactionNo'].toString();
+//       tranId = data['transactionId'].toString();
+//       // Clear the temporary image file
+//       if (file1 != null && await file1.exists()) {
+//         await file1.delete();
+//       }
+//       await getDemandDetail(demand_PropertyId, "demand");
+//       showLoadingDialog(false);
+//       Get.dialog(
+//         barrierDismissible: false,
+//         AlertDialog(
+//           content: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Icon(Icons.task_alt_rounded, size: 85.0, color: Colors.green),
+//               SizedBox(height: 7,),
+//               Text(
+//                 result.errorMessage,
+//                 style: GoogleFonts.publicSans(
+//                   fontWeight: FontWeight.w700,
+//                   fontSize: 16,
+//                   fontStyle: FontStyle.normal,
+//                   color: Colors.green,
+//                 ),
+//               ),
+//               SizedBox(height: 5,),
+//             ],
+//           ),
+//           actions: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     clearAllFields();
+//                     Get.back();
+//                     Get.back();
+//                     Get.back();
+//                   },
+//                   child: Text("Close"),
+//                 ),
+//                 ElevatedButton(
+//                   onPressed: () async {
+//                     await getPaymentReceipt(tranId);
+//                     // Get.to(PrintReceipt(),
+//                     //     transition: Transition.rightToLeft,
+//                     //     duration: Duration(seconds: 1),
+//                     //     arguments: [
+//                     //       { 'print_string1': getPrintString1()},
+//                     //       { 'print_string2': getPrintString2()},
+//                     //       { 'print_string3': getPrintString3()},
+//                     //     ],
+//                     //     preventDuplicates: true);
+//                     openPrintPOS();
+//                   },
+//                   child: Text("Print Receipt"),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       );
+//       Get.snackbar(
+//         '😁😁',
+//         result.errorMessage,
+//         backgroundColor: Colors.green,
+//         colorText: Colors.white,
+//       );
+//     } else {
+//       showLoadingDialog(false);
+//       Get.snackbar(
+//         'Oops!!!',
+//         result.errorMessage,
+//         backgroundColor: Colors.redAccent,
+//         colorText: Colors.white,
+//       );
+//     }
+//     isPaymentInProgress.value = false;
+//
+// }
+//
+//

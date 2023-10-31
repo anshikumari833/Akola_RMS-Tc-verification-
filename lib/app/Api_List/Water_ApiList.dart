@@ -13,4 +13,8 @@ class water_ApiEndpoints {
   static const String generatePaymentReceipt = '/api/water/consumer/demand/generate-payment-receipt';
   //Payment
   static const String payDemand = '/api/water/consumer/offline-demand-payment';
+  // Generate Demand
+  static const String generateDemand = '/api/water/admin/consumer/generate-demand';
+  // Calculate Demand
+  static const String calculateDemand = '/api/water/consumer/calculate-month-demand';
 }

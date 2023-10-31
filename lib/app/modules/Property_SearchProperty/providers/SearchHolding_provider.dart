@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../../common/api_response.dart';
 import '../../../common/string.dart';
+import 'package:http/http.dart' as http;
 
 class SearchHoldingProvider extends GetConnect {
   @override
@@ -79,23 +80,56 @@ class SearchHoldingProvider extends GetConnect {
         {"data": response.body, "error": response.status.hasError});
   }
 
-  //PAYMENT(CASH - CHEQUE- DD -NEFT)
-  Future<APIResponse> DemandTaxDuePayment(demand_PropertyId,Map data) async {
-    String url = Strings.base_url + '/api/property/offline-payment-holding';
-      final response = await post(url, {
-        "id": demand_PropertyId,
-        "deviceId": "01",
-        "paymentMode": data["paymentMode"],
-        "chequeDate": data["chequeDate"],
-        "bankName": data["bankName"],
-        "branchName": data["branchName"],
-        "chequeNo": data["chequeNo"],
-        "isArrear": data["isArrear"],
-      }, headers: Strings.headers,
-      );
-    return APIResponse.fromJson(
-        {"data": response.body, "error": response.status.hasError});
+  // //PAYMENT(CASH - CHEQUE- DD -NEFT)
+  // Future<APIResponse> DemandTaxDuePayment(demand_PropertyId,Map data) async {
+  //   String url = Strings.base_url + '/api/property/offline-payment-holding';
+  //     final response = await post(url, {
+  //       "id": demand_PropertyId,
+  //       "deviceId": "01",
+  //       "paymentMode": data["paymentMode"],
+  //       "chequeDate": data["chequeDate"],
+  //       "bankName": data["bankName"],
+  //       "branchName": data["branchName"],
+  //       "chequeNo": data["chequeNo"],
+  //       "isArrear": data["isArrear"],
+  //     }, headers: Strings.headers,
+  //     );
+  //   return APIResponse.fromJson(
+  //       {"data": response.body, "error": response.status.hasError});
+  // }
+
+//PHASE - 2 (version 2)(CODE OF DEMAND PAYMENT WITH PART PAYMENT)
+  // PAYMENT (CASH,CHEQUE,DD)
+  Future<APIResponse> DemandTaxDuePayment(demand_PropertyId, Map data) async {
+    String url = Strings.base_url + '/api/property/v2/offline-payment-holding';
+
+    // Create a multipart request
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers.addAll(Strings.headers);
+    // Add text fields to the request
+    request.fields['id'] = demand_PropertyId;
+    request.fields['deviceId'] = '01';
+    request.fields['paymentType'] = data["paymentType"];
+    request.fields['paidAmount'] = data["paidAmount"];
+    request.fields['paymentMode'] = data["paymentMode"];
+    request.fields['chequeDate'] = data["chequeDate"];
+    request.fields['bankName'] = data["bankName"];
+    request.fields['branchName'] = data["branchName"];
+    request.fields['chequeNo'] = data["chequeNo"];
+    // Add the image file to the request
+    if (data["imagePath[0]"] != null) {
+      final imageFile = data["imagePath[0]"];
+      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+    }
+    // Send the request
+    final response = await request.send();
+    // Process the response and return the APIResponse
+    final responseStream = await response.stream.bytesToString();
+    final responseStatus = response.statusCode;
+
+    return APIResponse.fromJson({"data": responseStream, "error": false});
   }
+
 
 
   //PINLAB PAYMENT ONLINE(PAYMENT REF NO )

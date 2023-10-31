@@ -274,6 +274,7 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                                             _buildDetailsRow('Guardian Name', user_Details['guardian_name'].toString()),
                                             _buildDetailsRow('Address', user_Details['address'].toString()),
                                             _buildDetailsRow('Bill Amount', user_Details['amount'].toString()),
+                                            _buildDetailsRow('Status', user_Details['payment_status'].toString()),
                                           ],
                                         ),
                                       ),
@@ -283,7 +284,7 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                                           //BASIC DETAILS
                                           TextButton(onPressed:  ()
                                           async{
-                                            controller.clearAllFields();
+                                            // controller.clearAllFields();
                                             controller.isDataProcessing.value = true;
                                             await controller.searchConsumerById(controller.searchedconsumerData[index]['id']);
                                             Get.to(WaterConsumerDetailView(),
@@ -291,42 +292,46 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                                             );
                                             controller.isDataProcessing.value = false;
                                           },
-                                              child: Text('Consumer Detail')),
+                                              child: Text(' Consumer \n    Detail')),
                                           //DEMAND DETAILS
                                           TextButton(onPressed:  () async{
-                                            controller.clearAllFields();
-                                            controller.isDataProcessing.value = true;
-                                            // await controller.getDemandDetail(propertyDetails['id'],'demand');
-                                            // Get.to(PropertyDemandDetailsView(),
-                                            //   preventDuplicates: true,
-                                            // );
-                                            controller.isDataProcessing.value = false;
-                                          }, child: Text('Meter Detail')),
-                                        ],),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          //DEMAND DETAILS
-                                          TextButton(onPressed:  () async{
-                                            controller.clearAllFields();
+                                            // controller.clearAllFields();
                                             controller.isDataProcessing.value = true;
                                             await controller.getConsumerDemandDetail(controller.searchedconsumerData[index]['id']);
+                                            await controller.searchConsumerById(controller.searchedconsumerData[index]['id']);
                                             Get.to(WaterDemandDetailView(),
                                               preventDuplicates: true,
                                             );
                                             controller.isDataProcessing.value = false;
-                                          }, child: Text('Demand Detail')),
+                                          }, child: Text(' Demand \n   Detail')),
                                           //PAYMENT HISTORY
                                           TextButton(onPressed:  () async{
-                                            controller.clearAllFields();
+                                            // controller.clearAllFields();
                                             controller.isDataProcessing.value = true;
                                             await controller.getPaymentHistoryDetail(controller.searchedconsumerData[index]['id']);
-                                              Get.to(WaterPaymentHistoryView(),
+                                            Get.to(WaterPaymentHistoryView(),
                                               preventDuplicates: true,
                                             );
                                             controller.isDataProcessing.value = false;
-                                          }, child: Text('Payment History'))
-                                        ],)
+                                          }, child: Text(' Payment \n  History')),
+
+                                          // //METER DETAILS
+                                          // TextButton(onPressed:  () async{
+                                          //   controller.clearAllFields();
+                                          //   controller.isDataProcessing.value = true;
+                                          //   // await controller.getDemandDetail(propertyDetails['id'],'demand');
+                                          //   // Get.to(PropertyDemandDetailsView(),
+                                          //   //   preventDuplicates: true,
+                                          //   // );
+                                          //   controller.isDataProcessing.value = false;
+                                          // }, child: Text('Meter Detail')),
+                                        ],),
+                                      SizedBox(height: 6,)
+                                      // Row(
+                                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      //   children: [
+                                      //
+                                      //   ],)
                                     ],
                                   ),
                                 ),

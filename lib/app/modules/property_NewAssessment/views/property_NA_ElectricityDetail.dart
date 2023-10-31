@@ -18,7 +18,7 @@ class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentControl
       appBar: AssessmentAppbar(),
       body: SingleChildScrollView(
         child: Form(
-          // key: controller.electricityDetailsFormKey,
+           // key: controller.electricityDetailsFormKey,
           child: Column(
             children: [
               //ELECTRICITY & WATER DETAILS
@@ -55,8 +55,7 @@ class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentControl
                           // Update the checkbox state when it's clicked
                           controller.isCheckboxChecked.value = value ?? false;
                         },
-                        value: controller.isCheckboxChecked
-                            .value, // Assign the checkbox state to its value
+                        value: controller.isCheckboxChecked.value,
                       ),
                       Expanded(
                         child: Text(
@@ -71,7 +70,7 @@ class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentControl
               Obx(() => Visibility(
                     visible: controller.isCheckboxChecked.value,
                     child: Visibility(
-                      visible: controller.isCheckboxChecked.value, // Show or hide the widget based on checkbox state
+                      visible: controller.isCheckboxChecked.value,
                       child:  Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Container(
@@ -324,8 +323,7 @@ class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentControl
                                             }
                                           },
                                           onChanged: (value) {
-                                            controller.electricityConsumer.value =
-                                                value.toString();
+                                            controller.electricityConsumer.value = value.toString();
                                           },
                                         ),
                                       ),
@@ -706,7 +704,7 @@ class PropertyElectricityDetailView extends GetView<PropertyNewAssessmentControl
                       child: Text('Save & next'))
                 ],
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: 80,),
             ],
           ),
         ),

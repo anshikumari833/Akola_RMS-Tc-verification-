@@ -126,6 +126,21 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                               },
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: Row(
+                              children: [
+                                Icon(CupertinoIcons.info_circle_fill,size: 12,color: Colors.red,),
+                                Text(' Select Zone to get Ward',
+                                  style: GoogleFonts.literata(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                      fontStyle: FontStyle.normal,
+                                  color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
                           // ZONE TYPE
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -209,65 +224,12 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                               },
                             ),
                           ),),
-                          // Padding(
-                          //   padding: const EdgeInsets.all(8.0),
-                          //   child: DropdownButtonFormField2(
-                          //     decoration: InputDecoration(
-                          //       filled: true,
-                          //       fillColor: Colors.grey[100],
-                          //       contentPadding: EdgeInsets.zero,
-                          //       enabledBorder: UnderlineInputBorder(
-                          //         borderRadius: BorderRadius.circular(5),
-                          //         borderSide: BorderSide(
-                          //           color: Color(0xff263238),
-                          //           width: 0.1,
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     isExpanded: true,
-                          //     hint: const Text('Select',
-                          //       style: TextStyle(fontSize: 14, color: Colors.grey),),
-                          //     icon: const Icon(
-                          //       Icons.arrow_drop_down,
-                          //       color: Colors.black45,
-                          //     ),
-                          //     iconSize: 30,
-                          //     buttonHeight: 40,
-                          //     buttonPadding: EdgeInsets.only(left: 20, right: 25, bottom: 10),
-                          //     buttonElevation: 2,
-                          //     itemPadding: EdgeInsets.only(left: 25, right: 25),
-                          //     dropdownMaxHeight: 250,
-                          //     dropdownWidth: 320,
-                          //     dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(5),),
-                          //     dropdownElevation: 8,
-                          //     scrollbarRadius: Radius.circular(40),
-                          //     scrollbarThickness: 5,
-                          //     scrollbarAlwaysShow: true,
-                          //     items: controller.zoneList.map((zone) {
-                          //       return DropdownMenuItem(
-                          //         value: zone["id"].toString(),
-                          //         child:
-                          //         Text(zone["zone_name"].toString()),
-                          //       );
-                          //     }).toList(),
-                          //     validator: (value) {
-                          //       if (value == null) {
-                          //         return 'Please Select Zone';
-                          //       }
-                          //     },
-                          //     onChanged: (value) async{
-                          //       await controller.getWardByZone(zoneId: value.toString());
-                          //       controller.zoneType.value = value.toString(); // Update the selected zone in your controller
-                          //     },
-                          //   ),
-                          // ),
                           //NEW WARD
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Icon(CupertinoIcons.info_circle_fill,size: 15,),
-                                Text(' New Ward No',
+                                Text(' Ward No',
                                   style: GoogleFonts.literata(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 14,
@@ -344,63 +306,6 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                               },
                             ),
                           ),),
-                          // Obx(() {
-                          //   if (controller.isDataProcessing == true) {
-                          //     return Center(
-                          //       child: CircularProgressIndicator(),
-                          //     );
-                          //   } else {
-                          //     return Padding(
-                          //       padding: const EdgeInsets.all(8.0),
-                          //       child: DropdownButtonFormField2(
-                          //         decoration: InputDecoration(
-                          //           filled: true,
-                          //           fillColor: Colors.grey[100],
-                          //           contentPadding: EdgeInsets.zero,
-                          //           enabledBorder: UnderlineInputBorder(
-                          //             borderRadius: BorderRadius.circular(5),
-                          //             borderSide: BorderSide(
-                          //               color: Color(0xff263238),
-                          //               width: 0.1,
-                          //             ),
-                          //           ),
-                          //         ),
-                          //         isExpanded: true,
-                          //         hint: const Text('Select',
-                          //           style: TextStyle(fontSize: 14, color: Colors.grey),),
-                          //         icon: const Icon(
-                          //           Icons.arrow_drop_down,
-                          //           color: Colors.black45,
-                          //         ),
-                          //         iconSize: 30,
-                          //         buttonHeight: 40,
-                          //         buttonPadding: EdgeInsets.only(left: 20, right: 25, bottom: 10),
-                          //         buttonElevation: 2,
-                          //         itemPadding: EdgeInsets.only(left: 25, right: 25),
-                          //         dropdownMaxHeight: 250,
-                          //         dropdownWidth: 330,
-                          //         dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(5),),
-                          //         dropdownElevation: 1,
-                          //         scrollbarRadius: Radius.circular(40),
-                          //         scrollbarThickness: 5,
-                          //         scrollbarAlwaysShow: true,
-                          //         items: controller.WardListByZone.map((ward) {
-                          //           return DropdownMenuItem(
-                          //             value: ward["id"].toString(),
-                          //             child: Text(ward["ward_name"].toString()),);}).toList(),
-                          //         validator: (value) {
-                          //           if (value == null) {
-                          //             return 'Please Select New Ward No';
-                          //           }
-                          //         },
-                          //         onChanged: (value) {
-                          //           controller.newWardNo.value = '';
-                          //           controller.newWardNo.value = value.toString();
-                          //         },
-                          //       ),
-                          //     );
-                          //   }
-                          // }),
                           //OWNERSHIP TYPE
 
                           // value: GetStorage().read("assessmentType") != 'new' ? "" : null,
@@ -564,6 +469,85 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                               );
                             }
                           }),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Category',
+                                  style: GoogleFonts.literata(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.normal),
+                                ),
+                                Text(" *", style: TextStyle(color: Colors.red),),
+                              ],
+                            ),
+                          ),
+                          Obx(() {
+                            if (controller.isDataProcessing == true) {
+                              return Center(
+                                child: Center(child:SpinKitThreeBounce(
+                                  color: Colors.blue,
+                                  size: 20.0,
+                                ),),
+                              );
+                            } else {
+                              return   Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: DropdownButtonFormField2(
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: Colors.grey[100],
+                                    contentPadding: EdgeInsets.zero,
+                                    enabledBorder: UnderlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: BorderSide(
+                                        color: Color(0xff263238),
+                                        width: 0.1,
+                                      ),
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  hint: const Text('Select',
+                                    style: TextStyle(fontSize: 14, color: Colors.grey),),
+                                  icon: const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Colors.black45,
+                                  ),
+                                  iconSize: 30,
+                                  buttonHeight: 40,
+                                  buttonPadding: EdgeInsets.only(left: 20, right: 25, bottom: 10),
+                                  buttonElevation: 2,
+                                  itemPadding: EdgeInsets.only(left: 25, right: 25),
+                                  dropdownMaxHeight: 250,
+                                  dropdownWidth: 320,
+                                  dropdownDecoration: BoxDecoration(borderRadius: BorderRadius.circular(5),),
+                                  dropdownElevation: 8,
+                                  scrollbarRadius: Radius.circular(40),
+                                  scrollbarThickness: 5,
+                                  scrollbarAlwaysShow: true,
+                                  items: controller.categoryList.map((zone) {
+                                    return DropdownMenuItem(
+                                      value: zone["id"].toString(),
+                                      child:
+                                      Text(zone["category"].toString()),
+                                    );
+                                  }).toList(),
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return 'Please Select Category';
+                                    }
+                                  },
+                                  onChanged: (value) async{
+                                    controller.categoryType.value = value.toString();
+                                  },
+                                ),
+                              );
+                            }
+                          }),
+
+                          SizedBox(height:2,),
                         ],
                       ),
                     ),
@@ -582,17 +566,17 @@ class PropertyNewAssessmentView extends GetView<PropertyNewAssessmentController>
                   ElevatedButton(
                     child: Text('Save & next'),
                     onPressed: () {
-                     Get.to(PropertyPropertyDetailView());
+                      // Get.to(PropertyPropertyDetailView());
                       // Get.to(PropertyNATaxCalculationFormView());
-                      // if (controller.basicDetailsFormKey.currentState!.validate()) {
-                      //   // Form is valid, navigate to the next screen
-                      //   Get.to(PropertyPropertyDetailView());
-                      // }
+                      if (controller.basicDetailsFormKey.currentState!.validate()) {
+                        // Form is valid, navigate to the next screen
+                        Get.to(PropertyPropertyDetailView());
+                      }
                     },
                   ),
                 ],
               ),
-              SizedBox(height: 40,),
+              SizedBox(height: 80,),
             ],
           ),
         ),

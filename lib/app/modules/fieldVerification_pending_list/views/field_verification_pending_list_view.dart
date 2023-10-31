@@ -108,8 +108,7 @@ class FieldVerificationPendingListView
                               isExpanded: true,
                               hint: const Text(
                                 'Select',
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
+                                style:  TextStyle(fontSize: 16, color: Colors.grey),
                               ),
                               icon: const Icon(
                                 Icons.arrow_drop_down,
@@ -144,34 +143,27 @@ class FieldVerificationPendingListView
                                 ),
                               ],
                               onChanged: (value) {
-                                controller.selectedFilterOption =
-                                    value.toString();
+                                controller.selectedFilterOption = value.toString();
                               },
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      SizedBox(height: 10,),
                       Column(
                         children: [
                           Container(
                             child: TextField(
-                              onChanged: (value) =>
-                                  controller.searchQuery = value.toString(),
+                              onChanged: (value) => controller.searchQuery = value.toString(),
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: Colors.grey[100],
-                                contentPadding:
-                                    EdgeInsets.only(left: 35, right: 10),
+                                contentPadding: EdgeInsets.only(left: 35, right: 10),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(70),
                                     borderSide: BorderSide.none),
-                                suffixIcon:
-                                    Icon(Icons.search, color: Colors.grey),
-                                hintStyle:
-                                    TextStyle(fontSize: 16, color: Colors.grey),
+                                suffixIcon: Icon(Icons.search, color: Colors.grey),
+                                hintStyle: TextStyle(fontSize: 16, color: Colors.grey),
                                 hintText: "Search...",
                               ),
                             ),
@@ -189,11 +181,9 @@ class FieldVerificationPendingListView
                             onPressed: () {
                               controller.getUserDetails(1, performSearch: true);
                             },
-
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    10.0), // Adjust the value to change the button's roundness
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
                             ),
                             child: Text('Search'),
@@ -212,8 +202,7 @@ class FieldVerificationPendingListView
                 ),
                 Container(
                   child: Padding(
-                    padding:
-                        EdgeInsets.only(top: 5, bottom: 0, left: 30, right: 10),
+                    padding: EdgeInsets.only(top: 5, bottom: 0, left: 30, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -243,7 +232,6 @@ class FieldVerificationPendingListView
                                     // color: Color(0xFF454646),
                                   ),
                                 )),
-
                             // SizedBox(width: 5.0),
                             IconButton(
                               icon: Icon(Icons.keyboard_double_arrow_right),
@@ -290,8 +278,7 @@ class FieldVerificationPendingListView
                         onTap: () async {
                           controller.resetValues();
                           controller.isLoading.value = true;
-                          await controller.verificationByUserID(
-                              controller.verifyuser[index]['vId']);
+                          await controller.verificationByUserID(controller.verifyuser[index]['vId']);
                           // switch(GetStorage().read('isTc')){
                           //   case true:{
                           //     if(controller.verifyuser[index]['atcVerified'] == 'true'){
@@ -334,12 +321,10 @@ class FieldVerificationPendingListView
                                         height: 165.53,
                                         decoration: BoxDecoration(
                                             color: const Color(0xFFEEF4F6),
-                                            borderRadius:
-                                                BorderRadius.circular(15),
+                                            borderRadius: BorderRadius.circular(15),
                                             boxShadow: const [
                                               BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.06),
+                                                color: Color.fromRGBO(0, 0, 0, 0.06),
                                                 offset: Offset(0, 4),
                                                 blurRadius: 4,
                                                 spreadRadius: 0,
@@ -354,7 +339,6 @@ class FieldVerificationPendingListView
                                               fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w600,
                                               color: Colors.blue,
-                                              // (0xFF8E9193)
                                             ),
                                           ),
                                         ),
@@ -364,7 +348,6 @@ class FieldVerificationPendingListView
                                     //  ===============================
                                     //  card details
                                     //  ===============================
-
                                     Positioned(
                                       bottom: 40.35,
                                       child: Container(
@@ -372,12 +355,10 @@ class FieldVerificationPendingListView
                                         width: size.width * 0.92,
                                         decoration: BoxDecoration(
                                             color: Color(0xFFFFFFFF),
-                                            borderRadius:
-                                                BorderRadius.circular(15),
+                                            borderRadius: BorderRadius.circular(15),
                                             boxShadow: const [
                                               BoxShadow(
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.02),
+                                                color: Color.fromRGBO(0, 0, 0, 0.02),
                                                 offset: Offset(0, 4),
                                                 blurRadius: 4,
                                                 spreadRadius: 0,
@@ -390,99 +371,40 @@ class FieldVerificationPendingListView
                                             Expanded(
                                               flex: 1,
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                 children: [
                                                   Container(
                                                     padding: EdgeInsets.all(0),
-                                                    child: Image.asset(
-                                                        "assets/images/image_1.png"),
+                                                    child: Image.asset("assets/images/image_1.png"),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 19.27),
+                                              padding: const EdgeInsets.symmetric(vertical: 19.27),
                                               child: VerticalDivider(
                                                 width: 16,
-                                                color: Color.fromRGBO(
-                                                    69, 70, 70, 0.2),
+                                                color: Color.fromRGBO(69, 70, 70, 0.2),
                                               ),
                                             ),
                                             Expanded(
                                               flex: 3,
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 4),
+                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: [
-                                                    if (controller.verifyuser[index]['atcVerified'] == 'true' &&
-                                                        controller.verifyuser[
-                                                                    index][
-                                                                'utcVerified'] ==
-                                                            'true' &&
-                                                        controller.verifyuser[
-                                                                    index]
-                                                                ['geoTagged'] ==
-                                                            'false')
-                                                      _buildDetailsRow(
-                                                          'Backwarded ',
-                                                          "for Geo-Tagging"),
-                                                    if (controller.verifyuser[index]['atcVerified'] == 'true' &&
-                                                        controller.verifyuser[
-                                                                    index][
-                                                                'utcVerified'] ==
-                                                            'true' &&
-                                                        controller.verifyuser[
-                                                                    index]
-                                                                ['geoTagged'] ==
-                                                            'true')
-                                                      _buildDetailsRow(
-                                                          'You had backwarded',
-                                                          "for Geo-Tagging"),
-                                                    _buildDetailsRow(
-                                                        'SAF No -',
-                                                        (controller.verifyuser[index]['vSafno'] == null ? '' : controller.verifyuser[index]['vSafno'].toString())),
-                                                    _buildDetailsRow(
-                                                        'Name -',
-                                                        capitalizeFirstLetter(
-                                                            controller.verifyuser[
-                                                                    index][
-                                                                'vOwnerName'])),
-                                                    _buildDetailsRow(
-                                                        'Ward No. -',
-                                                        capitalizeFirstLetter(
-                                                            controller.verifyuser[
-                                                                    index]
-                                                                ['vwardNo'])),
-                                                    _buildDetailsRow(
-                                                        'Assessment Type -',
-                                                        capitalizeFirstLetter(
-                                                            controller.verifyuser[
-                                                                    index][
-                                                                'vAssessmentType'])),
-                                                    _buildDetailsRow(
-                                                        'Mobile No -',
-                                                        capitalizeFirstLetter(
-                                                            controller.verifyuser[
-                                                                    index]
-                                                                ['vMobileNo'])),
-                                                    _buildDetailsRow(
-                                                        'Property Type -',
-                                                        capitalizeFirstLetter(
-                                                            controller.verifyuser[
-                                                                    index][
-                                                                'vPropertyType'])),
+                                                    if (controller.verifyuser[index]['atcVerified'] == 'true' && controller.verifyuser[index]['utcVerified'] == 'true' && controller.verifyuser[index]['geoTagged'] == 'false')
+                                                      _buildDetailsRow('Backwarded ', "for Geo-Tagging"),
+                                                    if (controller.verifyuser[index]['atcVerified'] == 'true' && controller.verifyuser[index]['utcVerified'] == 'true' && controller.verifyuser[index]['geoTagged'] == 'true')
+                                                      _buildDetailsRow('You had backwarded', "for Geo-Tagging"),
+                                                    _buildDetailsRow('SAF No -', (controller.verifyuser[index]['vSafno'] == null ? '' : controller.verifyuser[index]['vSafno'].toString())),
+                                                    _buildDetailsRow('Name -', capitalizeFirstLetter(controller.verifyuser[index]['vOwnerName'])),
+                                                    _buildDetailsRow('Ward No. -', capitalizeFirstLetter(controller.verifyuser[index]['vwardNo'])),
+                                                    _buildDetailsRow('Assessment Type -', capitalizeFirstLetter(controller.verifyuser[index]['vAssessmentType'])),
+                                                    _buildDetailsRow('Mobile No -', capitalizeFirstLetter(controller.verifyuser[index]['vMobileNo'])),
+                                                    _buildDetailsRow('Property Type -', capitalizeFirstLetter(controller.verifyuser[index]['vPropertyType'])),
                                                   ],
                                                 ),
                                               ),

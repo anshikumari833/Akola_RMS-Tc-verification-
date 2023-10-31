@@ -14,6 +14,7 @@ import '../controllers/SearchHolding_controller.dart';
 import '../search_propert_model.dart';
 import 'SearchHolding_BasicDetails_view.dart';
 import 'SearchHolding_DemandDetails_view.dart';
+import 'SearchHolding_PayDemand(PartPayment)_view.dart';
 import 'SearchHolding_PaymentHistory_view.dart';
 import 'SearchHolding_PropertyDetails_view.dart';
 
@@ -668,7 +669,8 @@ class PropertyPayPropertyTaxView extends GetView<PropertyPayPropertyTaxControlle
                                               controller.isDataProcessing.value = true;
                                               if(nullToNA(GetStorage().read('assessmentType')) == "NA"){
                                                 await controller.getDemandDetail(propertyDetails['id'],'demand');
-                                                Get.to(PropertyDemandDetailsView(),
+                                                Get.to(DemandPartPaymentView(),
+                                                    // Get.to(PropertyDemandDetailsView(),
                                                   preventDuplicates: true,
                                                 );
                                                 controller.isDataProcessing.value = false;

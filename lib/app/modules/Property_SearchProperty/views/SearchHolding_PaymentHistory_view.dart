@@ -57,7 +57,10 @@ class PropertyPaymentHistoryView
                   children: [
                     _buildDetailsRow('Holding No', controller.searchedDataById[0].holdingNo),
                     _buildDetailsRow('Property No', controller.searchedDataById[0].propertyNo),
-                    _buildDetailsRow('Applicant Name', controller.searchedDataById[0].applicantName),
+                    _buildDetailsRow('Owner Name', controller.searchedDataById[0].owners[0].ownerName.toString() ?? ''),
+                    _buildDetailsRow('Owner Name(In Marathi)', controller.searchedDataById[0].owners[0].ownerMarathiName.toString() ?? ''),
+                    _buildDetailsRow('Applicant Name',  controller.searchedDataById[0].applicantName),
+                    _buildDetailsRow('Applicant Name(In Marathi)',  controller.searchedDataById[0].applicantMarathi),
                     _buildDetailsRow('Property Address', controller.searchedDataById[0].propAddress),
                     _buildDetailsRow('Zone',controller.searchedDataById[0].zoneName.toString() ),
                     _buildDetailsRow('Ward No',  controller.searchedDataById[0].wardNo.toString()),
