@@ -34,8 +34,8 @@ import '../modules/Property_WaterHarvestingFieldVerify/bindings/property_water_h
 import '../modules/Property_WaterHarvestingFieldVerify/views/property_water_harvesting_field_verify_view.dart';
 import '../modules/SplashScreen/bindings/splash_screen_binding.dart';
 import '../modules/SplashScreen/views/splash_screen_view.dart';
-import '../modules/advertisement_HomeScreen/bindings/advertisement_home_screen_binding.dart';
-import '../modules/advertisement_HomeScreen/views/advertisement_home_screen_view.dart';
+import '../modules/Water_DailyCollectionReport/bindings/water_daily_collection_report_binding.dart';
+import '../modules/Water_DailyCollectionReport/views/water_DailyCollection(MainPage)_view.dart';
 import '../modules/fieldVerification_pending_list/bindings/field_verification_pending_list_binding.dart';
 import '../modules/fieldVerification_pending_list/views/field_verification_pending_list_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -108,11 +108,6 @@ class AppPages {
       name: _Paths.TRADE_HOME_SCREEN,
       page: () => const TradeHomeScreenView(),
       binding: TradeHomeScreenBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADVERTISEMENT_HOME_SCREEN,
-      page: () => AdvertisementHomeScreenView(),
-      binding: AdvertisementHomeScreenBinding(),
     ),
     GetPage(
       name: _Paths.FIELD_VERIFICATION_PENDING_LIST,
@@ -288,6 +283,11 @@ class AppPages {
       name: _Paths.MUNICIPAL_RENTAL_TOLL_DAILY_REPORT,
       page: () => const MunicipalRentalTollDailyReportView(),
       binding: MunicipalRentalTollDailyReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.WATER_DAILY_COLLECTION_REPORT,
+      page: () => const WaterDailyCollectionReportView(),
+      binding: WaterDailyCollectionReportBinding(),
     ),
   ];
 }

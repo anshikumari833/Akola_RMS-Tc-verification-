@@ -14,6 +14,15 @@ class DrawerProfileController extends GetxController {
   late TextEditingController newPasswordController;
 
 
+
+  var id = "".obs;
+  var name= "".obs;
+  var user_name= "".obs;
+  var mobile= "".obs;
+  var email= "".obs;
+  var ulb_id= "".obs;
+  var ulb_name= "".obs;
+
   final count = 0.obs;
   @override
   void onInit() {
@@ -32,13 +41,7 @@ class DrawerProfileController extends GetxController {
   void onReady() {
     super.onReady();
   }
-  var id = "".obs;
-  var name= "".obs;
-  var user_name= "".obs;
-  var mobile= "".obs;
-  var email= "".obs;
-  var ulb_id= "".obs;
-  var ulb_name= "".obs;
+
   Future<void> submit_UserDetailData() async {
     isLoading.value = true;
     var result = await DrawerProfileProvider().getUserDetails();
@@ -66,32 +69,6 @@ class DrawerProfileController extends GetxController {
     }
     isLoading.value = false;
   }
-
-
-  // Future<void> submit_UserDetailData() async {
-  //   var result = await DrawerProfileProvider().UserDetailData({
-  //     "name":userNameController.text.toString(),
-  //     "moblieNo":mobileNoController.text.toString(),
-  //     "email":emailController.text.toString(),
-  //     "dateOfBirth":dobController.text.toString(),
-  //     "gender":genderController.text.toString(),
-  //   });
-  //   if (result.error == false) {
-  //     Get.snackbar(
-  //       '😁😁',
-  //       result.errorMessage,
-  //       backgroundColor: Colors.green,
-  //       colorText: Colors.white,
-  //     );
-  //   } else {
-  //     Get.snackbar(
-  //       'Oops!!!',
-  //       result.errorMessage,
-  //       backgroundColor: Colors.redAccent,
-  //       colorText: Colors.white,
-  //     );
-  //   }
-  // }
 
   Future<void> submit_UserPassword() async {
     isLoading.value = true;
@@ -130,3 +107,34 @@ class DrawerProfileController extends GetxController {
 
   void increment() => count.value++;
 }
+
+
+
+
+
+
+
+// Future<void> submit_UserDetailData() async {
+//   var result = await DrawerProfileProvider().UserDetailData({
+//     "name":userNameController.text.toString(),
+//     "moblieNo":mobileNoController.text.toString(),
+//     "email":emailController.text.toString(),
+//     "dateOfBirth":dobController.text.toString(),
+//     "gender":genderController.text.toString(),
+//   });
+//   if (result.error == false) {
+//     Get.snackbar(
+//       '😁😁',
+//       result.errorMessage,
+//       backgroundColor: Colors.green,
+//       colorText: Colors.white,
+//     );
+//   } else {
+//     Get.snackbar(
+//       'Oops!!!',
+//       result.errorMessage,
+//       backgroundColor: Colors.redAccent,
+//       colorText: Colors.white,
+//     );
+//   }
+// }

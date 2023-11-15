@@ -750,7 +750,6 @@ class PendVerificationFormView extends GetView<TcFieldVerificationController> {
                                       ],
                                     ),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -819,8 +818,7 @@ class PendVerificationFormView extends GetView<TcFieldVerificationController> {
                                     //radio button
                                     //============================
                                     Obx(() {
-                                      final verificationStatus =
-                                          controller.NewWardCheckStatus.value;
+                                      final verificationStatus = controller.NewWardCheckStatus.value;
                                       final isWrong = verificationStatus == '1';
                                       final isEnabled = isWrong;
                                       return Column(

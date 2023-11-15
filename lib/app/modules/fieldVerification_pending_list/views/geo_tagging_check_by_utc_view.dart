@@ -451,8 +451,8 @@ class GeoTaggingCheckByUtcView extends GetView<TcFieldVerificationController> {
                                                 // Strings.base_url + '/'  + controller.tcRightRelativeImage.toString() + '/' +
                                                 controller.tcRightImage.toString(),
                                                 fit: BoxFit.cover,
-                                                width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
-                                                height: MediaQuery.of(context).size.height * 0.3, // 30% of screen height
+                                                width: MediaQuery.of(context).size.width * 0.8,
+                                                height: MediaQuery.of(context).size.height * 0.3,
                                               ),
                                             ),
                                           ],
@@ -605,8 +605,8 @@ class GeoTaggingCheckByUtcView extends GetView<TcFieldVerificationController> {
                                                 // Strings.base_url + '/'  + controller.tcLeftRelativeImage.toString() + '/' +
                                                 controller.tcLeftImage.toString(),
                                                 fit: BoxFit.cover,
-                                                width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
-                                                height: MediaQuery.of(context).size.height * 0.3, // 30% of screen height
+                                                width: MediaQuery.of(context).size.width * 0.8,
+                                                height: MediaQuery.of(context).size.height * 0.3,
                                               ),
                                             ),
                                           ],

@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/drawer_faq_controller.dart';
 
+/**
+ * | Created By: ANSHI KUMARI
+ */
 class DrawerFaqView extends GetView<DrawerFaqController> {
   const DrawerFaqView({Key? key}) : super(key: key);
   @override
@@ -16,18 +19,24 @@ class DrawerFaqView extends GetView<DrawerFaqController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Top Queries',style:GoogleFonts.inter(
-                fontSize:20,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),),
+                'Top Queries',
+                style: GoogleFonts.inter(
+                  fontSize: 20,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+              ),
             ),
-             SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -172,7 +181,8 @@ class DrawerFaqView extends GetView<DrawerFaqController> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: '6)	How can I view and print the collection report?\n',
+                          text:
+                              '6)	How can I view and print the collection report?\n',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,

@@ -61,8 +61,9 @@ android {
 //        minSdkVersion flutter.minSdkVersion
         minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 4
-        versionName "2.2"
+//        1,2,3,4,
+        versionCode 5
+        versionName "2.3"
     }
 
     buildTypes {
@@ -82,3 +83,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+
+

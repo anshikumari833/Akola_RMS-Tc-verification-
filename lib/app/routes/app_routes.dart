@@ -53,6 +53,8 @@ abstract class Routes {
       _Paths.MUNICIPAL_RENTAL_PAY_TOLL_RENT;
   static const MUNICIPAL_RENTAL_TOLL_DAILY_REPORT =
       _Paths.MUNICIPAL_RENTAL_TOLL_DAILY_REPORT;
+  static const WATER_DAILY_COLLECTION_REPORT =
+      _Paths.WATER_DAILY_COLLECTION_REPORT;
 }
 
 abstract class _Paths {
@@ -105,4 +107,5 @@ abstract class _Paths {
       '/municipal-rental-pay-toll-rent';
   static const MUNICIPAL_RENTAL_TOLL_DAILY_REPORT =
       '/municipal-rental-toll-daily-report';
+  static const WATER_DAILY_COLLECTION_REPORT = '/water-daily-collection-report';
 }

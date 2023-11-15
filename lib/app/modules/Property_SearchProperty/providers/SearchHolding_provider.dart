@@ -136,9 +136,11 @@ class SearchHoldingProvider extends GetConnect {
   Future<APIResponse> Pinelab_PaymentOnline(Map data) async {
     String url = Strings.base_url + '/api/property/v1/get-billref-no';
     final response = await post(url, {
-    "propId":data["propId"],
-    "isArrear":data["isArrear"],
-    "paymentMode":data["paymentMode"]
+      "propId":data["propId"],
+      // "isArrear":data["isArrear"],
+      "paymentMode":data["paymentMode"],
+      "paymentType":data["paymentType"],
+      "paidAmount":data["paidAmount"]
     }, headers: Strings.headers,);
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
@@ -150,8 +152,8 @@ class SearchHoldingProvider extends GetConnect {
     final response = await post(url, {
       "billRefNo" : data["BillingRefNo"],
       "amount" : data["amount"],
-     "applicationId":data["applicationId"],
-     "paymentType":"Property",
+      "applicationId":data["applicationId"],
+      "paymentType":"Property",
       "pinelabResponseBody":data["pinelabResponseBody"],
       }, headers: Strings.headers,);
     return APIResponse.fromJson(

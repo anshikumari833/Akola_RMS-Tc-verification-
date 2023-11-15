@@ -5,7 +5,19 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.android.FlutterActivity
 
+/**
+ * | Created By: ANSHI KUMARI
+ * | Description:Handles communication with a Point of Sale (POS) device through a Method Channel.
+ * | Fields:
+ * |   - `CHANNEL`: Method channel identifier for communication with Flutter and POS device.
+ * |   - `REQUEST_CODE`: Request code for `startActivityForResult`.
+ * | Methods:
+ * |   - `configureFlutterEngine`: Configures the Flutter engine, sets up the MethodChannel, and handles method calls to send payment intents.
+ * |   - `onActivityResult`: Handles the result of the activity, invokes the Flutter method to handle the POS response.
+ */
+
 class MainActivity: FlutterActivity() {
+    // Method channel identifier for communication between Flutter and POS device.
     private val CHANNEL = "com.amcakola.tc_verification_app/com.pinelabs.masterapp"
     private val REQUEST_CODE = 1004 // request code for startActivityForResult
 
@@ -15,6 +27,7 @@ class MainActivity: FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
             .setMethodCallHandler { call, result ->
                 if (call.method == "sendPaymentIntent") {
+                    // Extract payload JSON from Flutter method call arguments.
                     val payloadJson = call.arguments as String
 
                     val intent = Intent("com.pinelabs.masterapp.HYBRID_REQUEST")
@@ -23,8 +36,10 @@ class MainActivity: FlutterActivity() {
                     intent.putExtra("packageName", "com.amcakola.tc_verification_app")
 
                     try {
+                        // Start the activity for result, expecting a response.
                         startActivityForResult(intent, REQUEST_CODE)
                     } catch (e: Throwable) {
+                        // Handle any errors and report them back to Flutter.
                         result.error("SEND_INTENT_ERROR", e.message, null)
                     }
                 } else {

@@ -56,219 +56,222 @@ class DemandPymentView extends GetView<WaterConsumerSearchController> {
                   size: 70.0,
                 );
               }
-              return  Container(
-                margin: EdgeInsets.all(14.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 1,
-                      offset: Offset(0, 1),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    SizedBox(height: 10),
-                    CustomDropdownFormField(
-                      headingText: 'Select Month Upto',
-                      items: controller.consumerDemands.value.map<DropdownMenuItem<String>>((demand) {
-                        return DropdownMenuItem<String>(
-                          value: demand['demand_upto'],
-                          child: Text(demand['demand_upto']),
-                        );
-                      }).toList(),
-                      hintText: 'Select an option',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select an option';
-                        }
-                        return null;
-                      },
-                      onChanged: (DemandPayment) {
-                        controller.selectDateUpto.value = DemandPayment.toString();
-                        controller.getCalculationDemandDetails();
-                      },
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 100,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                              child: Text(
-                                'Total Demand',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 14,
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                              child: TextFormField(
-                                controller: TextEditingController(text:controller.Calculation_totalPayAmount.value),
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  filled: true,
-                                  fillColor: Colors.grey[200],
-                                  disabledBorder: InputBorder.none,
-
-                                ),
-                                enabled: false,
-                                // initialValue: controller.Calculation_totalPayAmount.value,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'This field is required';
-                                  }
-                                  return '';
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+              return  Form(
+                key: controller.fullPaymentFormkey,
+                child: Container(
+                  margin: EdgeInsets.all(14.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
                       ),
-                    ),
-                    // hintText: controller.Calculation_totalPayAmount.value,hintStyle: TextStyle(color:Colors.black),
-                    CustomDropdownFormField(
-                      headingText: 'Payment Method',
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Cash"),
-                          value: "Cash",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("Cheque"),
-                          value: "Cheque",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("DD"),
-                          value: "DD",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("NEFT"),
-                          value: "Neft",
-                        ),
-                        // DropdownMenuItem(
-                        //   child: Text("ONILNE"),
-                        //   value: "ONLINE",
-                        // ),
-                      ],
-                      hintText: 'Select an option',
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select an option';
-                        }
-                        return null;
-                      },
-                      onChanged: (DemandPayment) {
-                         controller.demand_PaymentMode.value = DemandPayment.toString();
-                      },
-                    ),
-                    // 🔴 🔴 🔴 IN CASE OF CHEQUE/DD
-                    if (controller.demand_PaymentMode.value == 'Cheque'||controller.demand_PaymentMode.value == 'DD')
-                      Container(
-                        child: Column(
-                          children: [
-                            //BANK NAME
-                            CustomTextField(
-                              controller: controller.bankNameController,
-                              headingText: "Bank Name", hintText: "Enter Bank Name",validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field is required';
-                              }
-                              return "";
-                            },),
-                            //BRANCH NAME
-                            CustomTextField(
-                              controller: controller.branchNameController,
-                              headingText: "Branch Name", hintText: "Enter Branch Name",validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field is required';
-                              }
-                              return "";
-                            },),
-                            //CHEQUE /DD NO
-                            CustomTextField(
-                              controller: controller.chequeNoController,
-                              headingText: "Cheque/DD No", hintText: "Enter Cheque/DD No",validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'This field is required';
-                              }
-                              return "";
-                            },),
-                            //CHEQUE DD/DATE
-                            CustomDateTimeField(
-                              headingText: 'Cheque/DD Date ',
-                              controller: controller.chequeDateController,
-                              decoration: InputDecoration(
-                                labelText: 'Date',
-                                border: OutlineInputBorder(),
-                              ),
-                              format: DateFormat("yyyy-MM-dd"),
-                              onShowPicker: (context, currentValue) {
-                                return showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime(1900),
-                                    initialDate: currentValue ?? DateTime.now(),
-                                    lastDate: DateTime(2100));
-                              },
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Please select a date and time';
-                                }
-                                // Add more validation if needed
-                                return null;
-                              },
-                            ),
-                            // SizedBox(height: 30),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      CustomDropdownFormField(
+                        headingText: 'Select Month Upto',
+                        items: controller.consumerDemands.value.map<DropdownMenuItem<String>>((demand) {
+                          return DropdownMenuItem<String>(
+                            value: demand['demand_upto'],
+                            child: Text(demand['demand_upto']),
+                          );
+                        }).toList(),
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an option';
+                          }
+                          return null;
+                        },
+                        onChanged: (DemandPayment) {
+                          controller.selectDateUpto.value = DemandPayment.toString();
+                          controller.getCalculationDemandDetails();
+                        },
+                      ),
 
-                            // SizedBox(height:30,),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 100,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                                child: Text(
+                                  'Total Demand',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                child: TextFormField(
+                                  controller: TextEditingController(text:controller.Calculation_totalPayAmount.value),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    filled: true,
+                                    fillColor: Colors.grey[200],
+                                    disabledBorder: InputBorder.none,
+
+                                  ),
+                                  enabled: false,
+                                  // initialValue: controller.Calculation_totalPayAmount.value,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'This field is required';
+                                    }
+                                    return '';
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    CustomTextField(
-                      controller: controller.remarksController,
-                      headingText: "Remarks", hintText: "Enter value",validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field is required';
-                      }
-                      return "";
-                    },),
-                    SizedBox(height:10,),
-                    Container(
-                      padding: const EdgeInsets.all(6),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      // hintText: controller.Calculation_totalPayAmount.value,hintStyle: TextStyle(color:Colors.black),
+                      CustomDropdownFormField(
+                        headingText: 'Payment Method',
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("Cash"),
+                            value: "Cash",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Cheque"),
+                            value: "Cheque",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("DD"),
+                            value: "DD",
+                          ),
+                          DropdownMenuItem(
+                            child: Text("NEFT"),
+                            value: "Neft",
+                          ),
+                          // DropdownMenuItem(
+                          //   child: Text("ONILNE"),
+                          //   value: "ONLINE",
+                          // ),
+                        ],
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an option';
+                          }
+                          return null;
+                        },
+                        onChanged: (DemandPayment) {
+                           controller.demand_PaymentMode.value = DemandPayment.toString();
+                        },
+                      ),
+                      // 🔴 🔴 🔴 IN CASE OF CHEQUE/DD
+                      if (controller.demand_PaymentMode.value == 'Cheque'||controller.demand_PaymentMode.value == 'DD')
+                        Container(
+                          child: Column(
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  controller.DemandPaymentDetail();
+                              //BANK NAME
+                              CustomTextField(
+                                controller: controller.bankNameController,
+                                headingText: "Bank Name", hintText: "Enter Bank Name",validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'This field is required';
+                                }
+                                return "";
+                              },),
+                              //BRANCH NAME
+                              CustomTextField(
+                                controller: controller.branchNameController,
+                                headingText: "Branch Name", hintText: "Enter Branch Name",validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'This field is required';
+                                }
+                                return "";
+                              },),
+                              //CHEQUE /DD NO
+                              CustomTextField(
+                                controller: controller.chequeNoController,
+                                headingText: "Cheque/DD No", hintText: "Enter Cheque/DD No",validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'This field is required';
+                                }
+                                return "";
+                              },),
+                              //CHEQUE DD/DATE
+                              CustomDateTimeField(
+                                headingText: 'Cheque/DD Date ',
+                                controller: controller.chequeDateController,
+                                decoration: InputDecoration(
+                                  labelText: 'Date',
+                                  border: OutlineInputBorder(),
+                                ),
+                                format: DateFormat("yyyy-MM-dd"),
+                                onShowPicker: (context, currentValue) {
+                                  return showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1900),
+                                      initialDate: currentValue ?? DateTime.now(),
+                                      lastDate: DateTime(2100));
                                 },
-                                child: Text(' Pay Tax '),
-                              )
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Please select a date and time';
+                                  }
+                                  // Add more validation if needed
+                                  return null;
+                                },
+                              ),
+                              // SizedBox(height: 30),
+
+                              // SizedBox(height:30,),
                             ],
                           ),
-                        ],
+                        ),
+                      CustomTextField(
+                        controller: controller.remarksController,
+                        headingText: "Remarks", hintText: "Enter value",validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return "";
+                      },),
+                      SizedBox(height:10,),
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.DemandPaymentDetail();
+                                  },
+                                  child: Text(' Pay Tax '),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height:10,),
-                  ],
+                      SizedBox(height:10,),
+                    ],
+                  ),
                 ),
               );
             }),

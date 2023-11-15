@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import '../../../common/cluster.dart';
 import '../../../widgets/Common_DropdownField.dart';
 import '../../../widgets/Common_TextField.dart';
@@ -220,11 +221,13 @@ class MunicipalRentalPayTollRentView extends GetView<MunicipalRentalPayTollRentC
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(35.0),
-                        child: Image.asset(
-                          "assets/images/search_img3.png",),
+                        padding: const EdgeInsets.all(40.0),
+                        child:Lottie.asset('assets/lottie/DailyLicence_PayToll.json'),
+                        // Image.asset(
+                        //   "assets/images/search_img3.png",),
                       ),
-                      Text('No Data Available !!!')
+                      Text('No Data Available !!!'),
+                      SizedBox(height: 50,)
                     ],
                   ),
                 );
@@ -243,7 +246,7 @@ class MunicipalRentalPayTollRentView extends GetView<MunicipalRentalPayTollRentC
                       final propertyDetails = displayedData[index];
                       return   GestureDetector(
                         onTap: () async{
-                          // controller.clearAllFields();
+                           controller.resetFields();
                           // controller.isDataProcessing.value = true;
                           // if(nullToNA(GetStorage().read('assessmentType')) == "NA"){
                            await controller.searchTollById(controller.searchedTollData[index]['id']);

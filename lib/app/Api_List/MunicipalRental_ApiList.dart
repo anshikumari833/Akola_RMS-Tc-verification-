@@ -16,4 +16,5 @@ class municipalRental_ApiEndpoints {
   static const String listTollByMarketId = '/api/market/rental/list-toll-by-market-id';
   static const String tollAmtCalculation = '/api/market/rental/calculate-toll-price';
   static const String tollPayment = '/api/market/toll-payments';
+  static const String tollPaymentReceipt = '/api/market/rental/get-toll-payment-reciept';
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import '../../../common/cluster.dart';
 import '../../../widgets/Common_DropdownField.dart';
 import '../../../widgets/Common_TextField.dart';
@@ -88,12 +89,8 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                         value: "consumerNo",
                       ),
                       DropdownMenuItem(
-                        child: Text("Holding No"),
-                        value: "holdingNo",
-                      ),
-                      DropdownMenuItem(
-                        child: Text("SAF No"),
-                        value: "safNo",
+                        child: Text("Property No"),
+                        value: "propertyNo",
                       ),
                       DropdownMenuItem(
                         child: Text("Application Name"),
@@ -213,12 +210,14 @@ class WaterConsumerSearchView extends GetView<WaterConsumerSearchController> {
                 }  else if (controller.searchedconsumerData.isEmpty) {
                   return Container(
                     child:  Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Lottie.asset('assets/lottie/Water_searchConsumer_screen.json'),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Image.asset(
-                            "assets/images/Water_ConsumerSearch.png",),
+                          padding: const EdgeInsets.all(30.0),
+                          child:  Lottie.asset('assets/lottie/HomeScreen_Water.json'),
+                          // child: Image.asset(
+                          //   "assets/images/Water_ConsumerSearch.png",),
                         ),
                       ],
                     ),

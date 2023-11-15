@@ -46,6 +46,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - assets/lottie/
   fonts:
     - family: TiroDevanagariMarathi
       fonts:

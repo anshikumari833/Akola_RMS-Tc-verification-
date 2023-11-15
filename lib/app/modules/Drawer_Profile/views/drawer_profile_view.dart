@@ -3,9 +3,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../common/cluster.dart';
-import '../../../widgets/Common_TextField.dart';
 import '../controllers/drawer_profile_controller.dart';
 
+/**
+ * | Created By: ANSHI KUMARI
+ */
 class DrawerProfileView extends GetView<DrawerProfileController> {
   const DrawerProfileView({Key? key}) : super(key: key);
   @override
@@ -20,81 +22,6 @@ class DrawerProfileView extends GetView<DrawerProfileController> {
           children: [
             //IMAGE-NAME-BUTTON(EDIT PROFILE)
             SizedBox(height: 20,),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Container(
-            //       width: 340,
-            //       height: 200,
-            //       decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.only(
-            //           topLeft: Radius.circular(20),
-            //           topRight: Radius.circular(25),
-            //           bottomLeft: Radius.circular(20),
-            //           bottomRight: Radius.circular(20),
-            //         ),
-            //         color: Colors.white,
-            //       ),
-            //       child:Column(
-            //         children: [SizedBox(height: 20),
-            //           // Container  (
-            //           //   width: 90,
-            //           //   height: 90,
-            //           //   decoration: BoxDecoration(
-            //           //     shape: BoxShape.circle,
-            //           //     image: DecorationImage(
-            //           //       image: AssetImage('assets/images/profile_img.png'),
-            //           //       fit: BoxFit.cover,
-            //           //     ),
-            //           //   ),
-            //           // ),
-            //           Container(
-            //             decoration: BoxDecoration(
-            //               // shape: BoxShape.circle,
-            //               // color: Colors.white
-            //               // border: Border.all(color: Colors.indigoAccent, width: 1.0),
-            //             ),
-            //             child: Padding(
-            //               padding: const EdgeInsets.all(0),
-            //               child:  Image.asset(
-            //                 'assets/images/profile_img.png',
-            //                 height:100,
-            //                 width:100,
-            //               ),
-            //             ),
-            //           ),
-            //           SizedBox(height: 15),
-            //           Text(
-            //             'Anshi Kumari',
-            //             style: TextStyle(
-            //               color: Color(0xFF0E100F),
-            //               fontSize: 16,
-            //               fontFamily: 'Plus Jakarta Sans',
-            //               fontWeight: FontWeight.w600,
-            //               height: 1.25,
-            //               letterSpacing: -0.28,
-            //             ),
-            //           ),
-            //           SizedBox(height:8),
-            //           Text(
-            //             'Welcome To Your Profile',
-            //             style: TextStyle(
-            //               color: Color(0xFF7E8491),
-            //               fontSize: 12,
-            //               fontFamily: 'Plus Jakarta Sans',
-            //               fontWeight: FontWeight.w500,
-            //               height: 1.25,
-            //             ),
-            //           ),
-            //
-            //
-            //
-            //         ],
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 20,),
             Obx(() {
               if (controller.isLoading.value) {
                 return Center(
@@ -141,23 +68,6 @@ class DrawerProfileView extends GetView<DrawerProfileController> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     controller.submit_UserDetailData();
-                  //   },
-                  //   style: ElevatedButton.styleFrom(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(12),
-                  //     ),
-                  //     backgroundColor: Color(0xFF7E49FF),
-                  //     padding: EdgeInsets.symmetric(horizontal: 20),
-                  //   ),
-                  //   child: Text('Edit Profile',style: TextStyle(
-                  //     fontSize: 14,
-                  //     fontFamily: 'Plus Jakarta Sans',
-                  //     fontWeight: FontWeight.w600,
-                  //   )),
-                  // ),
                   ElevatedButton(
                     onPressed: () {
                       _showChangePasswordDialog(context);
@@ -239,8 +149,6 @@ void _showChangePasswordDialog(BuildContext context) {
                   decoration: InputDecoration(labelText: 'New Password'),
                 ),
                 SizedBox(height: 16.0),
-
-                // Show the loader when isLoading is true
                 controller.isLoading.value
                     ? Center(
                   child: SpinKitThreeBounce(
@@ -258,16 +166,9 @@ void _showChangePasswordDialog(BuildContext context) {
         actions: [
           ElevatedButton(
             onPressed: () async {
-              // Set isLoading to true to show the loader
               controller.isLoading.value = true;
-
-              // Call the submit_UserPassword function
               await controller.submit_UserPassword();
-
-              // Set isLoading to false to hide the loader
               controller.isLoading.value = false;
-
-              // Close the dialog
               Navigator.of(context).pop();
             },
             child: Text('Change'),

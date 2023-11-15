@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -144,7 +143,6 @@ class PropertyDailyTcReportController extends GetxController {
         '${footerItem['mode']}(${footerItem['count']})  >>  ${footerItem['amount']}',
       );
     }
-
     return footerText.toString();
   }
 

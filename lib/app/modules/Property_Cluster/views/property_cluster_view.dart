@@ -213,7 +213,7 @@ class PropertyClusterView extends GetView<PropertyClusterController> {
                                           //     ),
                                           //   ),
                                           // ),
-                          Expanded(
+                                           Expanded(
                             flex: 3,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -245,10 +245,10 @@ class PropertyClusterView extends GetView<PropertyClusterController> {
                       ),
                     );
                   },
-              ),
+                ),
                 );
-            })
-         ],
+                })
+              ],
             ),
           ),
         )
@@ -261,7 +261,6 @@ Widget _buildDetailsRow(String label, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical:0,horizontal:0),
     child: Row(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal:0),

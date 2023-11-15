@@ -169,7 +169,7 @@ class _PrintReceiptState extends State<PrintReceipt> {
                       child: TextField(
                         maxLines: null,
                         controller: _txtText,
-                        enabled: false, // Add this line to disable editing
+                        enabled: false, //disable editing
                       ),
                     ),
 

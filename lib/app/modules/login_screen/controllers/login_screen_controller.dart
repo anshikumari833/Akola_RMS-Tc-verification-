@@ -5,6 +5,16 @@ import 'package:get_storage/get_storage.dart';
 import '../../home/views/home_view.dart';
 import '../providers/login_screen_provider.dart';
 
+
+/**
+ * | Created By: ANSHI KUMARI
+ * | Description:
+ *   - This login controller manages the logic for the login screen.
+ *   - Handles user input, validation, and communicates with the backend for user authentication.
+ *   - Uses GetStorage for local storage of user-related data.
+ */
+
+
 class LoginScreenController extends GetxController {
   late TextEditingController emailController;
   late TextEditingController passwordController;
@@ -27,10 +37,10 @@ class LoginScreenController extends GetxController {
     isLoading.value = true;
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-
+    // Validate email and password
     invalidEmailError.value = email.isEmpty || !GetUtils.isEmail(email);
     incorrectPasswordError.value = password.isEmpty || password.length < 6;
-
+    // If validation fails, stop login and return false
     if (invalidEmailError.value || incorrectPasswordError.value) {
       isLoading.value = false;
       return false;
@@ -52,7 +62,8 @@ class LoginScreenController extends GetxController {
       return false;
     }
        // await Future.delayed(Duration(seconds: 5));
-       //Api Hit for login
+
+    // Calling API for login
     var result = await LoginScreenProvider().userLogin(
         {
           'email': emailController.value.text,
@@ -63,6 +74,7 @@ class LoginScreenController extends GetxController {
     // Handling response
     if (result.error == true) {
       print('Unsuccessful! PLEASE TRY AGAIN');
+      // Display error message if login is unsuccessful
       GetSnackBar(
         dismissDirection: DismissDirection.horizontal,
         title: 'Could not Login',
@@ -81,12 +93,13 @@ class LoginScreenController extends GetxController {
       isLoading.value = false;
       return false;
     } else {
+      // Extract user details from the API response
       // Temporary variable storing
       var token = result.data['token'];
       var userName = result.data['userDetails']['name'];
       var description = result.data['userDetails']['description'];
       final isTc = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'tax collector');
-      final isUtc = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'seniour lipik');
+      final isUtc = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'senior lipik');
       final isJe = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'junior engineer');
       final isTd = (result.data['userDetails']['role']).isNotEmpty && (result.data['userDetails']['role']).any((role) => role.toLowerCase() == 'tax daroga');
       // Storing data to local storage

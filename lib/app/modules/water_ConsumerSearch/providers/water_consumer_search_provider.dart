@@ -60,11 +60,11 @@ class WaterConsumerSearchProvider extends GetConnect {
         {"data": response.body, "error": response.status.hasError});
   }
 
-  //Receipt
-  Future<APIResponse> ComsumerReceiptDetail(consumerId) async {
+  //PAYMENT RECEIPT
+  Future<APIResponse> ComsumerReceiptDetail(transaction_No) async {
     String url = Strings.base_url + water_ApiEndpoints.generatePaymentReceipt ;
     final response = await post(url, {
-      "consumerId": consumerId.toString()
+      "transactionNo": transaction_No.toString()
     },  headers: Strings.headers,
     );
     return APIResponse.fromJson(
@@ -89,6 +89,39 @@ class WaterConsumerSearchProvider extends GetConnect {
     );
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
+  }
+
+
+
+  //PART PAYMENT
+   Future<APIResponse> ConsumerPartPayment(Map data) async {
+    String url = Strings.base_url + water_ApiEndpoints.payPartDemand;
+
+    // Create a multipart request
+    final request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers.addAll(Strings.headers);
+    // Add text fields to the request
+    request.fields['consumerId'] = data["consumerId"];
+    request.fields['demandUpto'] = data["demandUpto"];
+    request.fields['amount'] = data["amount"];
+    request.fields['paymentMode'] = data["paymentMode"];
+    request.fields['bankName'] = data["bankName"];
+    request.fields['branchName'] = data["branchName"];
+    request.fields['chequeNo'] = data["chequeNo"];
+    request.fields['chequeDate'] = data["chequeDate"];
+    request.fields['remarks'] = data["remarks"];
+    // Add the image file to the request
+    if (data["document"] != null) {
+      final imageFile = data["document"];
+      request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+    }
+    // Send the request
+    final response = await request.send();
+    // Process the response and return the APIResponse
+    final responseStream = await response.stream.bytesToString();
+    final responseStatus = response.statusCode;
+
+    return APIResponse.fromJson({"data": responseStream, "error": false});
   }
 
 

@@ -1,3 +1,5 @@
+// This file manages the state and functionality related to paying property taxes.
+// Import necessary packages and libraries.
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,9 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 class PropertyPayPropertyTaxController extends GetxController {
+  // Global key for the search holding form.
   final GlobalKey<FormState> SearchHoldingFormKey = GlobalKey<FormState>();
+
   var searchedPropData = List<dynamic>.empty(growable: true).obs;
   var searchedDataById = List<dynamic>.empty(growable: true).obs;
   var isDataProcessing = false.obs;
@@ -29,6 +33,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     isLoading.value = value;
   }
 
+  // MASTER SAF DATA - (DROPDOWN LIST)
   RxList<Map<String, dynamic>> wardList = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> WardListByZone = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> ownershipList = <Map<String, dynamic>>[].obs;
@@ -41,6 +46,497 @@ class PropertyPayPropertyTaxController extends GetxController {
   RxList<Map<String, dynamic>> categoryList = <Map<String, dynamic>>[].obs;
   var newWardNo = ''.obs;
   var zoneType = ''.obs;
+
+
+  //SEARCH-PROPERTY-DETAILS
+  var filterByValue = "".obs;
+  late TextEditingController searchByController;
+
+  //DEMAND- DETAIL
+  var paymentStatus = ''.obs;
+  var currentDemand = ''.obs;
+  var demandList = <Map<String, dynamic>>[].obs;
+  var grandTaxes = <String, dynamic>{}.obs;
+  var arrear = ''.obs;
+  var arrearPayableAmt = ''.obs;
+  var payableAmount = ''.obs;
+  var monthlyPenaltyAmount = '';
+  var totalPenaltyIntrest = '';
+  // var basicDetails = <String, dynamic>{};
+  Map<String, dynamic> basicDetails= {};
+  var demand_PropertyId = '';
+  var demand_ModuleId = '';
+  var demand_WorkflowId = '';
+  var demandMessage = ''.obs;
+  var demandError = false.obs;
+
+  // PINLAB PAYMENT ONLINE
+  var online_tranNo ;
+  var online_tranId ;
+
+  //PAYMENT HISTORY
+  var holdingData =<Map<String, dynamic>>[];
+  var safData = <Map<String, dynamic>>[];
+
+//PRINT RECEIPT
+  var departmentSection = "";
+  var accountDescription = "";
+  var transactionDate = "";
+  var transactionNo = "";
+  var transactionTime = "";
+  var applicationNo = "";
+  var customerName = "";
+  var mobileNo = "";
+  var receiptWard = "";
+  var ReceiptAddress  = "";
+  var paidFrom = "";
+  var paidFromQtr = "";
+  var paidUpto = "";
+  var paidUptoQtr = "";
+  var paymentMode = "";
+  var bankName = "";
+  var branchName = "";
+  var chequeNo = "";
+  var chequeDate = "";
+  var demandAmount = "";
+  var taxDetails = "";
+  var totalRebate = "";
+  var arrearAmount = "";
+  var totalPenalty = "";
+  var ReceiptUlbId = "";
+  var ReceiptWardNo = "";
+  var ReceiptZoneNo = "";
+  var ReceiptnewWardNo = "";
+  var towards = "";
+  var propertyNo = "";
+  var tax_description = "";
+  var totalPaidAmount = "";
+  var paidAmtInWords = "";
+  var tcName = "";
+  var tcMobile = "";
+  var website = "";
+  var tollFreeNo = "";
+  var tranId = "";
+  var bookNo = "";
+  var receiptNo = "";
+  List<Map<String, dynamic>> penaltyRebatesList = [];
+  List<Widget> penaltyRebateWidgets = [];
+
+
+  //PAY DEMAND TAX
+  //PAYMENT
+  var demand_PaymentMethod = "".obs;
+  var demand_PaymentMode = "".obs;
+  var tranNo = "";
+
+  late TextEditingController partPaymentAmountController;
+  late TextEditingController bankNameController;
+  late TextEditingController branchNameController;
+  late TextEditingController chequeNoController;
+  late TextEditingController chequeDateController;
+  late TextEditingController remarksController;
+  var isCheckboxChecked = false.obs;
+  var billRefNo = "";
+  var isPaymentInProgress = false.obs;
+  var paymentSuccessful = false.obs;
+
+  final count = 0.obs;
+  final responseMessage = RxString("");
+  // String responseNewMessage = "";
+  final responseNewMessage = ''.obs;
+  var responseCode = '';
+  var responseMsg = '';
+  var pineLabStatus = false.obs;
+
+  void updateMessage(String message) {
+    responseNewMessage.value = message;
+  }
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    getDropdownListDetail();
+    searchByController  = TextEditingController();
+    bankNameController = TextEditingController();
+    branchNameController = TextEditingController();
+    chequeNoController = TextEditingController();
+    chequeDateController = TextEditingController();
+    remarksController = TextEditingController();
+    partPaymentAmountController = TextEditingController();
+    const platform = MethodChannel("com.amcakola.tc_verification_app/com.pinelabs.masterapp");
+    platform. setMethodCallHandler((call) async {
+      if (call.method == 'handleResponse') {
+        // if (shouldHandlePaymentResponse.value) {
+          handlePaymentResponse(call.arguments);
+        // }
+        pineLabStatus.value = true;
+        responseMessage.value = call.arguments;
+      }
+    });
+  }
+
+
+
+  //*********************************************************PINE LAB METHODS IMPLEMENTATION****************************************************************************************
+
+  // ***CARD IMPLEMENTATION***
+  static const MethodChannel _channel = MethodChannel('com.amcakola.tc_verification_app/com.pinelabs.masterapp');
+
+  // CARD PAYMENT
+  //^^^  Initiates a  card payment transaction,Parses payment details, converts amounts to cents format, and creates a payload for payment,Invokes a method on _channel to initiate the payment transaction
+  Future<void> openPineCardPOS() async {
+    if (Platform.isAndroid) {
+      try {
+        shouldHandlePaymentResponse.value = true;
+        // Determine the amount to be paid based on the checkbox state
+        // double amountToPay = isCheckboxChecked.value
+        //     ? double.parse(arrearPayableAmt.value)
+        //     : double.parse(payableAmount.value);
+        double amountToPay;
+        switch (demand_PaymentMethod.value) {
+          case "isArrearPayment":
+            amountToPay = double.parse(arrearPayableAmt.value);
+            break;
+          case "isFullPayment":
+            amountToPay =  double.parse(payableAmount.value);
+            break;
+          case "isPartPayment":
+            amountToPay = double.parse(partPaymentAmountController.text);
+            break;
+          default:
+            amountToPay = 0.0;
+            break;
+        }
+
+        // Convert amount to cents format
+        int amountInDollars = (amountToPay * 100).toInt();
+        // Convert payableAmount to cents format
+        // int amountInDollars = int.parse(payableAmount.value) * 100;
+        final Map<String, dynamic> paymentDetail = {
+          "BillingRefNo": billRefNo,
+          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
+          "TransactionType": 4001,
+        };
+        final Map<String, dynamic> payload = {
+          "Detail": paymentDetail,
+          "Header": {
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "MethodId": "1001",
+            "UserId": "1234",
+            "VersionNo": "1.0",
+          },
+        };
+        final String payloadJson = json.encode(payload);
+        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = true;
+        if (responseDataJson != null) {
+          try {
+            final Map<String, dynamic> response = json.decode(responseDataJson);
+            handlePaymentResponse(responseDataJson);
+            // SenddPinelabResponse(responseDataJson);
+          } catch (e) {
+            print('Error parsing JSON: $e');
+          }
+        } else {
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
+
+
+  // ***UPI IMPLEMENTATION***
+  // UPI PAYMENT
+  //^^^ Initiates a UPI payment transaction Parses payment details, converts amounts to cents format, and creates a payload for payment,Invokes a method on _channel to initiate the payment transaction
+  Future<void> openPineUPIPOS() async {
+    if (Platform.isAndroid) {
+      try {
+        shouldHandlePaymentResponse.value = true;
+        // // Determine the amount to be paid based on the checkbox state
+        // //Stage 1 of arrear payment (changed)
+        // double amountToPay = isCheckboxChecked.value
+        //     ? double.parse(arrearPayableAmt.value)
+        //     : double.parse(payableAmount.value);
+        //
+        // // Convert amount to cents format
+        // int amountInDollars = (amountToPay * 100).toInt();
+
+        // Convert payableAmount to cents format
+        // int amountInDollars = int.parse(payableAmount.value) * 100;
+
+
+        //After Part Payment-second
+        double amountToPay;
+        switch (demand_PaymentMethod.value) {
+          case "isArrearPayment":
+            amountToPay = double.parse(arrearPayableAmt.value);
+            break;
+          case "isFullPayment":
+            amountToPay =  double.parse(payableAmount.value);
+            break;
+          case "isPartPayment":
+            amountToPay = double.parse(partPaymentAmountController.text);
+            break;
+          default:
+            amountToPay = 0.0;
+            break;
+        }
+        int amountInDollars = (amountToPay * 100).toInt();
+
+        final Map<String, dynamic> paymentDetail = {
+          "BillingRefNo": billRefNo,
+          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
+          "TransactionType": 5120,
+        };
+        final Map<String, dynamic> payload = {
+          "Detail": paymentDetail,
+          "Header": {
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "MethodId": "1001",
+            "UserId": "1234",
+            "VersionNo": "1.0",
+          },
+        };
+
+        final String payloadJson = json.encode(payload);
+
+        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = true;
+        if (responseDataJson != null) {
+          try {
+            final Map<String, dynamic> response = json.decode(responseDataJson);
+            handlePaymentResponse(responseDataJson);
+            // SenddPinelabResponse(responseDataJson);
+
+            // if(response['Response']['ResponseCode'] == 100){
+            //
+            // }
+
+          } catch (e) {
+            print('Error parsing JSON: $e');
+          }
+        } else {
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
+
+  //*** UPI GET STATUS ***
+  Future<void> getUpiStatus() async {
+    if (Platform.isAndroid) {
+      try {
+        // Convert payableAmount to cents format
+        // int amountInDollars = payableAmount * 100;
+        int amountInDollars = int.parse(payableAmount.value) * 100;
+        final Map<String, dynamic> paymentDetail = {
+          "BillingRefNo": billRefNo,
+          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
+          "TransactionType": 5122,
+        };
+        final Map<String, dynamic> payload = {
+          "Detail": paymentDetail,
+          "Header": {
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "MethodId": "1001",
+            "UserId": "1234",
+            "VersionNo": "1.0",
+          },
+        };
+        final String payloadJson = json.encode(payload);
+        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = true;
+        if (responseDataJson != null) {
+          try {
+            final Map<String, dynamic> response = json.decode(responseDataJson);
+            handlePaymentResponse(responseDataJson);
+            // SenddPinelabResponse(responseDataJson);
+          } catch (e) {
+            print('Error parsing JSON: $e');
+          }
+        } else {
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
+
+
+  // Define a function to generate the lines conditionally
+  String generateConditionalLines(String paymentMode) {
+    if (paymentMode == "CASH") {
+      return ''; // returning an  empty string if payment mode is "CASH"
+    } else {
+      return """
+      Bank Name: $bankName
+      Branch Name: $branchName
+      Cheque No: $chequeNo
+      Cheque Date: $chequeDate
+    """;
+    }
+  }
+
+  var shouldHandlePaymentResponse = false.obs;
+
+  //PRINT BY POS
+  //^^^Generates a formatted receipt to be printed,Creates a payload for printing receipt data,Invokes a method on _channel to send the printing intent
+  Future<void> openPrintPOS() async {
+    if (Platform.isAndroid) {
+      try {
+        shouldHandlePaymentResponse.value = false;
+        final Map<String, dynamic> payload = {
+          "Header": {
+            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
+            "UserId": "user1234",
+            "MethodId": "1002",
+            "VersionNo": "1.0"
+          },
+          "Detail": {
+            "PrintRefNo": "123456789",
+            "SavePrintData": true,
+            "Data": [
+              {
+                "PrintDataType": "0",
+                "PrinterWidth": 24,
+                "IsCenterAligned": true,
+                "DataToPrint": "Akola Municipal Corporation\n"
+                    "Maharashtra\n"
+                    "( Payment Receipt )\n"
+                    " $paidFrom\n "
+              },
+              {
+                "PrintDataType": "0",
+                "PrinterWidth":24,
+                "DataToPrint": "Date: $transactionDate\n"
+                    "Time: $transactionTime\n"
+                    "Book No: $bookNo\n"
+                    "Receipt Book No: $receiptNo\n"
+                    "   ********************\n"
+                    "Desc: $accountDescription\n"
+                    "Zone: $ReceiptZoneNo\n"
+                    "Ward No.: $ReceiptWardNo\n"
+                    "Holding No.: $applicationNo\n"
+                    "Property No.: $propertyNo\n"
+                    "Tax Ow. Name: $customerName\n"
+                    "Address: $ReceiptAddress\n"
+                    "   ********************\n"
+                    "Trans No.: $transactionNo\n"
+                    "Paid Upto: $paidUpto\n"
+                    "Mode: $paymentMode\n"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Bank Name: $bankName\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Branch Name: $branchName\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque No: $chequeNo\n"}"
+                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque Date: $chequeDate\n"}"
+                    "Total Amount Paid: $totalPaidAmount\n"
+                    "In Words: ${(paidAmtInWords)} only\n"
+                    "   ********************\n"
+                    "TC Name: $tcName\n"
+                    "Mobile No: $tcMobile\n"
+              },
+              {
+                "PrintDataType": "0",
+                "PrinterWidth":24,
+                 "IsCenterAligned": true,
+                "DataToPrint":
+                    "Thank You!\n"
+                    "For More Details Please visit: $website\n"
+                    "$tollFreeNo\n"
+                    "Please keep this Bill \n For Future Reference\n\n\n\n",
+              },
+            ]
+          }
+        };
+
+        final String payloadJson = json.encode(payload);
+        final String responseDataJson =
+        await _channel.invokeMethod('sendPaymentIntent', payloadJson);
+        shouldHandlePaymentResponse.value = false;
+        if (responseDataJson != null) {
+          try {
+            final Map<String, dynamic> response = json.decode(responseDataJson);
+            handlePaymentResponse(responseDataJson);
+          } catch (e) {
+            print('Error parsing JSON: $e');
+          }
+        } else {
+          // Handle the case where responseDataJson is null
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
+
+  //HANDLE RESPONSE MESSAGE
+  //^^^ Decodes and handles the response received from payment transactions.
+  void handlePaymentResponse(String response) {
+    try {
+      final Map<String, dynamic> responseData = jsonDecode(response);
+       //Storing pinelab response
+       if (shouldHandlePaymentResponse.value) {
+         SenddPinelabResponse(responseData);
+      }
+      // SenddPinelabResponse(responseData);
+      // Access the response message from the JSON
+      responseCode = responseData['Response']['ResponseCode'].toString();
+      responseMsg = responseData['Response']['ResponseMsg'].toString();
+      if(responseCode != '0'){
+        Get.snackbar(
+          'Message',
+          responseMsg,
+          // duration: Duration(seconds: 3),
+          backgroundColor: Colors.amberAccent,
+          colorText: Colors.black,
+        );
+      }
+      if(responseCode == '100'){
+        // checkPaymentStatus();
+      }
+
+      if(responseCode != '0' && responseCode != '100'){
+        // submitPaymentResponse()
+      }
+    } catch (e) {
+      print('Error decoding JSON: $e');
+    }
+  }
+
+//*********************************************************PINE LAB METHODS IMPLEMENTATION****************************************************************************************
+
+  //PAGINATION
+  var currentPage = 1.obs;
+  var lastPage = 1.obs;
+  var totalPages = 1.obs;
+  var isPageLoading = false.obs;
+  int page = 1;
+  int perPage = 10;
+
+  void nextPage() {
+    isPageLoading.value = true;
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++;
+      getDetaiBySearch(currentPage.value); // Pass the updated currentPage.value
+    }
+  }
+
+  void previousPage() {
+    isPageLoading.value = true;
+    if (currentPage.value > 1) {
+      currentPage.value--;
+      getDetaiBySearch(currentPage.value);
+    }
+  }
+
+
+
   // MASTER SAF DATA - (DROPDOWN LIST)
   void getDropdownListDetail() async {
     isDataProcessing(true);
@@ -157,9 +653,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     }
     isDataProcessing.value = false;
   }
-  //SEARCH-PROPERTY-DETAILS
-  var filterByValue = "".obs;
-  late TextEditingController searchByController;
+
 
   //WARD BY ZONE - (DROPDOWN LIST)
   Future<void>  getWardByZone({required String zoneId}) async {
@@ -193,364 +687,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     isDataProcessing.value = false;
   }
 
-  final count = 0.obs;
-  final responseMessage = RxString("");
-  // String responseNewMessage = "";
-  final responseNewMessage = ''.obs;
-  var responseCode = '';
-  var responseMsg = '';
-  var pineLabStatus = false.obs;
 
-  void updateMessage(String message) {
-    responseNewMessage.value = message;
-  }
-  @override
-  void onInit() {
-    super.onInit();
-    getDropdownListDetail();
-    searchByController  = TextEditingController();
-    bankNameController = TextEditingController();
-    branchNameController = TextEditingController();
-    chequeNoController = TextEditingController();
-    chequeDateController = TextEditingController();
-    remarksController = TextEditingController();
-    partPaymentAmountController = TextEditingController();
-    const platform = MethodChannel("com.amcakola.tc_verification_app/com.pinelabs.masterapp");
-    platform. setMethodCallHandler((call) async {
-      if (call.method == 'handleResponse') {
-        // if (shouldHandlePaymentResponse.value) {
-          handlePaymentResponse(call.arguments);
-        // }
-        pineLabStatus.value = true;
-        responseMessage.value = call.arguments;
-      }
-    });
-  }
-
-  //     handlePaymentResponse(call.arguments);
-  //     pineLabStatus.value = true;
-  //     if (call.method == 'handleResponse') {
-  //       responseMessage.value = call.arguments;
-  //     }
-  //   });
-  // }
-
-  //*********************************************************PINE LAB METHODS IMPLEMENTATION****************************************************************************************
-
-  // ***CARD IMPLEMENTATION***
-  static const MethodChannel _channel = MethodChannel('com.amcakola.tc_verification_app/com.pinelabs.masterapp');
-  // CARD PAYMENT
-  Future<void> openPineCardPOS() async {
-    if (Platform.isAndroid) {
-      try {
-        shouldHandlePaymentResponse.value = true;
-        // Determine the amount to be paid based on the checkbox state
-        double amountToPay = isCheckboxChecked.value
-            ? double.parse(arrearPayableAmt.value)
-            : double.parse(payableAmount.value);
-
-        // Convert amount to cents format
-        int amountInDollars = (amountToPay * 100).toInt();
-        // Convert payableAmount to cents format
-        // int amountInDollars = int.parse(payableAmount.value) * 100;
-        final Map<String, dynamic> paymentDetail = {
-          "BillingRefNo": billRefNo,
-          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
-          "TransactionType": 4001,
-        };
-        final Map<String, dynamic> payload = {
-          "Detail": paymentDetail,
-          "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
-            "MethodId": "1001",
-            "UserId": "1234",
-            "VersionNo": "1.0",
-          },
-        };
-        final String payloadJson = json.encode(payload);
-        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-        shouldHandlePaymentResponse.value = true;
-        if (responseDataJson != null) {
-          try {
-            final Map<String, dynamic> response = json.decode(responseDataJson);
-            handlePaymentResponse(responseDataJson);
-            // SenddPinelabResponse(responseDataJson);
-          } catch (e) {
-            print('Error parsing JSON: $e');
-          }
-        } else {
-        }
-      } catch (e) {
-        print('Error: $e');
-      }
-    }
-  }
-
-  //***UPI GET STATUS
-  Future<void> getUpiStatus() async {
-    if (Platform.isAndroid) {
-      try {
-        // Convert payableAmount to cents format
-        // int amountInDollars = payableAmount * 100;
-        int amountInDollars = int.parse(payableAmount.value) * 100;
-        final Map<String, dynamic> paymentDetail = {
-          "BillingRefNo": billRefNo,
-          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
-          "TransactionType": 5122,
-        };
-        final Map<String, dynamic> payload = {
-          "Detail": paymentDetail,
-          "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
-            "MethodId": "1001",
-            "UserId": "1234",
-            "VersionNo": "1.0",
-          },
-        };
-        final String payloadJson = json.encode(payload);
-        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-        shouldHandlePaymentResponse.value = true;
-        if (responseDataJson != null) {
-          try {
-            final Map<String, dynamic> response = json.decode(responseDataJson);
-            handlePaymentResponse(responseDataJson);
-            // SenddPinelabResponse(responseDataJson);
-          } catch (e) {
-            print('Error parsing JSON: $e');
-          }
-        } else {
-        }
-      } catch (e) {
-        print('Error: $e');
-      }
-    }
-  }
-
-  // ***UPI IMPLEMENTATION***
-  Future<void> openPineUPIPOS() async {
-    if (Platform.isAndroid) {
-      try {
-        shouldHandlePaymentResponse.value = true;
-        // Determine the amount to be paid based on the checkbox state
-        double amountToPay = isCheckboxChecked.value
-            ? double.parse(arrearPayableAmt.value)
-            : double.parse(payableAmount.value);
-
-        // Convert amount to cents format
-        int amountInDollars = (amountToPay * 100).toInt();
-
-        // Convert payableAmount to cents format
-        // int amountInDollars = int.parse(payableAmount.value) * 100;
-        final Map<String, dynamic> paymentDetail = {
-          "BillingRefNo": billRefNo,
-          "PaymentAmount": amountInDollars.toStringAsFixed(2), // Format as 2 decimal places
-          "TransactionType": 5120,
-        };
-        final Map<String, dynamic> payload = {
-          "Detail": paymentDetail,
-          "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
-            "MethodId": "1001",
-            "UserId": "1234",
-            "VersionNo": "1.0",
-          },
-        };
-
-        final String payloadJson = json.encode(payload);
-
-        final String responseDataJson = await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-        shouldHandlePaymentResponse.value = true;
-        if (responseDataJson != null) {
-          try {
-            final Map<String, dynamic> response = json.decode(responseDataJson);
-            handlePaymentResponse(responseDataJson);
-            // SenddPinelabResponse(responseDataJson);
-
-            // if(response['Response']['ResponseCode'] == 100){
-            //
-            // }
-
-          } catch (e) {
-            print('Error parsing JSON: $e');
-          }
-        } else {
-        }
-      } catch (e) {
-        print('Error: $e');
-      }
-    }
-  }
-
-  // Define a function to generate the lines conditionally
-  String generateConditionalLines(String paymentMode) {
-    if (paymentMode == "CASH") {
-      return ''; // Return an empty string if payment mode is "CASH"
-    } else {
-      // Return the lines for bank details
-      return """
-      Bank Name: $bankName
-      Branch Name: $branchName
-      Cheque No: $chequeNo
-      Cheque Date: $chequeDate
-    """;
-    }
-  }
-
-
-  var shouldHandlePaymentResponse = false.obs;
-  //PRINT
-  Future<void> openPrintPOS() async {
-    if (Platform.isAndroid) {
-      try {
-        shouldHandlePaymentResponse.value = false;
-        final Map<String, dynamic> payload = {
-          "Header": {
-            "ApplicationId": "4fb3fd901e2449819eedad73a6656ae4",
-            "UserId": "user1234",
-            "MethodId": "1002",
-            "VersionNo": "1.0"
-          },
-          "Detail": {
-            "PrintRefNo": "123456789",
-            "SavePrintData": true,
-            "Data": [
-              {
-                "PrintDataType": "0",
-                "PrinterWidth": 24,
-                "IsCenterAligned": true,
-                "DataToPrint": "Akola Municipal Corporation\n"
-                    "Maharashtra\n"
-                    "( Payment Receipt )\n"
-                    " $paidFrom\n "
-              },
-              {
-                "PrintDataType": "0",
-                "PrinterWidth":24,
-                "DataToPrint": "Date: $transactionDate\n"
-                    "Time: $transactionTime\n"
-                    "Book No: $bookNo\n"
-                    "Receipt Book No: $receiptNo\n"
-                    "   ********************\n"
-                    "Desc: $accountDescription\n"
-                    "Zone: $ReceiptZoneNo\n"
-                    "Ward No.: $ReceiptWardNo\n"
-                    "Holding No.: $applicationNo\n"
-                    "Property No.: $propertyNo\n"
-                    "Tax Ow. Name: $customerName\n"
-                    "Address: $ReceiptAddress\n"
-                    "   ********************\n"
-                    "Trans No.: $transactionNo\n"
-                    "Paid Upto: $paidUpto\n"
-                    "Mode: $paymentMode\n"
-                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Bank Name: $bankName\n"}"
-                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Branch Name: $branchName\n"}"
-                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque No: $chequeNo\n"}"
-                    "${paymentMode == "CASH" || paymentMode == "CARD" || paymentMode == "UPI" ? "" : "Cheque Date: $chequeDate\n"}"
-                // "${generateConditionalLines(paymentMode)}"
-                //     "Demand: $demandAmount\n"
-                //     "Arrear : $arrearAmount\n"
-                //     "Total Amount Paid: $totalPaidAmount\n"
-                    "Total Amount Paid: $totalPaidAmount\n"
-                    "In Words: ${(paidAmtInWords)} only\n"
-                    "   ********************\n"
-                    "TC Name: $tcName\n"
-                    "Mobile No: $tcMobile\n"
-              },
-              {
-                "PrintDataType": "0",
-                "PrinterWidth":24,
-                 "IsCenterAligned": true,
-                "DataToPrint":
-                    "Thank You!\n"
-                    "For More Details Please visit: $website\n"
-                    "$tollFreeNo\n"
-                    "Please keep this Bill \n For Future Reference\n\n\n\n",
-              },
-            ]
-          }
-        };
-
-        final String payloadJson = json.encode(payload);
-        final String responseDataJson =
-        await _channel.invokeMethod('sendPaymentIntent', payloadJson);
-        shouldHandlePaymentResponse.value = false;
-        if (responseDataJson != null) {
-          try {
-            final Map<String, dynamic> response = json.decode(responseDataJson);
-            handlePaymentResponse(responseDataJson);
-          } catch (e) {
-            print('Error parsing JSON: $e');
-          }
-        } else {
-          // Handle the case where responseDataJson is null
-        }
-      } catch (e) {
-        print('Error: $e');
-      }
-    }
-  }
-
-
-
-
-  //HANDLE RESPONSE MESSAGE
-  void handlePaymentResponse(String response) {
-    try {
-      final Map<String, dynamic> responseData = jsonDecode(response);
-       //Storing pinelab response
-       if (shouldHandlePaymentResponse.value) {
-         SenddPinelabResponse(responseData);
-      }
-      // SenddPinelabResponse(responseData);
-      // Access the response message from the JSON
-      responseCode = responseData['Response']['ResponseCode'].toString();
-      responseMsg = responseData['Response']['ResponseMsg'].toString();
-      if(responseCode != '0'){
-        Get.snackbar(
-          'Message',
-          responseMsg,
-          // duration: Duration(seconds: 3),
-          backgroundColor: Colors.amberAccent,
-          colorText: Colors.black,
-        );
-      }
-      if(responseCode == '100'){
-        // checkPaymentStatus();
-      }
-
-      if(responseCode != '0' && responseCode != '100'){
-        // submitPaymentResponse()
-      }
-    } catch (e) {
-      print('Error decoding JSON: $e');
-    }
-  }
-
-//*********************************************************PINE LAB METHODS IMPLEMENTATION****************************************************************************************
-
-
-  var currentPage = 1.obs;
-  var lastPage = 1.obs;
-  var totalPages = 1.obs;
-  var isPageLoading = false.obs;
-  int page = 1;
-  int perPage = 10;
-
-  void nextPage() {
-    isPageLoading.value = true;
-    if (currentPage.value < totalPages.value) {
-      currentPage.value++;
-      getDetaiBySearch(currentPage.value); // Pass the updated currentPage.value
-    }
-  }
-
-  void previousPage() {
-    isPageLoading.value = true;
-    if (currentPage.value > 1) {
-      currentPage.value--;
-      getDetaiBySearch(currentPage.value);
-    }
-  }
 
   // SEARCH-PROPERTY-DETAILS
   Future<void> getDetaiBySearch(int page) async {
@@ -590,14 +727,17 @@ class PropertyPayPropertyTaxController extends GetxController {
 
 
 
-  //Search Holding Detail By Id
+  //Search property Detail By Id
+  // Searching property details by its unique ID
   searchHoldingById(int propertyId) async {
     await getPropertyDetail(propertyId);
   }
 
   //PROPERTY DETAIL
+  // Retrieves property details from the API
   Future<bool> getPropertyDetail(propertyId) async {
     APIResponse response = await SearchHoldingProvider().SearchedPropertyData(propertyId);
+    // Clears previously stored property data
     searchedDataById.clear();
     if (response.error == false) {
       Map<String, dynamic> data = response.data;
@@ -630,47 +770,12 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
-  // Storing duesList values
-  // var paymentStatus;
-  // var currentDemand;
-  // List<Map<String, dynamic>> demandList = [];
-  // Map<String, dynamic> grandTaxes = {};
-  // var arrear;
-  // var payableAmount;
-  // var monthlyPenaltyAmount;
-  // Map<String, dynamic> basicDetails= {};
-  // var demand_PropertyId;
-  // var  demand_ModuleId;
-  // var  demand_WorkflowId;
-  // var demandMessage;
-  // bool demandError = false;
-  var paymentStatus = ''.obs;
-  var currentDemand = ''.obs;
-  var demandList = <Map<String, dynamic>>[].obs;
-  var grandTaxes = <String, dynamic>{}.obs;
-  var arrear = ''.obs;
-  var arrearPayableAmt = ''.obs;
-  var payableAmount = ''.obs;
-  var monthlyPenaltyAmount = '';
-  var totalPenaltyIntrest = '';
-  // var basicDetails = <String, dynamic>{};
-  Map<String, dynamic> basicDetails= {};
-  var demand_PropertyId = '';
-  var demand_ModuleId = '';
-  var demand_WorkflowId = '';
-  var demandMessage = ''.obs;
-  var demandError = false.obs;
 
   //DEMAND- DETAIL
+  // Retrieves demand details for a specific property
   Future<void> getDemandDetail(propertyId,type) async {
-
     isPaymentInProgress.value = false;
-
-    // Clear the previous data when fetching data for a different propertyId
-   //  demandError = false;
-   //  demandList = [];
-   //  grandTaxes = {};
-   //  basicDetails = {};
+    // Clearing the previous data when fetching data for a different propertyId
     demandError.value = false;
     currentDemand.value = '';
     demandMessage.value = '';
@@ -712,12 +817,9 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
-  var selectedPaymentUptoYr = "".obs;
-  var selectedPaymentUptoQtr  = "".obs;
 
-  var holdingData =<Map<String, dynamic>>[];
-  var safData = <Map<String, dynamic>>[];
   //PAYMENT HISTORY
+  // Retrieves payment history for a property
   Future<void> getPaymentDetail(propertyId) async {
     APIResponse response = await SearchHoldingProvider().SearchedPaymentData(propertyId);
     if (response.error == false) {
@@ -734,52 +836,11 @@ class PropertyPayPropertyTaxController extends GetxController {
     }
   }
 
-  var departmentSection = "";
-  var accountDescription = "";
-  var transactionDate = "";
-  var transactionNo = "";
-  var transactionTime = "";
-  var applicationNo = "";
-  var customerName = "";
-  var mobileNo = "";
-  var receiptWard = "";
-  var ReceiptAddress  = "";
-  var paidFrom = "";
-  var paidFromQtr = "";
-  var paidUpto = "";
-  var paidUptoQtr = "";
-  var paymentMode = "";
-  var bankName = "";
-  var branchName = "";
-  var chequeNo = "";
-  var chequeDate = "";
-  var demandAmount = "";
-  var taxDetails = "";
-  var totalRebate = "";
-  var arrearAmount = "";
-  var totalPenalty = "";
-  var ReceiptUlbId = "";
-  var ReceiptWardNo = "";
-  var ReceiptZoneNo = "";
-  var ReceiptnewWardNo = "";
-  var towards = "";
-  var propertyNo = "";
-  var tax_description = "";
-  var totalPaidAmount = "";
-  var paidAmtInWords = "";
-  var tcName = "";
-  var tcMobile = "";
-  var website = "";
-  var tollFreeNo = "";
-  var tranId = "";
-  var bookNo = "";
-  var receiptNo = "";
-
-  List<Map<String, dynamic>> penaltyRebatesList = [];
-  List<Widget> penaltyRebateWidgets = [];
-
+  //PRINT RECEIPT
+  // Retrieves payment receipt for a specific transaction ID
   Future<void> getPaymentReceipt(printTranId) async {
     tranId = printTranId.toString();
+    // Clears previously stored data
     departmentSection = "";
     accountDescription = "";
     transactionDate = "";
@@ -819,17 +880,9 @@ class PropertyPayPropertyTaxController extends GetxController {
     tollFreeNo = "";
     bookNo = "";
     receiptNo = "";
-
-
     APIResponse response = await SearchHoldingProvider().PropPaymentReceip(printTranId);
     if (response.error == false) {
       var data = response.data;
-      // Extract penalty amounts and store them in the controller's list
-      // var penaltyRebates = data['penaltyRebates'];
-      // if (penaltyRebates is List) {
-      //   penaltyRebatesList = List<Map<String, dynamic>>.from(penaltyRebates);
-      // }
-      // Check if penaltyRebatesList is not empty and build penalty rebate widgets
       for (final penaltyRebate in penaltyRebatesList) {
         final headName = penaltyRebate['head_name'];
         final amount = penaltyRebate['amount'];
@@ -882,24 +935,9 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
-  //PAY DEMAND TAX
-//PAYMENT
-  var demand_PaymentMethod = "".obs;
-  var demand_PaymentMode = "".obs;
 
-  var tranNo = "";
-  // var tranId = "";
-  late TextEditingController partPaymentAmountController;
-  late TextEditingController bankNameController;
-  late TextEditingController branchNameController;
-  late TextEditingController chequeNoController;
-  late TextEditingController chequeDateController;
-  late TextEditingController remarksController;
-  var isCheckboxChecked = false.obs;
-  var billRefNo = "";
-  var isPaymentInProgress = false.obs;
-  var paymentSuccessful = false.obs;
-
+  //Common Loader for payment only
+  // loading dialog for the payment process
   void showLoadingDialog(bool value) {
     if(value)
       {
@@ -908,9 +946,9 @@ class PropertyPayPropertyTaxController extends GetxController {
             children: [
               // Blurred background
               BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Adjust blur intensity
+                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: Container(
-                  color: Colors.black.withOpacity(0.5), // Adjust the opacity
+                  color: Colors.black.withOpacity(0.5),
                   width: double.infinity,
                   height: double.infinity,
                 ),
@@ -920,7 +958,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(), // Display a loading indicator
+                    CircularProgressIndicator(),
                     SizedBox(height: 16),
                     Text(
                       'Waiting for payment...',
@@ -943,6 +981,7 @@ class PropertyPayPropertyTaxController extends GetxController {
   Future<void> DemandTaxPayment({String type = ''}) async {
     showLoadingDialog(true);
     isPaymentInProgress.value = true;
+    // Clears previously stored data
     tranNo = '';
     tranId = '';
     var file1;
@@ -1059,17 +1098,36 @@ class PropertyPayPropertyTaxController extends GetxController {
 
 
   //PINLAB PAYMENT ONLINE (for card ):(PAYMENT REF NO )
+  // Processes online card payments for property taxes
+
   Future<void> DemandOnlineCardPayment() async {
     showLoadingDialog(true);
     isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentOnline({
       "propId": demand_PropertyId,
       "paymentMode": "CARD".toString(),
-       "isArrear": isCheckboxChecked.value,
+      "paymentType":demand_PaymentMethod.value.toString(),
+      "paidAmount":partPaymentAmountController.value.text,
+       //"isArrear": isCheckboxChecked.value,
     });
     if (result.error == false) {
       var data = result.data;
       billRefNo = data['billRefNo'].toString();
+      // double amountToPay;
+      // switch (demand_PaymentMethod.value) {
+      //   case "isArrearPayment":
+      //     amountToPay = double.parse(arrearPayableAmt.value);
+      //     break;
+      //   case "isFullPayment":
+      //     amountToPay =  double.parse(payableAmount.value);
+      //     break;
+      //   case "isPartPayment":
+      //     amountToPay = double.parse(partPaymentAmountController.text);
+      //     break;
+      //   default:
+      //     amountToPay = 0.0;
+      //     break;
+      // }
       await openPineCardPOS();
       await getDemandDetail(demand_PropertyId,"demand");
       Get.dialog(
@@ -1133,14 +1191,17 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
+
   //PINLAB PAYMENT ONLINE (for upi ):(PAYMENT REF NO )
+  // Processes online UPI payments for property taxes
   Future<void> DemandOnlineUpiPayment() async {
     showLoadingDialog(true);
     isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentOnline({
       "propId": demand_PropertyId,
       "paymentMode": "UPI".toString(),
-      "isArrear": isCheckboxChecked.value,
+      "paymentType":demand_PaymentMethod.value.toString(),
+      "paidAmount":partPaymentAmountController.value.text,
     });
     if (result.error == false) {
       var data = result.data;
@@ -1205,8 +1266,10 @@ class PropertyPayPropertyTaxController extends GetxController {
     // showLoadingDialog(isPaymentInProgress.value);
   }
 
-  var online_tranNo ;
+
+
   //PINLAB PAYMENT ONLINE
+  // Processes Pinelab payment response received for a transaction and sending it to backend and waithing for response then if success then print receipt
   Future<void> SenddPinelabResponse(responseData) async {
     isPaymentInProgress.value = true;
     var result = await SearchHoldingProvider().Pinelab_PaymentResponse({
@@ -1219,6 +1282,7 @@ class PropertyPayPropertyTaxController extends GetxController {
     if (result.error == false) {
       var data = result.data;
       online_tranNo = data['res_ref_no'].toString();
+      online_tranId = data['tranId'].toString();
       await getDemandDetail(demand_PropertyId, "demand");
       if( result.data['response_code'] == 0){Get.dialog(
         barrierDismissible: false,
@@ -1254,7 +1318,7 @@ class PropertyPayPropertyTaxController extends GetxController {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    await getPaymentReceipt(online_tranNo);
+                    await getPaymentReceipt(online_tranId);
                     openPrintPOS();
                   },
                   child: Text("Print Receipt"),
@@ -1303,6 +1367,11 @@ class PropertyPayPropertyTaxController extends GetxController {
     isPaymentInProgress.value = false;
   }
 
+
+
+
+
+
   //PRINT RECEIPT(BLUETOOTH THERMAL PRINTER)
   getPrintString1() {
     var retStr = "";
@@ -1345,7 +1414,7 @@ class PropertyPayPropertyTaxController extends GetxController {
 
 
 
-
+  //CLEARING ALL THE FIELDS
   void clearAllFields() {
     bankNameController.clear();
     branchNameController.clear();
@@ -1359,6 +1428,8 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
+
+  //FOR IMAGE
   File? _selectedFile1 = null;
   var selectedImage1Path = ''.obs;
   var selectedImage1Size = ''.obs;
@@ -1463,38 +1534,6 @@ class PropertyPayPropertyTaxController extends GetxController {
   }
 
 
-  // //PDF
-  //
-  // Future<Uint8List> generatePDF(PropertyPayPropertyTaxController controller) async {
-  //   final pdf = pw.Document();
-  //
-  //   // Create a PDF page and add your widget to it
-  //   pdf.addPage(
-  //     pw.Page(
-  //       build: (pw.Context context) {
-  //         return PropReceiptView();
-  //       },
-  //     ),
-  //   );
-  //
-  //   // Save the PDF to a file
-  //   final output = await getTemporaryDirectory();
-  //   final file = File("${output.path}/receipt.pdf");
-  //   await file.writeAsBytes(await pdf.save());
-  //
-  //   return file.readAsBytesSync();
-  // }
-  //
-  //
-  // void openPDF(Uint8List pdfBytes) async {
-  //   // Save the PDF bytes to a temporary file
-  //   final tempDir = await getTemporaryDirectory();
-  //   final tempFile = File("${tempDir.path}/receipt.pdf");
-  //   await tempFile.writeAsBytes(pdfBytes);
-  //
-  //   // Open the PDF with a viewer or reader app
-  //   OpenFile.open(tempFile.path);
-  // }
 
   @override
   void onReady() {
@@ -1522,6 +1561,53 @@ class PropertyPayPropertyTaxController extends GetxController {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //PDF
+//
+// Future<Uint8List> generatePDF(PropertyPayPropertyTaxController controller) async {
+//   final pdf = pw.Document();
+//
+//   // Create a PDF page and add your widget to it
+//   pdf.addPage(
+//     pw.Page(
+//       build: (pw.Context context) {
+//         return PropReceiptView();
+//       },
+//     ),
+//   );
+//
+//   // Save the PDF to a file
+//   final output = await getTemporaryDirectory();
+//   final file = File("${output.path}/receipt.pdf");
+//   await file.writeAsBytes(await pdf.save());
+//
+//   return file.readAsBytesSync();
+// }
+//
+//
+// void openPDF(Uint8List pdfBytes) async {
+//   // Save the PDF bytes to a temporary file
+//   final tempDir = await getTemporaryDirectory();
+//   final tempFile = File("${tempDir.path}/receipt.pdf");
+//   await tempFile.writeAsBytes(pdfBytes);
+//
+//   // Open the PDF with a viewer or reader app
+//   OpenFile.open(tempFile.path);
+// }
 
 
 // PHASE - 1(version 1)

@@ -473,9 +473,3 @@ String capitalizeFirstLetter(String text) {
   return words.join(' ');
 }
 
-// SizedBox(width: 5.0),
-// Obx(() => Text(
-//   'Total Pages: ${controller.totalPages.value}',
-//   style: TextStyle(fontSize: 16.0),
-// )),
-// SizedBox(width: 30.0),

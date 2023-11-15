@@ -23,6 +23,24 @@ class GenerateDemandView extends GetView<WaterConsumerSearchController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(children: [
+                Icon(Icons.info_outline,color: Colors.red,),
+                Text('  Last Meter reading : ', style: GoogleFonts.publicSans(
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),),
+                Text(controller.searchedConsumerDataById[0]['finalReading'].toString(),style: GoogleFonts.publicSans(
+                  fontSize: 16,
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),),
+              ],),
+            ),
             if(controller.searchedConsumerDataById[0]['meterDetails']['ConnectionTypeName'].toString() == 'Meter')
               Container(
                 margin: EdgeInsets.all(14.0),
@@ -41,6 +59,7 @@ class GenerateDemandView extends GetView<WaterConsumerSearchController> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
+
                     SizedBox(height: 10),
                     Row(
                       children: [
@@ -58,6 +77,7 @@ class GenerateDemandView extends GetView<WaterConsumerSearchController> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 5),
                     Obx(() => controller.selectedImage1Path == ''
                         ? Padding(
                       padding: const EdgeInsets.only(top: 20.0),
@@ -111,6 +131,7 @@ class GenerateDemandView extends GetView<WaterConsumerSearchController> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 8),
                     CustomTextField(
                       controller: controller.finalMeterReading,
                       headingText: "Final Meter Readng", hintText: "Enter value",validator: (value) {
@@ -119,30 +140,31 @@ class GenerateDemandView extends GetView<WaterConsumerSearchController> {
                       }
                       return "";
                     },),
-                    CustomDateTimeField(
-                      headingText: 'Demand Upto Date',
-                      controller: controller.demandDateUpto,
-                      decoration: InputDecoration(
-                        labelText: 'Date',
-                        border: OutlineInputBorder(),
-                      ),
-                      format: DateFormat("yyyy-MM-dd"),
-                      onShowPicker: (context, currentValue) {
-                        return showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1900),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100));
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a date and time';
-                        }
-                        // Add more validation if needed
-                        return null;
-                      },
-                    ),
-                    SizedBox(height:10,),
+                CustomDateTimeField(
+                  headingText: 'Demand Upto Date',
+                  controller: controller.demandDateUpto,
+                  decoration: InputDecoration(
+                    labelText: 'Date',
+                    border: OutlineInputBorder(),
+                  ),
+                  format: DateFormat("yyyy-MM-dd"),
+                  onShowPicker: (context, currentValue) {
+                    final currentDate = DateTime.now();
+                    return showDatePicker(
+                      context: context,
+                      firstDate: currentDate,
+                      initialDate: currentValue ?? currentDate,
+                      lastDate: currentDate,
+                    );
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select the current date';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height:10,),
                     Container(
                       padding: const EdgeInsets.all(6),
                       child: Column(

@@ -195,79 +195,66 @@ class tollPaymentView extends GetView<MunicipalRentalPayTollRentController> {
                       child: Text("    Search    "),
                     ),
 
-
-
                   ],
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 1,
-                    offset: Offset(0, 1),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildDetailsRow('Payable Amount', controller.payableAmount.value.toString()),
-                  _buildDetailsRow('Payment Upto',controller.searchedTollDataBy_Id[0]['vendor_name'].toString()),
-                  CustomDropdownFormField(
-                    headingText: 'Payment Method',
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Cash"),
-                        value: "CASH",
+            Obx(() {
+              if ( controller.payableAmount.value.isNotEmpty) {
+                return Container(
+                  margin: EdgeInsets.all(14.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 1,
+                        offset: Offset(0, 1),
                       ),
-                      // DropdownMenuItem(
-                      //   child: Text("Cheque"),
-                      //   value: "CHEQUE",
-                      // ),
-                      // DropdownMenuItem(
-                      //   child: Text("DD"),
-                      //   value: "DD",
-                      // ),
-                      // DropdownMenuItem(
-                      //   child: Text("NEFT"),
-                      //   value: "NEFT",
-                      // ),
-                      // DropdownMenuItem(
-                      //   child: Text("ONILNE"),
-                      //   value: "ONLINE",
-                      // ),
                     ],
-                    hintText: 'Select an option',
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select an option';
-                      }
-                      return null;
-                    },
-                    onChanged: (Payment) {
-                    controller.toll_PaymentMode.value = Payment.toString();
-                    },
                   ),
-                  SizedBox(
-                    height: 20,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _buildDetailsRow('Payable Amount', controller.payableAmount.value.toString()),
+                      _buildDetailsRow('Payment Upto',controller.dateFromController.value.text.toString()),
+                      CustomDropdownFormField(
+                        headingText: 'Payment Method',
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("Cash"),
+                            value: "CASH",
+                          ),
+                        ],
+                        hintText: 'Select an option',
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Please select an option';
+                          }
+                          return null;
+                        },
+                        onChanged: (Payment) {
+                          controller.toll_PaymentMode.value = Payment.toString();
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.TollPayment_id();
+                        },
+                        child: Text("      Pay Now       "),
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      controller.CalculatePaymentDetail();
-                    },
-                    child: Text("      Pay Now       "),
-                  ),
-                ],
-              ),
-            ),
+                );
+              }
+              return Container();
+            }),
             SizedBox(height:200,),
           ],
         ),),

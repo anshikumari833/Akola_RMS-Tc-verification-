@@ -1,3 +1,12 @@
+/**
+ * | Created By: ANSHI KUMARI
+ **/
+
+
+/**
+ * | Function Name: getCurrentDate
+ * | Description: Returns the current date in the format 'YYYY-MM-DD'.
+ **/
 String getCurrentDate() {
   DateTime cDate = DateTime.now();
   int year = cDate.year;
@@ -7,6 +16,11 @@ String getCurrentDate() {
   String fullDate = '$year-$month-$day';
   return fullDate;
 }
+
+/**
+ * | Function Name: getDateBeforeYears
+ * | Description: Returns a formatted date before a specified number of years.
+ */
 
 String getDateBeforeYears(int years) {
   DateTime currentDate = DateTime.now();
@@ -142,6 +156,10 @@ String allowCharacterNumberSpaceCommaInput(String currentValue, String oldValue,
   if (currentValue.isEmpty || re.hasMatch(currentValue)) return currentValue;
   else return oldValue;
 }
+/**
+ * | Function Name: handleNullWithEmpty
+ * | Description: Returns an empty string if the input is null or empty, otherwise returns the input.
+ */
 
 String handleNullWithEmpty(value) {
   if (value == null || value.isEmpty || value == '') {
@@ -150,6 +168,11 @@ String handleNullWithEmpty(value) {
     return value;
   }
 }
+
+/**
+ * | Function Name: nullToNA
+ * | Description: Converts null or empty values to 'NA', true to 'Yes', false to 'No', and other values to strings.
+ */
 
 String nullToNA(value) {
   if (value == null || (value.toString()).isEmpty || value == '') {
@@ -162,6 +185,7 @@ String nullToNA(value) {
     return value.toString();
   }
 }
+
 
 // String nullToNA(value) {
 //   if (value == null || value.isEmpty || value == '') {
@@ -186,7 +210,10 @@ String NewNullToNA(value) {
   }
 }
 
-
+/**
+ * | Function Name: boolValue
+ * | Description: Converts string representations of boolean values to actual booleans.
+ */
 bool boolValue(value) {
   if (value == null || value == '') {
     return false;
@@ -199,6 +226,10 @@ bool boolValue(value) {
   }
 }
 
+/**
+ * | Function Name: nullToZero
+ * | Description: Converts null or empty values to '0' and other values to formatted decimal strings.
+ */
 String nullToZero(value) {
   if (value == null || value.isEmpty || value == '') {
     return '0';
@@ -207,6 +238,10 @@ String nullToZero(value) {
   }
 }
 
+/**
+ * | Function Name: indianAmount
+ * | Description: Converts null or empty values to Indian Rupee format ('₹0.00') and other values to formatted decimal strings.
+ */
 String indianAmount(value) {
   if (value == null || value.isEmpty || value == '') {
     return '\u20B9' + '0.00';
@@ -241,6 +276,7 @@ bool checkSizeValidation(file) {
       return false;
   }
 }
+
 
 String indianDate(value) {
   if (value == null || value == "" || value.isEmpty || value is bool) {

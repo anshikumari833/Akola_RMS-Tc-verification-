@@ -78,7 +78,7 @@ class WaterPaymentHistoryView extends GetView<WaterConsumerSearchController> {
                                 DataCell(Center(child: Text(show_Detail['tran_type']))),
                                 DataCell(Center(child: Text(show_Detail['tran_date']))),
                                 DataCell(Center(child: Text(show_Detail['amount']))),
-                                DataCell(Center(child: ElevatedButton(onPressed: () {},child:Text('  View \nReceipt')))),
+                                DataCell(Center(child: ElevatedButton(onPressed: () {controller.getPaymentReceipt(show_Detail['tran_no']);},child:Text('  View \nReceipt')))),
                               ],
                             ),
                         ],

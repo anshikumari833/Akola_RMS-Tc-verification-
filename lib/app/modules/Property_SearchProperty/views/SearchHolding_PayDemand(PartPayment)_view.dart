@@ -1177,90 +1177,295 @@ class DemandPartPaymentView extends GetView<PropertyPayPropertyTaxController> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                   children: [
-                                                    //UPI BUTTON
+                                                    Text( " UPI PAYMENT ",
+                                                      style: GoogleFonts.publicSans(
+                                                        fontWeight: FontWeight.w700,
+                                                        fontSize: 15,
+                                                        fontStyle: FontStyle.normal,
+                                                        color: Colors.pink,
+                                                      ),),
+                                                    //UPI PAYMENT
                                                     ElevatedButton(
-                                                      onPressed: () async {
-                                                        await controller.DemandOnlineUpiPayment();
-                                                        // await controller.openPineUPIPOS();
+                                                      onPressed: controller.isPaymentInProgress.value
+                                                          ? null
+                                                          : () {
+                                                        // Show a confirmation dialog
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) {
+                                                            return AlertDialog(
+                                                              title: Text("Confirmation"),
+                                                              content: Text("Are you sure you want to proceed with the payment?"),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop(); // Close the dialog
+                                                                  },
+                                                                  child: Text("Cancel"),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop(); // Close the dialog
+                                                                    controller.DemandOnlineUpiPayment();
+                                                                  },
+                                                                  child: Text("Confirm"),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
                                                       },
-                                                      child: Obx(() {
-                                                        if (controller.isCheckboxChecked.value) {
-                                                          // arrear amount to be shown  when the checkbox is selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('  UPI  : '),
-                                                              Text(
-                                                                controller.arrearPayableAmt.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
+                                                      child: controller.isPaymentInProgress.value
+                                                          ? Text('Processing Payment...')
+                                                          : Obx(() {
+                                                        switch(controller.demand_PaymentMethod.value){
+                                                        // Show the arrear amount
+                                                          case "isArrearPayment" : {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.arrearPayableAmt.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        } else {
-                                                          // Show the payable amount when the checkbox is not selected
-                                                          return Row(
-                                                            children: [
-                                                              Text('  UPI  : '),
-                                                              Text(
-                                                                controller.payableAmount.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
+                                                              ],
+                                                            );
+                                                          }
+                                                        // Show the full  payable amount
+                                                          case "isFullPayment": {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.payableAmount.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          );
+                                                              ],
+                                                            );
+                                                          }
+                                                        // Show the part payment amount
+                                                          case "isPartPayment": {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.partPaymentAmountController.text.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          }
+                                                          default: {
+                                                            return Container();
+                                                          }
                                                         }
                                                       }),
                                                     ),
-                                                    //CARD BUTTON
+                                                  ],
+                                                ),
+                                                SizedBox(height: 10,),
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Text( " CARD PAYMENT ",
+                                                      style: GoogleFonts.publicSans(
+                                                        fontWeight: FontWeight.w700,
+                                                        fontSize: 15,
+                                                        fontStyle: FontStyle.normal,
+                                                        color: Colors.purple,
+                                                      ),),
+                                                    //CARD PAYMENT
                                                     ElevatedButton(
-                                                      onPressed: () async {
-                                                        await controller.DemandOnlineCardPayment();
-                                                        // await controller.openPineCardPOS();
+                                                      onPressed: controller.isPaymentInProgress.value
+                                                          ? null
+                                                          : () {
+                                                        // Show a confirmation dialog
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) {
+                                                            return AlertDialog(
+                                                              title: Text("Confirmation"),
+                                                              content: Text("Are you sure you want to proceed with the payment?"),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop(); // Close the dialog
+                                                                  },
+                                                                  child: Text("Cancel"),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed: () {
+                                                                    Navigator.of(context).pop(); // Close the dialog
+                                                                    controller.DemandOnlineCardPayment();
+                                                                  },
+                                                                  child: Text("Confirm"),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
                                                       },
-                                                      child: Obx(() {
-                                                        if (controller.isCheckboxChecked.value) {
-                                                          // arrear amount to be shown  when the checkbox is selected
-                                                          return Row(
-                                                            children: [
-                                                              Text(' CARD  :   '),
-                                                              Text(
-                                                                controller.arrearPayableAmt.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
+                                                      child: controller.isPaymentInProgress.value
+                                                          ? Text('Processing Payment...')
+                                                          : Obx(() {
+
+                                                        switch(controller.demand_PaymentMethod.value){
+                                                        // Show the arrear amount
+                                                          case "isArrearPayment" : {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.arrearPayableAmt.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          );
-                                                        } else {
-                                                          // payable amount to be shown when the checkbox is not selected
-                                                          return Row(
-                                                            children: [
-                                                              Text(' CARD  :   '),
-                                                              Text(
-                                                                controller.payableAmount.toString(),
-                                                                style: GoogleFonts.publicSans(
-                                                                  fontWeight: FontWeight.w600,
-                                                                  fontSize: 15,
-                                                                  fontStyle: FontStyle.normal,
-                                                                  color: Colors.white,
+                                                              ],
+                                                            );
+                                                          }
+                                                        // Show the full  payable amount
+                                                          case "isFullPayment": {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.payableAmount.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
-                                                          );
+                                                              ],
+                                                            );
+                                                          }
+                                                        // Show the part payment amount
+                                                          case "isPartPayment": {
+                                                            return Row(
+                                                              children: [
+                                                                Text('Pay Now: '),
+                                                                Text(
+                                                                  controller.partPaymentAmountController.text.toString(),
+                                                                  style: GoogleFonts.publicSans(
+                                                                    fontWeight: FontWeight.w600,
+                                                                    fontSize: 15,
+                                                                    fontStyle: FontStyle.normal,
+                                                                    color: Colors.white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          }
+                                                          default: {
+                                                            return Container();
+                                                          }
                                                         }
                                                       }),
                                                     ),
+                                                    // //UPI BUTTON
+                                                    // ElevatedButton(
+                                                    //   onPressed: () async {
+                                                    //     await controller.DemandOnlineUpiPayment();
+                                                    //     // await controller.openPineUPIPOS();
+                                                    //   },
+                                                    //   child: Obx(() {
+                                                    //     if (controller.isCheckboxChecked.value) {
+                                                    //       // arrear amount to be shown  when the checkbox is selected
+                                                    //       return Row(
+                                                    //         children: [
+                                                    //           Text('  UPI  : '),
+                                                    //           Text(
+                                                    //             controller.arrearPayableAmt.toString(),
+                                                    //             style: GoogleFonts.publicSans(
+                                                    //               fontWeight: FontWeight.w600,
+                                                    //               fontSize: 15,
+                                                    //               fontStyle: FontStyle.normal,
+                                                    //               color: Colors.white,
+                                                    //             ),
+                                                    //           ),
+                                                    //         ],
+                                                    //       );
+                                                    //     } else {
+                                                    //       // Show the payable amount when the checkbox is not selected
+                                                    //       return Row(
+                                                    //         children: [
+                                                    //           Text('  UPI  : '),
+                                                    //           Text(
+                                                    //             controller.payableAmount.toString(),
+                                                    //             style: GoogleFonts.publicSans(
+                                                    //               fontWeight: FontWeight.w600,
+                                                    //               fontSize: 15,
+                                                    //               fontStyle: FontStyle.normal,
+                                                    //               color: Colors.white,
+                                                    //             ),
+                                                    //           ),
+                                                    //         ],
+                                                    //       );
+                                                    //     }
+                                                    //   }),
+                                                    // ),
+                                                    // //CARD BUTTON
+                                                    // ElevatedButton(
+                                                    //   onPressed: () async {
+                                                    //     await controller.DemandOnlineCardPayment();
+                                                    //     // await controller.openPineCardPOS();
+                                                    //   },
+                                                    //   child: Obx(() {
+                                                    //     if (controller.isCheckboxChecked.value) {
+                                                    //       // arrear amount to be shown  when the checkbox is selected
+                                                    //       return Row(
+                                                    //         children: [
+                                                    //           Text(' CARD  :   '),
+                                                    //           Text(
+                                                    //             controller.arrearPayableAmt.toString(),
+                                                    //             style: GoogleFonts.publicSans(
+                                                    //               fontWeight: FontWeight.w600,
+                                                    //               fontSize: 15,
+                                                    //               fontStyle: FontStyle.normal,
+                                                    //               color: Colors.white,
+                                                    //             ),
+                                                    //           ),
+                                                    //         ],
+                                                    //       );
+                                                    //     } else {
+                                                    //       // payable amount to be shown when the checkbox is not selected
+                                                    //       return Row(
+                                                    //         children: [
+                                                    //           Text(' CARD  :   '),
+                                                    //           Text(
+                                                    //             controller.payableAmount.toString(),
+                                                    //             style: GoogleFonts.publicSans(
+                                                    //               fontWeight: FontWeight.w600,
+                                                    //               fontSize: 15,
+                                                    //               fontStyle: FontStyle.normal,
+                                                    //               color: Colors.white,
+                                                    //             ),
+                                                    //           ),
+                                                    //         ],
+                                                    //       );
+                                                    //     }
+                                                    //   }),
+                                                    // ),
                                                   ],
                                                 ),
                                                 if(controller.pineLabStatus.value == true )

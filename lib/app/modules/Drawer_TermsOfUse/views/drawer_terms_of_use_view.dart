@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/drawer_terms_of_use_controller.dart';
 
+/**
+ * | Created By: ANSHI KUMARI
+ */
+
+
 class DrawerTermsOfUseView extends GetView<DrawerTermsOfUseController> {
   const DrawerTermsOfUseView({Key? key}) : super(key: key);
   @override

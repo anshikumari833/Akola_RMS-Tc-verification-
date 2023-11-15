@@ -1279,9 +1279,7 @@ class TcFieldVerificationController extends GetxController with StateMixin<dynam
                 tcVerifyFloor.add(existingFloorsMap);
               }
             }
-
           }
-
           if(newverifyuser1.data['geoTagging'].length > 0)
           {
             getData = true;
@@ -1294,7 +1292,6 @@ class TcFieldVerificationController extends GetxController with StateMixin<dynam
                 preventDuplicates: true,
               );
             }
-
             return true;
           } else {
             // Get.back();
@@ -1303,7 +1300,6 @@ class TcFieldVerificationController extends GetxController with StateMixin<dynam
             isLoading.value = false;
             return false;
           }
-
         } else {
           Get.snackbar(
             'Oops!!!',
@@ -1312,9 +1308,6 @@ class TcFieldVerificationController extends GetxController with StateMixin<dynam
             colorText: Colors.white,
           );
         }
-
-
-
       // if(newverifyuser1.data != null && newverifyuser1.data['geoTagging'].length > 0 && newverifyuser1.data['existingFloors'].length > 0)
 
     } break;
@@ -1332,7 +1325,6 @@ class TcFieldVerificationController extends GetxController with StateMixin<dynam
             preventDuplicates: true,
           );
         }
-
         return true;
       } else {
         Get.toNamed(Routes.FIELD_VERIFICATION_PENDING_LIST);

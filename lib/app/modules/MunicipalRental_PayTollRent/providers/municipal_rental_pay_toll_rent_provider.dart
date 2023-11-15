@@ -58,4 +58,15 @@ class MunicipalRentalPayTollRentProvider extends GetConnect {
     return APIResponse.fromJson(
         {"data": response.body, "error": response.status.hasError});
   }
+
+  //PAYMENT RECEIPT
+  Future<APIResponse> paymentReceiptDetail(tollId) async {
+    String url = Strings.base_url + municipalRental_ApiEndpoints.tollPaymentReceipt ;
+    final response = await post(url, {
+      "tollId": tollId.toString()
+    },  headers: Strings.headers,
+    );
+    return APIResponse.fromJson(
+        {"data": response.body, "error": response.status.hasError});
+  }
 }
